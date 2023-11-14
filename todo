@@ -1,0 +1,53 @@
+AC = automation controller(antigo ansible tower)
+
+#Criar a base da AAP
+
+#credenciais#
+[explicar o que é credentials no ansible]
+Resources > credeantial > Add
+
+Criar credencial do AC
+name: CRED-AC-CONFIG
+Description: Credencial de configuracao do Automation Controller
+Organization: SECURITY ou Defaults
+Credential type: Red Hat Ansible Automation Platform
+Red Hat Ansible Automation Platform: hostname ou ip do automation controller
+Username: admin
+Password: xxxxxxx
+
+Criar credential do git interno
+name: CRED-GIT-INTERNAL ou CRED-GIT-TEST
+Description: credenciais de acesso ao git interno
+Organization: SECURITY ou Defaults
+Credential Type: Source Control
+Username: xxxxxx
+Password: xxxxxx
+
+#Projects#
+[exlicar o que são projects no ansible]
+Resources > projects > Add
+Name: PROJ-GIT-UPDATEFIX
+Description: Repositorio de automações para update de servidores linux
+Organization:  SECURITY ou Defaults
+Execution Environment: Default execution environment
+Source Control Type: Git
+Source Control URL: 
+
+
+CRED-AC-CONFIG
+Criar credential do git interno
+
+Criar um inventario no AAP chamado INV-AC
+ - GROUP_AAP
+ - GROUP_SERVICENOW
+ - GROUP_SATELLITE
+
+Cadastrar hosts Automation Controller no inventario INV-AC
+Cadastrar hosts satellite no inventario INV-AC
+Cadastrar hosts servicenow no inventario INV-AC
+
+Criar o projeto PROJ-GIT-UPDATEFIX
+
+1 - levar a informação do https://github.com/allanroque/updatefix-mvp para o git local
+2 - se o git for privado criar a credencial do git privado 
+
