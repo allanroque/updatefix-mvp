@@ -67,6 +67,7 @@
         playbook: "upfix2/upfix2_1.yml"
         credentials:
           - "{{ ac_cred_servers }}" #esse job acessa diretamente os servidores
+          - "{{ ac_cred_ac }}"
         state: "present"
         survey_enabled: yes
         survey_spec: "{{ lookup('file', 'upfix2_1_survey.json') }}"
