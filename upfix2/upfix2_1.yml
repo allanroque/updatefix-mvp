@@ -1,7 +1,28 @@
 ---
 - name: Verificações e Ações
-  hosts: 
+  hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files: vars/vars.yml
   gather_facts: False
   tasks: 
-    - name: Verificar se os servidores previamente existe no Automation Controller no inventario principal
+
+#OBS: este teste de ping não é baseado no protocolo ICMP, este é o modulo ping do ansible que valida o acesso ao dispositivo
+    - name: Verificar se os servidores existentes no inventario estão acessiveis para o Automation Controller
+      ping:
+      register: ping_result
+
+    - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }}
+      ansible.controller.host:
+        name: "{{ inventory_hostname }}"
+        inventory: "{{ controller_updatefix_inventory }}"
+        variables:
+#          host_exists_in_inventory: "{{ host_exists_in_inventory }}"
+          hosts_reachable: "OK"
+        when: ping_result.ping is defined and ping_result.ping == "pong"
+
+    - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }}
+      ansible.controller.group:
+        name: "{{ controller_updatefix_inventory_group }}"
+        inventory: "{{ controller_updatefix_inventory }}"
+        hosts: "{{ inventory_hostname }}"
+        preserve_existing_hosts: True
+      when: ping_result.ping is defined and ping_result.ping == "pong"

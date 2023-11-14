@@ -58,6 +58,9 @@
         inventory: "{{ updatefix_inventory }}"
         preserve_existing_hosts: True
         variables:
+          updatefix_version: "{{ updatefix_version }}"
+          updatefix_inventory: "{{ ac_inv_updatefix }}" 
+          updatefix_inventory_group: "{{ updatefix_inventory }}_{{ updatefix_version }}"
           update_type: "{{ update_type }}"
           reboot: "{{ reboot }}"
       loop:
@@ -73,6 +76,7 @@
         hosts: "{{ item }}"
       loop: "{{ server_list.splitlines() }}" 
 
+#Ajuste no GRUPO DE SERVIDORES OK
     - name: Add hosts no grupo com status OK Updatefix versão {{ updatefix_version }} no inventory UPDATEFIX
       ansible.controller.group:
         name: "{{ updatefix_inventory_group_ok }}"
@@ -88,3 +92,5 @@
         inventory: "{{ updatefix_inventory }}"
         hosts: "{{ item }}"
       loop: "{{ server_noexisting }}"
+
+#remover server_existing do grupo fail - roadmap
