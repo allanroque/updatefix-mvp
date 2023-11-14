@@ -2,6 +2,7 @@
 - name: Verificações e Ações
   hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files: vars/vars.yml
+
   gather_facts: False
   tasks: 
 
@@ -11,6 +12,11 @@
       register: ping_result
       ignore_errors: True
       #ignore_unreachable: true
+  
+    - name: test
+      debug:
+        msg: ping_result
+
 
     - name: Ajustar variável de status do host no inventory e group Updatefix {{ updatefix_inventory_group }} OK
       ansible.controller.host:
