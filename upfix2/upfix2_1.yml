@@ -48,7 +48,7 @@
 #      run_once: true
 
     - name: Add hosts with status OK Updatefix version {{ updatefix_version }} to inventory UPDATEFIX
-      ansible.builtin.group:
+      ansible.controller.group:
         name: "{{ updatefix_inventory_group_ok }}"
         preserve_existing_hosts: True
         inventory: "{{ updatefix_inventory }}"
