@@ -89,7 +89,7 @@ O objetivo deste MVP é estabelecer um procedimento automatizado para atualizar 
 - **Inventário**: INV-AC
 - **Projeto**: PROJ-GIT-UPDATEFIX
 - **Ambiente de Execução**: Default execution environment
-- **Playbook**: [Nome do playbook]
+- **Playbook**: main.yml
 - **Credenciais**: [Selecione CRED-AC-CONFIG]
 - **Labels**: ac
 
