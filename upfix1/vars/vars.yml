@@ -6,6 +6,5 @@ ac_inv_all_hosts: INV-ALL-HOSTS
 ac_inv_updatefix: INV-UPDATEFIX
 ac_proj_updatefix: PROJ-GIT-UPDATEFIX
 
-variavel com a listagem dos servidore
+#variavel com a listagem dos servidore
 server_list: |
-
