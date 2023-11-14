@@ -31,10 +31,10 @@
         variables:
           host_exists_in_inventory: "{{ host_exists_in_inventory }}"
           hosts_reachable: "FAIL"
-      when: ping_result.ping is not defined and ping_result.ping != "pong
+      when: ping_result.ping is not defined and ping_result.ping != "pong"
       delegate_to: localhost
 
-    - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }}
+    - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }} 
       ansible.controller.group:
         name: "{{ updatefix_inventory_group_ok }}"
         inventory: "{{ updatefix_inventory }}"
@@ -42,3 +42,10 @@
         preserve_existing_hosts: True
       when: ping_result.ping is defined and ping_result.ping == "pong"
       delegate_to: localhost
+
+    - name: test
+      debug:
+        msg: test
+
+#add conf
+
