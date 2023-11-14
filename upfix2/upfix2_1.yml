@@ -62,5 +62,5 @@
         preserve_existing_hosts: True
         inventory: "{{ updatefix_inventory }}"
         hosts: "{{ item }}"
-      loop: "{{ server_existing }}"
+      loop: "{{ updatefix_inventory_group_ok }}"
       when: host_exists_in_inventory == 'OK' and hosts_reachable == 'OK'
