@@ -26,7 +26,7 @@
         organization: "{{ ac_organization }}"
         inventory: "{{ ac_inv_updatefix }}"
         project: "{{ ac_proj_updatefix }}"
-        playbook: "upfix1.yml"
+        playbook: "main.yml"
         credentials:
           - "{{ ac_cred_ac }}"
         state: "present"
