@@ -12,6 +12,10 @@
       register: check_inventory_result
       check_mode: yes
 
+    - name: test
+      debug:
+        var: check_inventory_result
+
     - name: Criar lista dos hosts existentes
       set_fact:
         server_existing: "{{ server_existing|default([]) + [item.item] }}"
