@@ -14,7 +14,7 @@
     - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }}
       ansible.controller.host:
         name: "{{ inventory_hostname }}"
-        inventory: "{{ updatefix_inventory_group }}"
+        inventory: "{{ updatefix_inventory }}"
         variables:
 #          host_exists_in_inventory: "{{ host_exists_in_inventory }}"
           hosts_reachable: "OK"
