@@ -9,13 +9,10 @@
         path: /etc/ansible/facts.d/
         state: directory
         mode: 0755
-      when: ping_result.ping is defined and ping_result.ping == "pong"
-      comment: "Cria um diretório para armazenar fatos do Ansible se o host estiver acessível."
 
     - name: Debug da variável controller_updatefix_inventory_group
       debug:
-        var: controller_updatefix_inventory_group
-      comment: "Exibe informações sobre o grupo de inventário UpdateFix."
+        var: updatefix_inventory_group
 
     - name: Gerar diretórios de log do Ansible e UpdateFix
       file:
