@@ -12,12 +12,6 @@
       register: ping_result
       ignore_errors: True
       ignore_unreachable: true
-
-    - name: "Mostrar hosts_reachable"
-      debug:
-        msg: "{{ hostvars[item]['hosts_reachable'] }}"
-      loop: "{{ groups[updatefix_inventory_group] }}"
-      run_once: true
       
     - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }}
       ansible.controller.host:
@@ -61,7 +55,7 @@
         hosts: "{{ item.hosts }}"
       loop: "{{ groups[updatefix_inventory_group] }}"
       when:
-        - hostvars[item]['host_exists_in_inventory'] == 'OK'
-        - hostvars[item]['hosts_reachable'] == 'OK'
+        - hostvars[item]['host_exists_in_inventory'] == "OK"
+        - hostvars[item]['hosts_reachable'] == "OK"
       delegate_to: localhost
       run_once: true
