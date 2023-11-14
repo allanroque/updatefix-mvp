@@ -10,10 +10,6 @@
         state: directory
         mode: 0755
 
-    - name: Debug da variável controller_updatefix_inventory_group
-      debug:
-        var: updatefix_inventory_group
-
     - name: Gerar diretórios de log do Ansible e UpdateFix
       file:
         state: directory
