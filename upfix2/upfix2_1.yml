@@ -11,11 +11,22 @@
       ping:
       register: ping_result
       ignore_errors: True
-      #ignore_unreachable: true
+      ignore_unreachable: true
 
     - name: test hosts
       debug:
         var: groups[updatefix_inventory_group_ok]
+
+    - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }} FAIL
+      ansible.controller.host:
+        name: "{{ item }}"
+        inventory: "{{ updatefix_inventory }}"
+        enabled: true
+        variables:
+          host_exists_in_inventory: "{{ host_exists_in_inventory }}" #definida na ultima automação
+          hosts_reachable: "{{ hosts_reachable | default(FAIL) }}"
+      loop: groups[updatefix_inventory_group_ok]
+      delegate_to: localhost
 
     - name: Ajustar variável de status do host no inventory e group Updatefix {{ updatefix_inventory_group }} OK
       ansible.controller.host:
@@ -26,17 +37,6 @@
           host_exists_in_inventory: "{{ host_exists_in_inventory }}"
           hosts_reachable: "OK"
       when: ping_result.ping is defined and ping_result.ping == "pong"
-      delegate_to: localhost
-
-    - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }} FAIL
-      ansible.controller.host:
-        name: "{{ inventory_hostname }}"
-        inventory: "{{ updatefix_inventory | default(FAIL)}}"
-        enabled: true
-        variables:
-          host_exists_in_inventory: "{{ host_exists_in_inventory }}"
-          hosts_reachable: "{{ hosts_reachable  }}"
-      when: ping_result.ping is not defined and ping_result.ping != "pong"
       delegate_to: localhost
 
     - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }} 
@@ -53,4 +53,3 @@
         msg: test
 
 #add conf
-
