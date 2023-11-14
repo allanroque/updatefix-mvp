@@ -14,6 +14,7 @@ Credential type: Red Hat Ansible Automation Platform
 Red Hat Ansible Automation Platform: hostname ou ip do automation controller
 Username: admin
 Password: xxxxxxx
+SAVE
 
 Criar credential do git interno
 name: CRED-GIT-INTERNAL ou CRED-GIT-TEST
@@ -22,16 +23,53 @@ Organization: SECURITY ou Defaults
 Credential Type: Source Control
 Username: xxxxxx
 Password: xxxxxx
+SAVE
 
 #Projects#
 [exlicar o que são projects no ansible]
+
+Criar projeto/repositorio de código de automação 
 Resources > projects > Add
 Name: PROJ-GIT-UPDATEFIX
 Description: Repositorio de automações para update de servidores linux
 Organization:  SECURITY ou Defaults
 Execution Environment: Default execution environment
 Source Control Type: Git
-Source Control URL: 
+Source Control URL: exemplo https://github.com/allanroque/updatefix-mvp.git
+Source Control Credential: selecionar a credencial criada caso o repositório seja privado
+Options: selecionar Clean, Delete, Update Revision on Launch
+SAVE
+
+#Inventory#
+[explique o que é inventory]
+
+Criar inventrario de hosts
+Resources > Inventory > Add
+Name: INV-AC
+Description: Inventário do automation controller
+Organization: SECURITY ou Defaults
+Labels: ac
+SAVE
+
+Adicionar hosts no inventario INV-AC
+click na aba Hosts > Add
+Name: hostname ou IP do automation controller
+description: Automation Controller
+
+#Criar um job template#
+[explique o que é um job template]
+Resources > templates > Add > Add job template
+
+Name: CONFIG-AC-BASE
+Description: Configuração basica do AAP
+Job Type: Run
+Inventory: INV-AC
+Project: PROJ-GIT-UPDATEFIX
+Execution Environment: Default execution environment
+Playbook: 
+Credentials: Selected Category > Red Hat Ansible Automation Platform > selecione CRED-AC-CONFIG
+Labels: ac
+
 
 
 CRED-AC-CONFIG
