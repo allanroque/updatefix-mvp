@@ -54,7 +54,7 @@
         preserve_existing_hosts: False
         inventory: "{{ updatefix_inventory }}"
         hosts:
-        delegate_to: localhost
+      delegate_to: localhost
 
       
     - name: Add hosts no grupo com status OK Updatefix versão {{ updatefix_version }} no inventory UPDATEFIX
