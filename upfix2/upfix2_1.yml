@@ -53,6 +53,7 @@
         name: "{{ updatefix_inventory_group_ok }}"
         inventory: "{{ updatefix_inventory }}"
         hosts:
+      run_once: true
       delegate_to: localhost
 
       
