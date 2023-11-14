@@ -46,21 +46,6 @@
 #      when: ping_result.ping is defined and ping_result.ping == "pong" 
 #      delegate_to: localhost
 #      run_once: true
-    - name: List all hosts
-      debug:
-        msg: "{{ item.hosts[0] }}"
-      loop: "{{ groups['updatefix_inventory_group'] }}"
-      when:
-        - hostvars[item]['host_exists_in_inventory'] == 'OK'
-        - hostvars[item]['hosts_reachable'] == 'OK'
-
-    - name: List all hosts
-      debug:
-        msg: "{{ hostvars[item].hostname }}"
-      loop: "{{ groups['updatefix_inventory_group'] }}"
-      when:
-        - hostvars[item]['host_exists_in_inventory'] == 'OK'
-        - hostvars[item]['hosts_reachable'] == 'OK'
 
     - name: Add hosts with status OK Updatefix version {{ updatefix_version }} to inventory UPDATEFIX
       ansible.builtin.group:
@@ -72,5 +57,5 @@
       when:
         - hostvars[item]['host_exists_in_inventory'] == 'OK'
         - hostvars[item]['hosts_reachable'] == 'OK'
-      delegate_to: localhost
-      run_once: true
+      #delegate_to: localhost
+      #run_once: true
