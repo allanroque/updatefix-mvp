@@ -9,12 +9,14 @@
     - name: Verificar se os servidores existentes no inventario estão acessiveis para o Automation Controller
       ping:
       register: ping_result
-      ignore_unreachable: true
+      ignore_errors: True
+      #ignore_unreachable: true
 
     - name: Ajustar variável de status do host no inventory e group Updatefix {{ updatefix_inventory_group }} OK
       ansible.controller.host:
         name: "{{ inventory_hostname }}"
         inventory: "{{ updatefix_inventory }}"
+        enabled: true
         variables:
           host_exists_in_inventory: "{{ host_exists_in_inventory }}"
           hosts_reachable: "OK"
@@ -25,6 +27,7 @@
       ansible.controller.host:
         name: "{{ inventory_hostname }}"
         inventory: "{{ updatefix_inventory }}"
+        enabled: true
         variables:
           host_exists_in_inventory: "{{ host_exists_in_inventory }}"
           hosts_reachable: "FAIL"
