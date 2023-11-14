@@ -1,7 +1,33 @@
 ---
-- name: teste
-  hosts: testes
-  tasks:
-    - name: teste
+- name: Acessibilidade e Inventários
+  hosts: localhost
+  vars_files: vars/vars.yml
+  gather_facts: False
+  tasks: 
+    - name: Verificar se os servidores previamente existe no Automation Controller no inventario principal
+      ansible.controller.host:
+        name: "{{ item }}"
+        inventory: "{{ ac_inv_all_hosts }}"
+      loop: "{{ server_list.splitlines() }}"
+      register: check_inventory_result
+      check_mode: yes
+
+    - name: Criar lista dos hosts existentes
+      set_fact:
+        server_existing: "{{ server_existing|default([]) + [item.item] }}"
+      with_items: "{{ check_inventory_result.results }}"
+      when: item.changed == False
+
+    - name: Criar lista dos hosts não existentes
+      set_fact:
+        server_noexisting: "{{ server_noexisting|default([]) + [item.item] }}"
+      with_items: "{{ check_inventory_result.results }}"
+      when: item.changed == True
+
+    - name: debug vars existentes
       debug:
-        msg: oi
+        var: server_existing
+
+    - name: debug vars não existentes
+      debug:
+        var: server_noexisting

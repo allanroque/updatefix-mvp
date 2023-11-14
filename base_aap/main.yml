@@ -23,9 +23,9 @@
         name: UPFIX 1 - ACCESS PREPARE
         job_type: "run"
         organization: "{{ ac_organization }}"
-        inventory: "{{ ac_inv_updatefix }}"
+        inventory: "{{ ac_inv_all_hosts }}" # ele usa o inventory full como fonte da verdade
         project: "{{ ac_proj_updatefix }}"
-        playbook: "main.yml"
+        playbook: "upfix1/upfix1.yml"
         credentials:
           - "{{ ac_cred_ac }}"
         state: "present"
