@@ -38,3 +38,7 @@
           - '!any'
         filter: ansible_local
       register: local_facts
+
+    - name: test
+      debug:
+        var: local_facts
