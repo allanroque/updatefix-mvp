@@ -47,3 +47,20 @@
         preserve_existing_hosts: True
       when: ping_result.ping is defined and ping_result.ping == "pong"
       delegate_to: localhost
+
+    - name: TEST
+      ansible.controller.group:
+        name: "{{ updatefix_inventory_group_ok }}"
+        preserve_existing_hosts: False
+        inventory: "{{ updatefix_inventory }}"
+        hosts:
+      loop: "{{ server_existing }}"
+      
+    - name: Add hosts no grupo com status OK Updatefix versão {{ updatefix_version }} no inventory UPDATEFIX
+      ansible.controller.group:
+        name: "{{ updatefix_inventory_group_ok }}"
+        preserve_existing_hosts: True
+        inventory: "{{ updatefix_inventory }}"
+        hosts: "{{ item }}"
+      loop: "{{ server_existing }}"
+      when: host_exists_in_inventory == 'OK' and hosts_reachable == 'OK'
