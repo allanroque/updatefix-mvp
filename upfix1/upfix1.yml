@@ -58,8 +58,30 @@
         variables:
           update_type: "{{ update_type }}"
           reboot: "{{ reboot }}"
-        loop:
-          - "{{ updatefix_inventory_group }}"
-          - "{{ updatefix_inventory_group_ok }}"
-          - "{{ updatefix_inventory_group_fail }}"
+      loop:
+        - "{{ updatefix_inventory_group }}"
+        - "{{ updatefix_inventory_group_ok }}"
+        - "{{ updatefix_inventory_group_fail }}"
 
+    - name: Add host no grupo Updatefix versão {{ updatefix_version }} no inventory UPDATEFIX
+      ansible.controller.group:
+        name: "{{ updatefix_inventory_group }}"
+        inventory: "{{ updatefix_inventory }}"
+        hosts: 
+          - "{{ item }}"
+        preserve_existing_hosts: True
+      loop: "{{ server_list.splitlines() }}" 
+
+    - name: Add hosts no grupo com status OK Updatefix versão {{ updatefix_version }} no inventory UPDATEFIX
+      ansible.controller.group:
+        name: "{{ updatefix_inventory_group_ok }}"
+        inventory: "{{ updatefix_inventory }}"
+        hosts: "{{ item }}"
+      loop: "{{ server_existing }}"
+
+    - name: Add hosts no grupo com status FAIL Updatefix versão {{ updatefix_version }} no inventory UPDATEFIX
+      ansible.controller.group:
+        name: "{{ updatefix_inventory_group_fail }}"
+        inventory: "{{ updatefix_inventory }}"
+        hosts: "{{ item }}"
+      loop: "{{ server_noexisting }}"
