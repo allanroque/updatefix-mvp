@@ -51,7 +51,6 @@
     - name: TEST
       ansible.controller.group:
         name: "{{ updatefix_inventory_group_ok }}"
-        preserve_existing_hosts: False
         inventory: "{{ updatefix_inventory }}"
         hosts:
       delegate_to: localhost
