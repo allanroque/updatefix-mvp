@@ -25,7 +25,7 @@
         variables:
           host_exists_in_inventory: "{{ host_exists_in_inventory }}" #definida na ultima automação
           hosts_reachable: "{{ hosts_reachable | default(FAIL) }}"
-      loop: "{{ groups['updatefix_inventory_group_ok'] }}"
+      loop: groups['updatefix_inventory_group_ok']
       delegate_to: localhost
 
     - name: Ajustar variável de status do host no inventory e group Updatefix {{ updatefix_inventory_group }} OK
