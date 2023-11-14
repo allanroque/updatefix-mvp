@@ -17,7 +17,6 @@
         description: "Inventario de atualização de servidores"
         organization: "{{ ac_organization }}"
         state: present
-        labels: updatefix 
 
     - name: Criar Job Template de UPFIX 1 - Acessibilidade e Inventários do UPDATEFIX
       ansible.controller.job_template:
