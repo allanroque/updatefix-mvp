@@ -15,5 +15,16 @@ updatefix_inventory_group: "{{ updatefix_inventory }}_{{ updatefix_version }}" #
 updatefix_inventory_group_ok: "{{ updatefix_inventory_group }}_OK"
 updatefix_inventory_group_fail: "{{ updatefix_inventory_group }}_FAILL"
 
-#variavel com a listagem dos servidore
-server_list: |
+#local_facts
+local_facts:
+  - root_space_check
+  - boot_space_check
+  - root_readonly_check
+  - boot_readonly_check
+  - subscription
+  - packages
+  - zombie_process
+  - uptime_reboot
+  - mount_points
+  - services
+  - proccess

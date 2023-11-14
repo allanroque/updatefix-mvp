@@ -10,6 +10,18 @@
         state: directory
         mode: 0755
 
+    - name: Garantir que o diretório /etc/ansible/facts.d existe
+      file:
+        path: /etc/ansible/facts.d
+        state: directory
+        mode: '0755'
+
+    - name: Criar arquivos de facts para cada item
+      template:
+        src: fact_template.j2
+        dest: "/etc/ansible/facts.d/{{ item }}.fact"
+      loop: "{{ local_facts }}"
+
     - name: Gerar diretórios de log do Ansible e UpdateFix
       file:
         state: directory
