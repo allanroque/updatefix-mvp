@@ -18,10 +18,6 @@
         msg: "{{ hostvars[item]['hosts_reachable'] }}"
       loop: "{{ groups[updatefix_inventory_group] }}"
       run_once: true
-
-    - name: Mostrar lista de hosts
-      debug:
-        var: groups[updatefix_inventory_group]
       
     - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }}
       ansible.controller.host:
@@ -47,32 +43,25 @@
       delegate_to: localhost
       run_once: true
 
-    - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }} 
-      ansible.controller.group:
-        name: "{{ updatefix_inventory_group_ok }}"
-        inventory: "{{ updatefix_inventory }}"
-        hosts: "{{ inventory_hostname }}"
-        preserve_existing_hosts: True
-      when: ping_result.ping is defined and ping_result.ping == "pong" 
-      delegate_to: localhost
-      run_once: true
-
-    - name: TEST
-      ansible.controller.group:
-        name: "{{ updatefix_inventory_group_fail }}"
-        inventory: "{{ updatefix_inventory }}"
-        hosts: "{{ item }}"
-        preserve_existing_hosts: True
-      delegate_to: localhost
-      when: hosts_reachable == 'FAIL'
-      run_once: true
-      
-#    - name: Add hosts no grupo com status OK Updatefix versão {{ updatefix_version }} no inventory UPDATEFIX
+#    - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }} 
 #      ansible.controller.group:
 #        name: "{{ updatefix_inventory_group_ok }}"
-#        preserve_existing_hosts: True
 #        inventory: "{{ updatefix_inventory }}"
-#        hosts: "{{ item }}"
-#      loop: "{{ groups[updatefix_inventory_group_ok] }}"
-#      when: host_exists_in_inventory == 'OK' and hosts_reachable == 'OK'
+#        hosts: "{{ inventory_hostname }}"
+#        preserve_existing_hosts: True
+#      when: ping_result.ping is defined and ping_result.ping == "pong" 
 #      delegate_to: localhost
+#      run_once: true
+
+    - name: Add hosts with status OK Updatefix version {{ updatefix_version }} to inventory UPDATEFIX
+      ansible.builtin.group:
+        name: "{{ updatefix_inventory_group_ok }}"
+        preserve_existing_hosts: True
+        inventory: "{{ updatefix_inventory }}"
+        hosts: "{{ item.hosts }}"
+      loop: "{{ groups[updatefix_inventory_group] }}"
+      when:
+        - hostvars[item]['host_exists_in_inventory'] == 'OK'
+        - hostvars[item]['hosts_reachable'] == 'OK'
+      delegate_to: localhost
+      run_once: true
