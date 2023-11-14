@@ -14,11 +14,11 @@
     - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }}
       ansible.controller.host:
         name: "{{ inventory_hostname }}"
-        inventory: "{{ controller_updatefix_inventory }}"
+        inventory: "{{ updatefix_inventory_group }}"
         variables:
 #          host_exists_in_inventory: "{{ host_exists_in_inventory }}"
           hosts_reachable: "OK"
-        when: ping_result.ping is defined and ping_result.ping == "pong"
+      when: ping_result.ping is defined and ping_result.ping == "pong"
 
     - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }}
       ansible.controller.group:
