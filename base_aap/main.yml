@@ -59,7 +59,7 @@
 
     - name: Criar Job Template de UPFIX 2-1 - VERIFICAÇÃO E AÇÃO - TESTE DE PING
       ansible.controller.job_template:
-        name: UPFIX 2 - ACESSO E VERIFICACÃO
+        name: UPFIX 2 - ACESSO
         job_type: "run"
         organization: "{{ ac_organization }}"
         inventory: "{{ ac_inv_updatefix }}" # esse job usa o inventory INV-UPDATEFIX
@@ -77,17 +77,17 @@
 #### Verificações e Ações ####
 ##############################
 
-    - name: Criar Job Template de UPFIX 2-2 - VERIFICAÇÃO E AÇÃO - COLETAS
+    - name: Criar Job Template de UPFIX 2-2 - VERIFICAÇÃO E AÇÃO - COLETAS e LOGS
       ansible.controller.job_template:
-        name: UPFIX 2 - Verificações e Ações
+        name: UPFIX 2 - LOGS
         job_type: "run"
         organization: "{{ ac_organization }}"
         inventory: "{{ ac_inv_updatefix }}" # esse job usa o inventory INV-UPDATEFIX
         project: "{{ ac_proj_updatefix }}"
-        playbook: "upfix2/upfix2_1.yml"
+        playbook: "upfix2/upfix2_2.yml"
         credentials:
           - "{{ ac_cred_servers }}" #esse job acessa diretamente os servidores
-          - "{{ ac_cred_ac }}"
+#          - "{{ ac_cred_ac }}"
         state: "present"
         survey_enabled: yes
         survey_spec: "{{ lookup('file', 'upfix2_1_survey.json') }}"

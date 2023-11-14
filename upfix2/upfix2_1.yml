@@ -1,9 +1,7 @@
 ---
-- name: Verificações e Ações
+- name: Verificações de acesso
   hosts: "{{ updatefix_inventory_group }}"
   vars_files: vars/vars.yml
-
-  gather_facts: False
   tasks: 
 
 #OBS: este teste de ping não é baseado no protocolo ICMP, este é o modulo ping do ansible que valida o acesso ao dispositivo
