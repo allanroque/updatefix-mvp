@@ -62,7 +62,7 @@
         name: UPFIX 2 - Verificações e Ações
         job_type: "run"
         organization: "{{ ac_organization }}"
-        inventory: "{{ ac_inv_all_hosts }}" # ele usa o inventory full como fonte da verdade
+        inventory: "{{ ac_inv_updatefix }}" # esse job usa o inventory INV-UPDATEFIX
         project: "{{ ac_proj_updatefix }}"
         playbook: "upfix2/upfix2_1.yml"
         credentials:
