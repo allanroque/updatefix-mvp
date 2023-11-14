@@ -24,7 +24,7 @@
         enabled: true
         variables:
           host_exists_in_inventory: "{{ host_exists_in_inventory }}" #definida na ultima automação
-          hosts_reachable: "{{ hosts_reachable | default(FAIL) }}"
+          hosts_reachable: FAIL
       loop: "{{ groups[updatefix_inventory_group_ok] }}"
       delegate_to: localhost
 
@@ -47,9 +47,3 @@
         preserve_existing_hosts: True
       when: ping_result.ping is defined and ping_result.ping == "pong"
       delegate_to: localhost
-
-    - name: test
-      debug:
-        msg: test
-
-#add conf
