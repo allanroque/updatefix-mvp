@@ -13,10 +13,6 @@
       register: check_inventory_result
       check_mode: yes
 
-    - name: test
-      debug:
-        var: check_inventory_result
-
     - name: Criar lista dos hosts existentes
       set_fact:
         server_existing: "{{ server_existing|default([]) + [item.item] }}"
@@ -29,10 +25,41 @@
       with_items: "{{ check_inventory_result.results }}"
       when: item.changed == True
 
-    - name: debug vars existentes
+    - name: debug vars servidores existentes no inventory
       debug:
         var: server_existing
 
-    - name: debug vars não existentes
+    - name: debug vars servidores não existentes inventory
       debug:
         var: server_noexisting
+
+    - name: Add hosts existente no inventory de UPDATEFIX com variável OK
+      ansible.controller.host:
+        name: "{{ item }}"
+        inventory: "{{ updatefix_inventory }}"
+        variables:
+          host_exists_in_inventory: OK
+      loop: "{{ server_existing }}"
+
+    - name: Add hosts NÃO existente no inventory de UPDATEFIX com variável FAIL
+      ansible.controller.host:
+        name: "{{ item }}"
+        inventory: "{{ updatefix_inventory }}"
+        variables:
+          host_exists_in_inventory: FAIL
+          hosts_reachable: FAIL
+      loop: "{{ server_noexisting }}"
+  
+    - name: Criar grupo Updatefix versão {{ updatefix_version }} on inventory UPDATEFIX
+      ansible.controller.group:
+        name: "{{ item }}"
+        inventory: "{{ updatefix_inventory }}"
+        preserve_existing_hosts: True
+        variables:
+          update_type: "{{ update_type }}"
+          reboot: "{{ reboot }}"
+        loop:
+          - "{{ updatefix_inventory_group }}"
+          - "{{ updatefix_inventory_group_ok }}"
+          - "{{ updatefix_inventory_group_fail }}"
+

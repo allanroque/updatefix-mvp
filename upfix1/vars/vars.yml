@@ -1,10 +1,19 @@
 ---
-ac_organization: SECURITY
-ac_cred_ac: CRED-AC-CONFIG
-ac_cred_servers: CRED-SSH-SERVER
+#variáveis do AC
 ac_inv_all_hosts: INV-ALL-HOSTS
 ac_inv_updatefix: INV-UPDATEFIX
-ac_proj_updatefix: PROJ-GIT-UPDATEFIX
+
+#variáveis do processo de updatefix
+updatefix_version: "" #0001
+update_type:  #all, debug, security
+reboot: no # yes or no
+update_pkgs: #roadmap
+
+#variaveis para construcao de inventário de updatefix
+updatefix_inventory: "{{ ac_inv_updatefix }}" 
+updatefix_inventory_group: "{{ updatefix_inventory }}_{{ updatefix_version }}" #exemplo INV-UPDATEFIX_0001
+updatefix_inventory_group_ok: "{{ updatefix_inventory_group }}_OK"
+updatefix_inventory_group_fail: "{{ updatefix_inventory_group }}_FAILL"
 
 #variavel com a listagem dos servidore
 server_list: |
