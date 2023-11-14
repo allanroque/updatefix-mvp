@@ -55,11 +55,10 @@
       ansible.controller.group:
         name: "{{ updatefix_inventory_group_fail }}"
         inventory: "{{ updatefix_inventory }}"
-        hosts:
-          - web02.aroque.com.br
-          - web03.aroque.com.br
+        hosts: "{{ item }}"
         preserve_existing_hosts: True
       delegate_to: localhost
+      when: and hosts_reachable == 'FAIL'
       run_once: true
       
 #    - name: Add hosts no grupo com status OK Updatefix versão {{ updatefix_version }} no inventory UPDATEFIX
