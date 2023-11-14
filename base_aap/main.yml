@@ -23,6 +23,7 @@
       ansible.controller.host:
         name: "{{ ac_hostname }}"
         inventory: "{{ ac_inv_updatefix }}"
+        enabled: True
 
     - name: Add Grupo AC no inventory UPDATEFIX, add host de AC no grupo
       ansible.controller.group:

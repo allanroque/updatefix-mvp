@@ -37,6 +37,7 @@
       ansible.controller.host:
         name: "{{ item }}"
         inventory: "{{ updatefix_inventory }}"
+        enabled: True
         variables:
           host_exists_in_inventory: OK
       loop: "{{ server_existing }}"
@@ -45,6 +46,7 @@
       ansible.controller.host:
         name: "{{ item }}"
         inventory: "{{ updatefix_inventory }}"
+        enabled: True
         variables:
           host_exists_in_inventory: FAIL
           hosts_reachable: FAIL
