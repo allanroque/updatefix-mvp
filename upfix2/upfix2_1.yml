@@ -27,6 +27,7 @@
           hosts_reachable: FAIL
       loop: "{{ groups[updatefix_inventory_group] }}"
       delegate_to: localhost
+      run_once: true
 
     - name: Ajustar variável de status do host no inventory e group Updatefix {{ updatefix_inventory_group }} OK
       ansible.controller.host:
@@ -38,6 +39,7 @@
           hosts_reachable: "OK"
       when: ping_result.ping is defined and ping_result.ping == "pong"
       delegate_to: localhost
+      run_once: true
 
     - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }} 
       ansible.controller.group:
@@ -47,6 +49,7 @@
         preserve_existing_hosts: True
       when: ping_result.ping is defined and ping_result.ping == "pong" 
       delegate_to: localhost
+      run_once: true
 
     - name: TEST
       ansible.controller.group:
