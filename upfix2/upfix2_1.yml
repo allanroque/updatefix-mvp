@@ -12,11 +12,6 @@
       register: ping_result
       ignore_errors: True
       #ignore_unreachable: true
-  
-    - name: test
-      debug:
-        var: ping_result
-
 
     - name: Ajustar variável de status do host no inventory e group Updatefix {{ updatefix_inventory_group }} OK
       ansible.controller.host:
@@ -32,11 +27,11 @@
     - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }} FAIL
       ansible.controller.host:
         name: "{{ inventory_hostname }}"
-        inventory: "{{ updatefix_inventory }}"
+        inventory: "{{ updatefix_inventory | default(FAIL)}}"
         enabled: true
         variables:
           host_exists_in_inventory: "{{ host_exists_in_inventory }}"
-          hosts_reachable: "FAIL"
+          hosts_reachable: "{{ hosts_reachable  }}"
       when: ping_result.ping is not defined and ping_result.ping != "pong"
       delegate_to: localhost
 
