@@ -13,6 +13,11 @@
       ignore_errors: True
       ignore_unreachable: true
 
+    - name: "Mostrar hosts_reachable"
+      debug:
+        msg: "{{ hostvars[item]['hosts_reachable'] }}"
+      loop: "{{ groups[updatefix_inventory_group] }}"
+
     - name: Mostrar lista de hosts
       debug:
         var: groups[updatefix_inventory_group]
