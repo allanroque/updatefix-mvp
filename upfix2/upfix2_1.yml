@@ -17,18 +17,19 @@
       debug:
         msg: "{{ hostvars[item]['hosts_reachable'] }}"
       loop: "{{ groups[updatefix_inventory_group] }}"
+      run_once: true
 
     - name: Mostrar lista de hosts
       debug:
         var: groups[updatefix_inventory_group]
       
-    - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }} FAIL
+    - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }}
       ansible.controller.host:
         name: "{{ item }}"
         inventory: "{{ updatefix_inventory }}"
         enabled: true
         variables:
-          host_exists_in_inventory: "{{ host_exists_in_inventory }}" #definida na ultima automação
+          host_exists_in_inventory: "{{ hostvars[item]['host_exists_in_inventory'] }}" #definida na ultima automação
           hosts_reachable: FAIL
       loop: "{{ groups[updatefix_inventory_group] }}"
       delegate_to: localhost
