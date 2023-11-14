@@ -1,0 +1,7 @@
+---
+- name: teste
+  hosts: testes
+  tasks:
+    - name: teste
+      debug:
+        msg: oi
