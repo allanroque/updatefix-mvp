@@ -10,7 +10,7 @@
         inventory: "{{ ac_inv_all_hosts }}"
       loop: "{{ server_list.splitlines() }}"
       register: check_inventory_result
-      check_mode: yes
+      #check_mode: yes
 
     - name: test
       debug:
