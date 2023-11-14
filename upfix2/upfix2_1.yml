@@ -19,11 +19,13 @@
 #          host_exists_in_inventory: "{{ host_exists_in_inventory }}"
           hosts_reachable: "OK"
       when: ping_result.ping is defined and ping_result.ping == "pong"
+      delegate_to: localhost
 
     - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }}
       ansible.controller.group:
-        name: "{{ controller_updatefix_inventory_group }}"
-        inventory: "{{ controller_updatefix_inventory }}"
+        name: "{{ updatefix_inventory_group_ok }}"
+        inventory: "{{ updatefix_inventory }}"
         hosts: "{{ inventory_hostname }}"
         preserve_existing_hosts: True
       when: ping_result.ping is defined and ping_result.ping == "pong"
+      delegate_to: localhost
