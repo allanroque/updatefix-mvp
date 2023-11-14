@@ -57,5 +57,5 @@
       when:
         - hostvars[item]['host_exists_in_inventory'] == 'OK'
         - hostvars[item]['hosts_reachable'] == 'OK'
-      #delegate_to: localhost
-      #run_once: true
+      delegate_to: localhost
+      run_once: true
