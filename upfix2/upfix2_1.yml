@@ -13,6 +13,11 @@
       ignore_errors: True
       #ignore_unreachable: true
 
+    - name: test hosts
+      debug:
+        var: groups['updatefix_inventory_group_ok']
+
+
     - name: Ajustar variável de status do host no inventory e group Updatefix {{ updatefix_inventory_group }} OK
       ansible.controller.host:
         name: "{{ inventory_hostname }}"
