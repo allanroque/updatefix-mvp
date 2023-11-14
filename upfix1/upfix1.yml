@@ -33,7 +33,7 @@
       debug:
         var: server_noexisting
 
-    - name: Add hosts existente no inventory de UPDATEFIX com variável OK
+    - name: Add hosts existentes no inventory de UPDATEFIX com variável OK
       ansible.controller.host:
         name: "{{ item }}"
         inventory: "{{ updatefix_inventory }}"
@@ -43,7 +43,7 @@
           hosts_reachable: FAIL
       loop: "{{ server_existing }}"
 
-    - name: Add hosts NÃO existente no inventory de UPDATEFIX com variável FAIL
+    - name: Add hosts NÃO existentse no inventory de UPDATEFIX com variável FAIL
       ansible.controller.host:
         name: "{{ item }}"
         inventory: "{{ updatefix_inventory }}"
