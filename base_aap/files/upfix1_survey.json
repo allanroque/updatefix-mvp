@@ -1,0 +1,62 @@
+{
+    "name": "",
+    "spec": [
+        {
+            "max": 2048,
+            "min": 0,
+            "type": "textarea",
+            "choices": "",
+            "default": "",
+            "required": false,
+            "variable": "server_list",
+            "new_question": false,
+            "question_name": "Adicione a lista de servidores para update",
+            "question_description": "informação no modelos de lista"
+        },
+        {
+            "max": 4,
+            "min": 0,
+            "type": "text",
+            "choices": "",
+            "default": "",
+            "required": false,
+            "variable": "updatefix_version",
+            "new_question": false,
+            "question_name": "Digite a versão do UPDATEFIX",
+            "question_description": "exemplo:0001"
+        },
+        {
+            "max": 1024,
+            "min": 0,
+            "type": "multiplechoice",
+            "choices": [
+                "all",
+                "security",
+                "bugfix",
+                "no_need_reboot_updates"
+            ],
+            "default": "security",
+            "required": false,
+            "variable": "update_type",
+            "new_question": false,
+            "question_name": "Selecione o tipo de Update que será aplicado para os servidores",
+            "question_description": "all, security, bugfix, no_need_reboot_updates"
+        },
+        {
+            "max": 1024,
+            "min": 0,
+            "type": "multiplechoice",
+            "choices": [
+                "yes",
+                "no"
+            ],
+            "default": "no",
+            "required": false,
+            "variable": "reboot",
+            "new_question": false,
+            "question_name": "Deseja realizar o reboot dos servidores?",
+            "question_description": "O reboot dos servidores será realizado antes e depois do update como medida de segurança"
+        }
+    ],
+    "description": ""
+}

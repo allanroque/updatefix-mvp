@@ -1,0 +1,34 @@
+---
+- name: Configuracao base o ambiente de UPDATEFIX
+  hosts: localhost
+  vars:
+    ac_organization: SECURITY
+    ac_cred_ac: CRED-AC-CONFIG
+    ac_cred_servers: CRED-SSH-SERVER
+    ac_inv_all_hosts: INV-ALL-HOSTS
+    ac_inv_updatefix: INV-UPDATEFIX
+    ac_proj_updatefix: PROJ-GIT-UPDATEFIX
+  gather_facts: False
+  tasks:
+
+    - name: Criar inventory UPDATEFIX
+      ansible.controller.inventory:
+        name: "{{ ac_inv_updatefix }}"
+        description: "Inventario de atualização de servidores"
+        organization: "{{ ac_organization }}"
+        state: present
+        labels: updatefix 
+
+    - name: Criar Job Template de UPFIX 1 - Acessibilidade e Inventários do UPDATEFIX
+      ansible.controller.job_template:
+        name: UPFIX 1 - ACCESS PREPARE
+        job_type: "run"
+        organization: "{{ ac_organization }}"
+        inventory: "{{ ac_inv_updatefix }}"
+        project: "{{ ac_proj_updatefix }}"
+        playbook: "upfix1.yml"
+        credentials:
+          - "{{ ac_cred_ac }}"
+        state: "present"
+        survey_enabled: yes
+        survey_spec: "{{ lookup('file', 'upfix1_survey.json') }}"

@@ -36,6 +36,14 @@ O objetivo deste MVP é estabelecer um procedimento automatizado para atualizar 
 - **Tipo de Credencial**: Source Control
 - **Username e Password**: [Detalhes de acesso]
 
+### Criar Credencial de acesso aos Servidores de teste
+- **Path**: `Resources > Credential > Add`
+- **Nome**: CRED-SSH-SERVER ou CRED-SSH-DEV
+- **Descrição**: Credenciais de acesso aos servidores de teste
+- **Organização**: SECURITY ou Defaults
+- **Tipo de Credencial**: Machine
+- **Username e Password**: [Detalhes de acesso]
+
 ## Projetos
 
 ### Criar Projeto/Repositório de Código de Automação
@@ -50,12 +58,22 @@ O objetivo deste MVP é estabelecer um procedimento automatizado para atualizar 
 
 ## Inventário
 
-### Criar Inventário de Hosts
+### Criar Inventário do AC
 - **Path**: `Resources > Inventory > Add`
 - **Nome**: INV-AC
 - **Descrição**: Inventário do Automation Controller
 - **Organização**: SECURITY ou Defaults
 - **Labels**: ac
+
+### Adicionar Hosts no Inventário do AC
+- **Nome**: [Hostname ou IP do host]
+- **Descrição**: [Detalhes do host]
+
+### Criar Inventário de Hosts
+- **Path**: `Resources > Inventory > Add`
+- **Nome**: INV-ALL-HOSTS
+- **Descrição**: Inventário com todos os hosts do ambiente
+- **Organização**: SECURITY ou Defaults
 
 ### Adicionar Hosts no Inventário
 - **Nome**: [Hostname ou IP do host]
