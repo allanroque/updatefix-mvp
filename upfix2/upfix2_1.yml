@@ -1,0 +1,7 @@
+---
+- name: Verificações e Ações
+  hosts: 
+  vars_files: vars/vars.yml
+  gather_facts: False
+  tasks: 
+    - name: Verificar se os servidores previamente existe no Automation Controller no inventario principal
