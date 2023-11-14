@@ -54,6 +54,8 @@
         preserve_existing_hosts: False
         inventory: "{{ updatefix_inventory }}"
         hosts:
+        delegate_to: localhost
+
       
     - name: Add hosts no grupo com status OK Updatefix versão {{ updatefix_version }} no inventory UPDATEFIX
       ansible.controller.group:
@@ -63,3 +65,4 @@
         hosts: "{{ item }}"
       loop: "{{ groups[updatefix_inventory_group_ok] }}"
       when: host_exists_in_inventory == 'OK' and hosts_reachable == 'OK'
+      delegate_to: localhost
