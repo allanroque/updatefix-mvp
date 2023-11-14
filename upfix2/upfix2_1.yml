@@ -15,7 +15,7 @@
   
     - name: test
       debug:
-        msg: ping_result
+        var: ping_result
 
 
     - name: Ajustar variável de status do host no inventory e group Updatefix {{ updatefix_inventory_group }} OK
