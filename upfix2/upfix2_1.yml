@@ -52,7 +52,7 @@
         name: "{{ updatefix_inventory_group_ok }}"
         preserve_existing_hosts: True
         inventory: "{{ updatefix_inventory }}"
-        hosts: "{{ item.hosts }}"
+        hosts: "{{ item }}"
       loop: "{{ groups[updatefix_inventory_group] }}"
       when:
         - hostvars[item]['host_exists_in_inventory'] == 'OK'
