@@ -14,17 +14,3 @@ updatefix_inventory: "{{ ac_inv_updatefix }}"
 updatefix_inventory_group: "{{ updatefix_inventory }}_{{ updatefix_version }}" #exemplo INV-UPDATEFIX_0001
 updatefix_inventory_group_ok: "{{ updatefix_inventory_group }}_OK"
 updatefix_inventory_group_fail: "{{ updatefix_inventory_group }}_FAILL"
-
-#local_facts
-local_facts:
-  - root_space_check
-  - boot_space_check
-  - root_readonly_check
-  - boot_readonly_check
-  - subscription_check
-  - packages_check
-  - zombie_process_check
-  - uptime_reboot_check
-  - mount_points_check
-  - services_status_check
-  - proccess_status_check

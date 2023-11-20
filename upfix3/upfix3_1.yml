@@ -12,9 +12,9 @@
           - '!all'
           - 'mounts'
 
-    - name: Exibir pontos de montagem
-      debug:
-        var: ansible_mounts
+#    - name: Exibir pontos de montagem
+#      debug:
+#        var: ansible_mounts
 
     - name: Exibir espaço e status em /
       set_fact:
@@ -56,6 +56,27 @@
       debug:
         var: boot_space_check
 
+    - name: Criar diretório de fatos do Ansible
+      file:
+        path: /etc/ansible/facts.d/
+        state: directory
+        mode: 0755
+
+    - name: Garantir que o diretório /etc/ansible/facts.d existe
+      file:
+        path: /etc/ansible/facts.d
+        state: directory
+        mode: '0755'
+
+    - name: Criar arquivos de facts para root_space_check
+      template:
+        src: root_space_check.j2
+        dest: "/etc/ansible/facts.d/root_space_check.fact"
+
+    - name: Criar arquivos de facts para boot_space_check
+      template:
+        src: boot_space_check.j2
+        dest: "/etc/ansible/facts.d/boot_space_check.fact"
 
 #    - name: Exibir pontos de montagem "/"
 #      debug:
