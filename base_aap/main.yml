@@ -94,3 +94,21 @@
         survey_enabled: yes
         survey_spec: "{{ lookup('file', 'upfix2_1_survey.json') }}"
 
+############################
+#### Seleção e Preparos ####
+############################
+
+    - name: Criar Job Template de UPFIX 3-1 - FileSystem
+      ansible.controller.job_template:
+        name: UPFIX 3_1 - FileSystem check
+        job_type: "run"
+        organization: "{{ ac_organization }}"
+        inventory: "{{ ac_inv_updatefix }}" # esse job usa o inventory INV-UPDATEFIX
+        project: "{{ ac_proj_updatefix }}"
+        playbook: "upfix3/upfix3_1.yml"
+        credentials:
+          - "{{ ac_cred_servers }}" #esse job acessa diretamente os servidores
+#          - "{{ ac_cred_ac }}"
+        state: "present"
+        survey_enabled: yes
+        survey_spec: "{{ lookup('file', 'upfix3_1_survey.json') }}"

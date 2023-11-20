@@ -1,0 +1,18 @@
+{
+    "name": "",
+    "spec": [
+        {
+            "max": 4,
+            "min": 0,
+            "type": "text",
+            "choices": "",
+            "default": "",
+            "required": false,
+            "variable": "updatefix_version",
+            "new_question": false,
+            "question_name": "Digite a versão do UPDATEFIX",
+            "question_description": "exemplo:0001"
+        }
+    ],
+    "description": ""
+}
