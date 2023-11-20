@@ -21,10 +21,10 @@ local_facts:
   - boot_space_check
   - root_readonly_check
   - boot_readonly_check
-  - subscription
-  - packages
-  - zombie_process
-  - uptime_reboot
-  - mount_points
-  - services
-  - proccess
+  - subscription_check
+  - packages_check
+  - zombie_process_check
+  - uptime_reboot_check
+  - mount_points_check
+  - services_status_check
+  - proccess_status_check

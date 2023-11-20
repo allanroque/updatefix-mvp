@@ -1,8 +1,10 @@
 ---
 - name: Listar pontos de montagem do servidor - UPFIX 3.1 - FileSystem
   hosts: "{{ updatefix_inventory_group_ok }}"
-  vars_files: vars/vars.yml
+  vars_files:
+    - vars/vars.yml
   gather_facts: False
+  
   tasks:
     - name: Coletar fatos do sistema
       ansible.builtin.setup:
@@ -12,4 +14,4 @@
 
     - name: Exibir pontos de montagem
       debug:
-        var: ansible_mounts   
+        var: ansible_mounts
