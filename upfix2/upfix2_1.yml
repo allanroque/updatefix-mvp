@@ -46,6 +46,12 @@
 #      delegate_to: localhost
 #      run_once: true
 
+- name: Verificações de acesso
+  hosts: "{{ updatefix_inventory_group }}"
+  vars_files: vars/vars.yml
+  gather_facts: False
+  tasks: 
+
     - name: Add hosts with status OK Updatefix version {{ updatefix_version }} to inventory UPDATEFIX
       ansible.controller.group:
         name: "{{ updatefix_inventory_group_ok }}"
