@@ -1,0 +1,26 @@
+---
+#variáveis do processo de updatefix
+updatefix_version: "" #0001
+update_type:  #all, debug, security
+reboot: # yes or no
+update_pkgs: #roadmap
+
+#variaveis para construcao de inventário de updatefix
+updatefix_inventory: "{{ ac_inv_updatefix }}" 
+updatefix_inventory_group: "{{ updatefix_inventory }}_{{ updatefix_version }}" #exemplo INV-UPDATEFIX_0001
+updatefix_inventory_group_ok: "{{ updatefix_inventory_group }}_OK"
+updatefix_inventory_group_fail: "{{ updatefix_inventory_group }}_FAILL"
+
+#local_facts
+local_facts:
+  - root_space_check
+  - boot_space_check
+  - root_readonly_check
+  - boot_readonly_check
+  - subscription
+  - packages
+  - zombie_process
+  - uptime_reboot
+  - mount_points
+  - services
+  - proccess
