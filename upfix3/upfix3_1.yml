@@ -4,7 +4,7 @@
   vars_files:
     - vars/vars.yml
   gather_facts: False
-  
+
   tasks:
     - name: Coletar fatos do sistema
       ansible.builtin.setup:
@@ -15,3 +15,18 @@
     - name: Exibir pontos de montagem
       debug:
         var: ansible_mounts
+
+    - name: Exibir pontos de montagem "/"
+      debug:
+        var: ansible_mounts
+      when: "'/' in ansible_mounts|map(attribute='mount')|list"
+
+    - name: Exibir pontos de montagem "/var"
+      debug:
+        var: ansible_mounts
+      when: "'/var' in ansible_mounts|map(attribute='mount')|list"
+
+    - name: Exibir pontos de montagem "/boot"
+      debug:
+        var: ansible_mounts
+      when: "'/boot' in ansible_mounts|map(attribute='mount')|list"

@@ -1,1 +1,39 @@
 Add o ansible_connection: local no inventário do AC host
+
+---
+- name: Ler variáveis de grupos específicos
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Exibir variáveis do grupo
+      debug:
+        msg: "Grupo: {{ item }}, Variáveis: {{ groups[item] | map('extract', hostvars) | list }}"
+      loop: "{{ groups_to_check }}"
+      vars:
+        groups_to_check:
+          - 'nome_do_grupo1'
+          - 'nome_do_grupo2'
+
+---
+- name: Coletar informações de grupo e listar hosts
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Exibir variáveis do grupo INV-UPDATEFIX_0001
+      debug:
+        msg: |
+          Grupo: INV-UPDATEFIX_0001
+          Variáveis:
+            updatefix_version: "{{ group_vars['INV-UPDATEFIX_0001']['updatefix_version'] }}"
+            updatefix_inventory: "{{ group_vars['INV-UPDATEFIX_0001']['updatefix_inventory'] }}"
+            updatefix_inventory_group: "{{ group_vars['INV-UPDATEFIX_0001']['updatefix_inventory_group'] }}"
+            update_type: "{{ group_vars['INV-UPDATEFIX_0001']['update_type'] }}"
+            reboot: "{{ group_vars['INV-UPDATEFIX_0001']['reboot'] }}"
+
+    - name: Listar hosts nos grupos específicos
+      debug:
+        msg: "Hosts no grupo {{ item }}: {{ groups[item] }}"
+      loop:
+        - INV-UPDATEFIX_0001
+        - INV-UPDATEFIX_0001_FAIL
+        - INV-UPDATEFIX_0001_OK
