@@ -1,4 +1,8 @@
 ---
+#variáveis do AC
+ac_inv_all_hosts: INV-ALL-HOSTS
+ac_inv_updatefix: INV-UPDATEFIX
+
 #variáveis do processo de updatefix
 updatefix_version: "" #0001
 update_type:  #all, debug, security
@@ -17,10 +21,10 @@ local_facts:
   - boot_space_check
   - root_readonly_check
   - boot_readonly_check
-  - subscription
-  - packages
-  - zombie_process
-  - uptime_reboot
-  - mount_points
-  - services
-  - proccess
+  - subscription_check
+  - packages_check
+  - zombie_process_check
+  - uptime_reboot_check
+  - mount_points_check
+  - services_status_check
+  - proccess_status_check
