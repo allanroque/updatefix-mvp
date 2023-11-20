@@ -31,15 +31,25 @@
 #        var: ansible_mounts
 #      when: "'/boot' in ansible_mounts|map(attribute='mount')|list"
 
-    - name: Exibir espaço e status em / e /boot
+    - name: Exibir espaço e status em /
       set_fact:
-        mount_info: "{{ mount_info | default([]) + [ {'mount': item.mount, 'total_gb': (item.size_total / 1024 / 1024 / 1024) | round(2), 'available_gb': (item.size_available / 1024 / 1024 / 1024) | round(2), 'available_percent': ((item.size_available / item.size_total | float) * 100) | round(2), 'status': 'OK' if (item.size_available / item.size_total | float) >= 0.1 else 'FAIL'} ] }}"
+        mount_info_root: "{{ mount_info_root | default([]) + [ {'mount': item.mount, 'total_gb': (item.size_total / 1024 / 1024 / 1024) | round(2), 'available_gb': (item.size_available / 1024 / 1024 / 1024) | round(2), 'available_percent': ((item.size_available / item.size_total | float) * 100) | round(2), 'status': 'OK' if (item.size_available / item.size_total | float) >= 0.1 else 'FAIL'} ] }}"
       loop: "{{ ansible_mounts }}"
-      when: item.mount in [ '/', '/boot' ]
+      when: item.mount in ['/']
 
-    - name: Exibir informações dos pontos de montagem
+    - name: Exibir informações dos pontos de montagem /
       debug:
-        var: mount_info
+        var: mount_info_root
+
+    - name: Exibir espaço e status em /boot
+      set_fact:
+        mount_info_root: "{{ mount_info_root | default([]) + [ {'mount': item.mount, 'total_gb': (item.size_total / 1024 / 1024 / 1024) | round(2), 'available_gb': (item.size_available / 1024 / 1024 / 1024) | round(2), 'available_percent': ((item.size_available / item.size_total | float) * 100) | round(2), 'status': 'OK' if (item.size_available / item.size_total | float) >= 0.1 else 'FAIL'} ] }}"
+      loop: "{{ ansible_mounts }}"
+      when: item.mount in ['/boot']
+
+    - name: Exibir informações dos pontos de montagem /boot
+      debug:
+        var: mount_info_root
 
     - name: Verificar espaço em /
       set_fact:
