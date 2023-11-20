@@ -6,7 +6,6 @@
   tasks: 
     - name: Verificar se os servidores previamente existe no Automation Controller no inventario principal
       ansible.controller.host:
-      validate_certs: False
         name: "{{ item }}"
         inventory: "{{ ac_inv_all_hosts }}"
         enabled: True
