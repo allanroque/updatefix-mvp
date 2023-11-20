@@ -46,6 +46,14 @@
 #      delegate_to: localhost
 #      run_once: true
 
+    - name: Exibir variáveis dos hosts
+      debug:
+        msg: "Host: {{ inventory_hostname }}, host_exists_in_inventory: {{ hostvars[inventory_hostname]['host_exists_in_inventory'] | default('Não definido') }}, hosts_reachable: {{ hostvars[inventory_hostname]['hosts_reachable'] | default('Não definido') }}"
+
+    - name: Listar hosts e suas variáveis
+      debug:
+        msg: "Host: {{ inventory_hostname }}, Variáveis: {{ hostvars[inventory_hostname] }}"
+
 - name: Verificações de acesso
   hosts: "{{ updatefix_inventory_group }}"
   vars_files: vars/vars.yml
