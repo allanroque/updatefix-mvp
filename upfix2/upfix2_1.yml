@@ -48,17 +48,19 @@
 
     - name: Exibir variáveis dos hosts
       debug:
-        msg: "Host: {{ inventory_hostname }}, host_exists_in_inventory: {{ hostvars[inventory_hostname]['host_exists_in_inventory'] | default('Não definido') }}, hosts_reachable: {{ hostvars[inventory_hostname]['hosts_reachable'] | default('Não definido') }}"
+        msg: "Host: {{ inventory_hostname }}, host_exists_in_inventory: {{ hostvars[inventory_hostname]['host_exists_in_inventory'] | default('FAIL') }}, hosts_reachable: {{ hostvars[inventory_hostname]['hosts_reachable'] | default('FAIL') }}"
 
-    - name: Listar hosts e suas variáveis
+    - name: Criar estrutura de variáveis para hosts específicos
+      set_fact:
+        selected_hosts: "{{ selected_hosts | default([]) + [inventory_hostname] }}"
+      when: 
+        - hostvars[inventory_hostname]['host_exists_in_inventory'] == 'OK'
+        - hostvars[inventory_hostname]['hosts_reachable'] == 'OK'
+
+    - name: Exibir hosts selecionados
       debug:
-        msg: "Host: {{ inventory_hostname }}, Variáveis: {{ hostvars[inventory_hostname] }}"
-
-- name: Verificações de acesso
-  hosts: "{{ updatefix_inventory_group }}"
-  vars_files: vars/vars.yml
-  gather_facts: False
-  tasks: 
+        var: selected_hosts
+      run_once: true
 
     - name: Add hosts with status OK Updatefix version {{ updatefix_version }} to inventory UPDATEFIX
       ansible.controller.group:
