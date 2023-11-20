@@ -1,0 +1,44 @@
+---
+- name: Construção de diretórios e logs para o UpdateFix
+  hosts: "{{ updatefix_inventory_group_ok }}"
+  vars_files:
+    - vars/vars.yml
+  tasks:
+    - name: Criar diretório de fatos do Ansible
+      file:
+        path: /etc/ansible/facts.d/
+        state: directory
+        mode: 0755
+
+    - name: Garantir que o diretório /etc/ansible/facts.d existe
+      file:
+        path: /etc/ansible/facts.d
+        state: directory
+        mode: '0755'
+
+    - name: Criar arquivos de facts para cada item
+      template:
+        src: fact_template.j2
+        dest: "/etc/ansible/facts.d/{{ item }}.fact"
+      loop: "{{ local_facts }}"
+
+    - name: Gerar diretórios de log do Ansible e UpdateFix
+      file:
+        state: directory
+        path: "{{ item }}"
+      loop:
+        - /var/log/ansible
+        - /var/log/ansible/updatefix
+        - /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}
+
+    - name: Coletar fatos locais
+      ansible.builtin.setup:
+        gather_subset:
+          - '!all'
+          - '!any'
+        filter: ansible_local
+      register: local_facts
+
+    - name: test
+      debug:
+        var: local_facts
