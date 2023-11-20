@@ -89,7 +89,7 @@
         playbook: "upfix2/upfix2_2.yml"
         credentials:
           - "{{ ac_cred_servers }}" #esse job acessa diretamente os servidores
-#          - "{{ ac_cred_ac }}"
+          - "{{ ac_cred_ac }}"
         state: "present"
         survey_enabled: yes
         survey_spec: "{{ lookup('file', 'upfix_version_survey.json') }}"
