@@ -1,0 +1,37 @@
+---
+- name: Listar pontos de montagem do servidor - UPFIX 3.2 - FileSystem somente leitura
+  hosts: "{{ updatefix_inventory_group_ok }}"
+  vars_files:
+    - vars/vars.yml
+  gather_facts: False
+
+  tasks:
+    - name: Coletar fatos do sistema
+      ansible.builtin.setup:
+        gather_subset:
+          - '!all'
+          - 'mounts'
+
+    - name: Verificar se / está em modo somente leitura
+      set_fact:
+        root_readonly_check: "FAIL"
+      when: "'ro' in (item.options|default('')) and item.mount == '/'"
+      loop: "{{ ansible_mounts }}"
+#      no_log: False
+
+    - name: Verificar se /boot está em modo somente leitura
+      set_fact:
+        boot_readonly_check: "FAIL"
+      when: "'ro' in (item.options|default('')) and item.mount == '/boot'"
+      loop: "{{ ansible_mounts }}"
+#     no_log: False
+
+    - name: Definir root_readonly_check como OK se não definido
+      set_fact:
+        root_readonly_check: "OK"
+      when: root_readonly_check is not defined
+
+    - name: Definir boot_readonly_check como OK se não definido
+      set_fact:
+        boot_readonly_check: "OK"
+      when: boot_readonly_check is not defined

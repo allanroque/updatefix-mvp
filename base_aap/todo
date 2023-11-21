@@ -37,3 +37,80 @@ Add o ansible_connection: local no inventário do AC host
         - INV-UPDATEFIX_0001
         - INV-UPDATEFIX_0001_FAIL
         - INV-UPDATEFIX_0001_OK
+
+#    - name: Exibir pontos de montagem "/"
+#      debug:
+#        var: ansible_mounts
+#      when: "'/' in ansible_mounts|map(attribute='mount')|list"
+
+#    - name: Exibir pontos de montagem "/var"
+#      debug:
+#        var: ansible_mounts
+#      when: "'/var' in ansible_mounts|map(attribute='mount')|list"
+
+#    - name: Exibir pontos de montagem "/boot"
+#      debug:
+#        var: ansible_mounts
+#      when: "'/boot' in ansible_mounts|map(attribute='mount')|list"
+
+
+
+#local_facts
+local_facts:
+  - root_space_check OK
+  - boot_space_check OK
+  - root_readonly_check doing
+  - boot_readonly_check doing 
+  - subscription_check
+  - packages_check
+  - zombie_process_check
+  - uptime_reboot_check
+  - mount_points_check
+  - services_status_check
+  - proccess_status_check
+
+exemplo:
+    - name: Criar arquivos de facts para root_space_check
+      template:
+        src: root_space_check.j2
+        dest: "/etc/ansible/facts.d/root_space_check.fact"
+
+
+[localfacts]
+root_space_check={{ root_space_check }}
+
+
+notas: 
+upfix1:
+ - Verificar se os servidores previamente existe no Automation Controller no inventario principal
+ - Criar lista dos hosts existentes
+ - Criar lista dos hosts não existentes
+ - Add hosts existentes no inventory de UPDATEFIX com variável OK
+ - Add hosts NÃO existentse no inventory de UPDATEFIX com variável FAIL
+ - Criar grupo Updatefix versão {{ updatefix_version }} on inventory UPDATEFIX
+ - Add host no grupo Updatefix versão {{ updatefix_version }} no inventory UPDATEFIX
+
+upfix2.1:
+ - Verificar se os servidores existentes no inventario estão acessiveis para o Automation Controller
+ -  Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }}
+ - Ajustar variável de status do host no inventory e group Updatefix {{ updatefix_inventory_group }} OK 
+upfix2.2:
+ - Exibir variáveis dos hosts
+ - Criar estrutura de variáveis para hosts específicos
+ - Exibir hosts selecionados
+ - Add hosts with status OK Updatefix version {{ updatefix_version }} to inventory UPDATEFIX
+upfix2.3:
+ - Construção de diretórios e logs para o UpdateFix
+ - Criar diretório de fatos do Ansible
+ - Garantir que o diretório /etc/ansible/facts.d existe
+ - Criar arquivos de facts para cada item
+ - Gerar diretórios de log do Ansible e UpdateFix
+ upfix3.1:
+ - Exibir espaço e status em /
+ - Exibir espaço e status em /boot
+ - Exibir informações dos pontos de montagem /
+ - Exibir informações dos pontos de montagem /boot
+ - Verificar espaço em /
+ - Verificar espaço em /boot
+ - Criar arquivos de facts para root_space_check
+ - Criar arquivos de facts para boot_space_check

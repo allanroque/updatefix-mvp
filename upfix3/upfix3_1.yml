@@ -66,17 +66,3 @@
         src: boot_space_check.j2
         dest: "/etc/ansible/facts.d/boot_space_check.fact"
 
-#    - name: Exibir pontos de montagem "/"
-#      debug:
-#        var: ansible_mounts
-#      when: "'/' in ansible_mounts|map(attribute='mount')|list"
-
-#    - name: Exibir pontos de montagem "/var"
-#      debug:
-#        var: ansible_mounts
-#      when: "'/var' in ansible_mounts|map(attribute='mount')|list"
-
-#    - name: Exibir pontos de montagem "/boot"
-#      debug:
-#        var: ansible_mounts
-#      when: "'/boot' in ansible_mounts|map(attribute='mount')|list"
