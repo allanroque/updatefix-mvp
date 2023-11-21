@@ -51,7 +51,7 @@
     - name: Criar arquivos de facts para root_readonly_check
       template:
         src: root_readonly_check.j2
-        dest: "/etc/ansible/facts.d/root_space_check.fact"
+        dest: "/etc/ansible/facts.d/root_readonly_check.fact"
 
     - name: Criar arquivos de facts para boot_space_check
       template:

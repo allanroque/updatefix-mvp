@@ -54,14 +54,21 @@ Add o ansible_connection: local no inventário do AC host
 #      when: "'/boot' in ansible_mounts|map(attribute='mount')|list"
 
 
+verificar:
+
+SSH password: 
+[WARNING]: Invalid characters were found in group names but not replaced, use
+-vvvv to see details
+
+
 
 #local_facts
 local_facts:
   - root_space_check OK
   - boot_space_check OK
-  - root_readonly_check doing
-  - boot_readonly_check doing 
-  - subscription_check
+  - root_readonly_check OK
+  - boot_readonly_check OK 
+  - subscription_check 
   - packages_check
   - zombie_process_check
   - uptime_reboot_check
