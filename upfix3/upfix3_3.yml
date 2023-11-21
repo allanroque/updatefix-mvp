@@ -1,5 +1,5 @@
 ---
-- name: Validação de subscrição - UPFIX 3.4 - Subscription
+- name: Validação de subscrição - UPFIX 3.3 - Mount Point
   hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files:
     - vars/vars.yml

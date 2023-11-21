@@ -1,5 +1,5 @@
 ---
-- name: Validação de subscrição - UPFIX 3.4 - Subscription
+- name: Validação de subscrição - UPFIX 3.5 - Repository
   hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files:
     - vars/vars.yml
@@ -7,13 +7,13 @@
   tasks:
     - name: Verificar repositórios existentes
       ansible.builtin.command:
-        cmd: yum repolist
+        cmd: yum repolist --quiet
       register: repolist_result
       ignore_errors: yes
 
     - name: Definir repository_check com base no resultado
       set_fact:
-        repository_check: "{{ 'OK' if 'repolist' in repolist_result.stdout else 'FAIL' }}"
+        repository_check: "{{ 'OK' if repolist_result.stdout_lines | length > 0 else 'FAIL' }}"
 
     - name: Exibir o resultado da verificação
       debug:
