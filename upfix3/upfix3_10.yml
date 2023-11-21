@@ -45,7 +45,7 @@
       ansible.builtin.debug:
         var: top_non_root_processes_simple
 
-    - name: Criar arquivos de facts para proccess_status_check
-      template:
-        src: proccess_status_check.j2
-        dest: "/etc/ansible/facts.d/proccess_status_check.fact"
+#    - name: Criar arquivos de facts para proccess_status_check
+#      template:
+#        src: proccess_status_check.j2
+#        dest: "/etc/ansible/facts.d/proccess_status_check.fact"
