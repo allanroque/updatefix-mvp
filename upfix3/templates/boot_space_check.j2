@@ -1,6 +1,6 @@
 [localfacts]
 boot_space_check={{ boot_space_check }}
-mount_info_boot_mount={{mount_info_boot.mount }}
-mount_info_boot_total_gb={{ mount_info_boot.total_gb }}
-mount_info_boot_available_gb={{mount_info_boot.available_gb }}
-mount_info_boot_available_percent={{ mount_info_boot.available_percent }}
+mount_info_boot_mount={{mount_info_boot[0]['mount'] }}
+mount_info_boot_total_gb={{ mount_info_boot[0]['total_gb'] }}
+mount_info_boot_available_gb={{mount_info_boot[0]['available_gb'] }}
+mount_info_boot_available_percent={{ mount_info_boot[0]['available_percent'] }}

@@ -1,6 +1,6 @@
 [localfacts]
 root_space_check={{ root_space_check }}
-mount_info_root_mount={{mount_info_root.mount }}
-mount_info_root_total_gb={{ mount_info_root.total_gb }}
-mount_info_root_available_gb={{mount_info_root.available_gb }}
-mount_info_root_available_percent={{ mount_info_root.available_percent }}
+mount_info_root_mount={{ mount_info_root[0]['mount'] }}
+mount_info_root_total_gb={{ mount_info_root[0]['total_gb'] }}
+mount_info_root_available_gb={{mount_info_root[0]['available_gb'] }}
+mount_info_root_available_percent={{ mount_info_root[0]['available_percent'] }}
