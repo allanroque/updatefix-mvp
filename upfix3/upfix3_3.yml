@@ -28,21 +28,7 @@
       when:
         - item.split() | length > 1
         - item.split()[0] != "#"
-        - "'/' in item.split()[1]"
-        - item.split()[1] in active_mounts
-      loop: "{{ fstab_lines }}"
-      loop_control:
-        label: "{{ (item.split() | default(['','']))[1] }}"
-
-
-    - name: Verificar se as montagens do fstab estão ativas
-      vars:
-        active_mounts: "{{ ansible_mounts | map(attribute='mount') | list }}"
-      debug:
-        msg: "{{ item.split()[1] }} está montado"
-      when:
-        - item.split() | length > 1
-        - item.split()[0] != "#"
+        - item.split()[1] != ''
         - item.split()[1] in active_mounts
       loop: "{{ fstab_lines }}"
       loop_control:
