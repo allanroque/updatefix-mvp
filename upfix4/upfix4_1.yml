@@ -5,6 +5,10 @@
     - vars/vars.yml
   tasks:
 
+    - name: Coletar fatos locais
+      ansible.builtin.setup:
+        filter: ansible_local
+
     - name: informacao local facts
       debug:
-        var: local_facts
+        var: ansible_local
