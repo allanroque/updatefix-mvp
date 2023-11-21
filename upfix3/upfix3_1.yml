@@ -56,18 +56,6 @@
       debug:
         var: boot_space_check
 
-    - name: Criar diretório de fatos do Ansible
-      file:
-        path: /etc/ansible/facts.d/
-        state: directory
-        mode: 0755
-
-    - name: Garantir que o diretório /etc/ansible/facts.d existe
-      file:
-        path: /etc/ansible/facts.d
-        state: directory
-        mode: '0755'
-
     - name: Criar arquivos de facts para root_space_check
       template:
         src: root_space_check.j2
