@@ -1,0 +1,24 @@
+---
+- name: Validação de subscrição - UPFIX 3.8 -  uptime
+  hosts: "{{ updatefix_inventory_group_ok }}"
+  vars_files:
+    - vars/vars.yml
+  gather_facts: True
+  tasks:
+    - name: Definir uptime_reboot_check com base no uptime
+      set_fact:
+        uptime_reboot_check: "{{ 'OK' if (ansible_uptime_seconds | int / 86400) < 365 else 'FAIL' }}"
+        uptime_days: "{{ ansible_uptime_seconds | int / 86400 }}"
+
+    - name: Exibir o resultado da verificação de reboot
+      debug:
+        var: uptime_reboot_check
+
+    - name: Exibir quanto tempo o servidor está sem reboot (em dias)
+      debug:
+        msg: "O servidor está sem reboot há {{ uptime_days }} dias."
+
+    - name: Criar arquivos de facts para uptime_reboot_check
+      template:
+        src: uptime_reboot_check.j2
+        dest: "/etc/ansible/facts.d/uptime_reboot_check.fact"

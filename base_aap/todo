@@ -71,9 +71,9 @@ local_facts:
   - mount_points_check OK
   - subscription_check OK
   - repository_check OK
-  - packages_check ok
-  - zombie_process_check
-  - uptime_reboot_check
+  - rpm_check ok
+  - zombie_process_check ok
+  - uptime_reboot_check ok 
   - services_status_check
   - proccess_status_check
 

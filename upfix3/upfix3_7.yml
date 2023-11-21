@@ -1,0 +1,25 @@
+---
+- name: Validação de subscrição - UPFIX 3.7 -  zombie_proces
+  hosts: "{{ updatefix_inventory_group_ok }}"
+  vars_files:
+    - vars/vars.yml
+  gather_facts: False
+  tasks:
+    - name: Obter a contagem de processos zumbis
+      ansible.builtin.shell: 
+        cmd: "ps aux | awk '{ print $8 }' | grep -c Z"
+      register: zombie_count
+      changed_when: false
+
+    - name: Definir zombie_process_check com base no resultado
+      set_fact:
+        zombie_process_check: "{{ 'OK' if zombie_count.stdout | int == 0 else 'FAIL' }}"
+
+    - name: Exibir o resultado da verificação
+      debug:
+        var: zombie_process_check
+      
+    - name: Criar arquivos de facts para zombie_process_check
+      template:
+        src: zombie_process_check.j2
+        dest: "/etc/ansible/facts.d/zombie_process_check.fact"

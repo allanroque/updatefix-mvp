@@ -188,3 +188,48 @@
         state: "present"
         survey_enabled: yes
         survey_spec: "{{ lookup('file', 'upfix_version_survey.json') }}"
+
+    - name: Criar Job Template de UPFIX 3-6 - rpm
+      ansible.controller.job_template:
+        name: UPFIX 3_6 - RPM DUPES 
+        job_type: "run"
+        organization: "{{ ac_organization }}"
+        inventory: "{{ ac_inv_updatefix }}" # esse job usa o inventory INV-UPDATEFIX
+        project: "{{ ac_proj_updatefix }}"
+        playbook: "upfix3/upfix3_6.yml"
+        credentials:
+          - "{{ ac_cred_servers }}" #esse job acessa diretamente os servidores
+#          - "{{ ac_cred_ac }}"
+        state: "present"
+        survey_enabled: yes
+        survey_spec: "{{ lookup('file', 'upfix_version_survey.json') }}"
+
+    - name: Criar Job Template de UPFIX 3-7 - zombie
+      ansible.controller.job_template:
+        name: UPFIX 3_7 - ZOMBIE 
+        job_type: "run"
+        organization: "{{ ac_organization }}"
+        inventory: "{{ ac_inv_updatefix }}" # esse job usa o inventory INV-UPDATEFIX
+        project: "{{ ac_proj_updatefix }}"
+        playbook: "upfix3/upfix3_7.yml"
+        credentials:
+          - "{{ ac_cred_servers }}" #esse job acessa diretamente os servidores
+#          - "{{ ac_cred_ac }}"
+        state: "present"
+        survey_enabled: yes
+        survey_spec: "{{ lookup('file', 'upfix_version_survey.json') }}"
+
+    - name: Criar Job Template de UPFIX 3-8 - uptime
+      ansible.controller.job_template:
+        name: UPFIX 3_8 - UPTIME 
+        job_type: "run"
+        organization: "{{ ac_organization }}"
+        inventory: "{{ ac_inv_updatefix }}" # esse job usa o inventory INV-UPDATEFIX
+        project: "{{ ac_proj_updatefix }}"
+        playbook: "upfix3/upfix3_8.yml"
+        credentials:
+          - "{{ ac_cred_servers }}" #esse job acessa diretamente os servidores
+#          - "{{ ac_cred_ac }}"
+        state: "present"
+        survey_enabled: yes
+        survey_spec: "{{ lookup('file', 'upfix_version_survey.json') }}"

@@ -1,0 +1,25 @@
+---
+- name: Validação de subscrição - UPFIX 3.6 - rpm dupes
+  hosts: "{{ updatefix_inventory_group_ok }}"
+  vars_files:
+    - vars/vars.yml
+  gather_facts: False
+  tasks:
+    - name: Verificar se servidor possui pacotes duplicados
+      shell: "package-cleanup --dupes --quiet | wc -l"
+      register: dup_packages_output
+
+    - name: Definir variável de pacotes duplicados
+      set_fact:
+        packages: "OK"
+      when: dup_packages_output.stdout|int == 0
+
+    - name: Definir variável de pacotes não duplicados
+      set_fact:
+        packages: "FAIL"
+      when: dup_packages_output.stdout|int > 0
+
+    - name: Criar arquivos de facts para repository_check
+      template:
+        src: rpm_check.j2
+        dest: "/etc/ansible/facts.d/rpm_check.fact"
