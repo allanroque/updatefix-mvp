@@ -5,33 +5,21 @@
     - vars/vars.yml
   gather_facts: False
   tasks:
-    - name: Coletar fatos do sistema
-      ansible.builtin.setup:
-        gather_subset:
-          - '!all'
-          - 'mounts'
+    - name: Executar findmnt --verify
+      ansible.builtin.command:
+        cmd: findmnt --verify
+      register: findmnt_result
+      ignore_errors: yes
 
-    - name: Ler conteúdo do /etc/fstab
-      ansible.builtin.slurp:
-        src: /etc/fstab
-      register: fstab_content
-
-    - name: Decodificar conteúdo do fstab
+    - name: Definir mount_points_check com base no resultado
       set_fact:
-        fstab_lines: "{{ (fstab_content['content'] | b64decode).split('\n') }}"
+        mount_points_check: "{{ 'OK' if findmnt_result.rc == 0 else 'FAIL' }}"
 
-    - name: Coletar pontos de montagem ativos
-      set_fact:
-        active_mounts: "{{ ansible_mounts | map(attribute='mount') | list }}"
-
-    - name: Verificar se as montagens do fstab estão ativas
+    - name: Exibir o resultado da verificação
       debug:
-        msg: "{{ mount_point }} está montado"
-      when:
-        - mount_point != ''
-        - mount_point in active_mounts
-      loop: "{{ fstab_lines }}"
-      loop_control:
-        label: "{{ mount_point }}"
-      vars:
-        mount_point: "{{ item.split() | first if item.split() | length > 1 else '' }}"
+        var: mount_points_check
+
+    - name: Criar arquivos de facts para mount_points_check
+      template:
+        src: mount_points_check.j2
+        dest: "/etc/ansible/facts.d/mount_points_check.fact"

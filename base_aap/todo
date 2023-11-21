@@ -68,7 +68,7 @@ local_facts:
   - boot_space_check OK
   - root_readonly_check OK
   - boot_readonly_check OK
-  - mount_points_check
+  - mount_points_check OK
   - subscription_check OK
   - packages_check
   - zombie_process_check
