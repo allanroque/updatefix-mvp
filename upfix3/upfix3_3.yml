@@ -31,4 +31,4 @@
         - item.split()[1] in active_mounts
       loop: "{{ fstab_lines }}"
       loop_control:
-        label: "{{ item.split() | default(['',''])[1] }}"
+        label: "{{ (item.split() | default(['','']))[1] }}"
