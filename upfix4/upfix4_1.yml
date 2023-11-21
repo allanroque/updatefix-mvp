@@ -11,11 +11,6 @@
       ansible.builtin.setup:
         filter: ansible_local
 
-    - name: Gerar relatório de validação
-      template:
-        src: validacao.j2
-        dest: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/validacao.log
-
     - name: Definir ready_for_update baseado em verificações
       set_fact:
         ready_for_update: "FAIL"
@@ -35,3 +30,9 @@
       set_fact:
         ready_for_update: "OK"
       when: ready_for_update is not defined
+
+
+    - name: Gerar relatório de validação
+      template:
+        src: validacao.j2
+        dest: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/validacao.log
