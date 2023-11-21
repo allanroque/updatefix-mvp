@@ -1,5 +1,5 @@
 ---
-- name: Validação de subscrição - UPFIX 3.9 -  services e process
+- name: Validação de subscrição - UPFIX 3.9 -  services
   hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files:
     - vars/vars.yml

@@ -1,0 +1,35 @@
+---
+- name: Validação de subscrição - UPFIX 3.10 -  process
+  hosts: "{{ updatefix_inventory_group_ok }}"
+  vars_files:
+    - vars/vars.yml
+  gather_facts: False
+  tasks:
+    - name: Obter os 10 principais processos
+      ansible.builtin.shell: "ps aux --sort=-%mem | head -n 11"
+      register: top_processes_result
+
+    - name: Armazenar os 10 principais processos em uma variável
+      set_fact:
+        top_processes: "{{ top_processes_result.stdout_lines }}"
+
+    - name: Exibir os 10 principais processos
+      ansible.builtin.debug:
+        var: top_processes
+
+    - name: Obter os 10 principais processos não root
+      ansible.builtin.shell: "ps aux --sort=-%mem | awk '$1 != \"root\"' | head -n 11"
+      register: top_non_root_processes_result
+
+    - name: Armazenar os 10 principais processos não root em uma variável
+      set_fact:
+        top_non_root_processes: "{{ top_non_root_processes_result.stdout_lines }}"
+
+    - name: Exibir os 10 principais processos não root
+      ansible.builtin.debug:
+        var: top_non_root_processes
+
+    - name: Criar arquivos de facts para proccess_status_check
+      template:
+        src: proccess_status_check.j2
+        dest: "/etc/ansible/facts.d/proccess_status_check.fact"
