@@ -61,6 +61,8 @@ SSH password:
 -vvvv to see details
 
 validar servicos: zabbix, besclient, nsr, urbancode
+- validar ldap
+
 
 #local_facts
 local_facts:

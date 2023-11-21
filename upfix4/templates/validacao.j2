@@ -35,4 +35,8 @@ Servido Pronto para update: {{ ready_for_update }}
 -----------------------------
 SERVICOS ATIVOS ANTES DO UPDATE
 -----------------------------
+ATIVOS E ENABLED
 {{ ansible_local.services_status_check.localfacts.active_enabled_services }}
+
+ATIVOS E DISABLED
+{{ ansible_local.services_status_check.localfacts.active_disabled_services }}
