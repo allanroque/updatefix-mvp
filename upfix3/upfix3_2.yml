@@ -4,6 +4,7 @@
   vars_files:
     - vars/vars.yml
   gather_facts: False
+  become: yes
 
   tasks:
     - name: Coletar fatos do sistema

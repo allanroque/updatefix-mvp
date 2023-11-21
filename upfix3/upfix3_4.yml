@@ -4,6 +4,7 @@
   vars_files:
     - vars/vars.yml
   gather_facts: False
+  become: yes
   tasks:
     - name: Checar se o servidor está registrado na Red Hat
       command: subscription-manager status

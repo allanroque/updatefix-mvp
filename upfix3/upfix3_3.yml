@@ -4,6 +4,8 @@
   vars_files:
     - vars/vars.yml
   gather_facts: False
+  become: yes
+  
   tasks:
     - name: Executar findmnt --verify
       ansible.builtin.command:

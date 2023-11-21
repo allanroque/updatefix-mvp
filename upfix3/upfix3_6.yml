@@ -4,6 +4,8 @@
   vars_files:
     - vars/vars.yml
   gather_facts: False
+  become: yes
+  
   tasks:
     - name: Verificar se servidor possui pacotes duplicados
       shell: "package-cleanup --dupes --quiet | wc -l"

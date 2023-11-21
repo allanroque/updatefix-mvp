@@ -4,6 +4,7 @@
   vars_files:
     - vars/vars.yml
   gather_facts: True
+  become: yes
   tasks:
     - name: Definir uptime_reboot_check com base no uptime
       set_fact:

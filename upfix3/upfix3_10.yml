@@ -4,6 +4,7 @@
   vars_files:
     - vars/vars.yml
   gather_facts: False
+  become: yes
   tasks:
     - name: Obter os 10 principais processos
       ansible.builtin.shell: "ps aux --sort=-%mem | head -n 11"
