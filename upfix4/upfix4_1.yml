@@ -1,0 +1,18 @@
+---
+- name: Seleção de hosts e ajustes de inventarios
+  hosts: "{{ updatefix_inventory_group_ok }}"
+  vars_files:
+    - vars/vars.yml
+  tasks:
+
+    - name: Coletar fatos locais
+      ansible.builtin.setup:
+        gather_subset:
+          - '!all'
+          - '!any'
+        filter: ansible_local
+      register: local_facts
+
+    - name: informacao local facts
+      debug:
+        var: local_facts

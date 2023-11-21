@@ -263,3 +263,22 @@
         state: "present"
         survey_enabled: yes
         survey_spec: "{{ lookup('file', 'upfix_version_survey.json') }}"
+
+############################
+#### Fase 4  ####
+############################
+
+    - name: Criar Job Template de UPFIX 4-1 - seleção
+      ansible.controller.job_template:
+        name: UPFIX 4_1 - SELECT HOSTS 
+        job_type: "run"
+        organization: "{{ ac_organization }}"
+        inventory: "{{ ac_inv_updatefix }}" # esse job usa o inventory INV-UPDATEFIX
+        project: "{{ ac_proj_updatefix }}"
+        playbook: "upfix4/upfix4_1.yml"
+        credentials:
+          - "{{ ac_cred_servers }}" 
+          - "{{ ac_cred_ac }}"
+        state: "present"
+        survey_enabled: yes
+        survey_spec: "{{ lookup('file', 'upfix_version_survey.json') }}"
