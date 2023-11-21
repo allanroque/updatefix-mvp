@@ -15,7 +15,7 @@
 
     - name: Armazenar os 10 principais processos resumidos em uma variável
       set_fact:
-        top_processes_simple: "{{ top_processes_result.stdout_lines | map('regex_replace', '.*\\s(/[^ ]+).*', '\\1') | list }}"
+        top_processes_simple: "{{ top_processes_result.stdout_lines | map('regex_replace', '.*\\s(/[^ ]+).*', '\\1') | list | reject('match', '^USER.*') | list }}"
 
     - name: Exibir os 10 principais processos
       ansible.builtin.debug:
@@ -31,7 +31,7 @@
 
     - name: Armazenar os 10 principais processos não root resumidos em uma variável
       set_fact:
-        top_non_root_processes_simple: "{{ top_non_root_processes_result.stdout_lines | map('regex_replace', '.*\\s(/[^ ]+).*', '\\1') | list }}"
+        top_non_root_processes_simple: "{{ top_non_root_processes_result.stdout_lines | map('regex_replace', '.*\\s(/[^ ]+).*', '\\1') | list | reject('match', '^USER.*') | list }}"
 
     - name: Armazenar os 10 principais processos não root em uma variável
       set_fact:
