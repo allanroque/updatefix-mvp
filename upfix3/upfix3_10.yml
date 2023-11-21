@@ -13,13 +13,25 @@
       set_fact:
         top_processes: "{{ top_processes_result.stdout_lines }}"
 
+    - name: Armazenar os 10 principais processos resumidos em uma variável
+      set_fact:
+        top_processes_simple: "{{ top_processes_result.stdout_lines | map('regex_replace', '.*\\s(/[^ ]+).*', '\\1') | list }}"
+
     - name: Exibir os 10 principais processos
       ansible.builtin.debug:
         var: top_processes
 
+    - name: Exibir os 10 principais processos resumidos
+      ansible.builtin.debug:
+        var: top_processes_simple
+
     - name: Obter os 10 principais processos não root
       ansible.builtin.shell: "ps aux --sort=-%mem | awk '$1 != \"root\"' | head -n 11"
       register: top_non_root_processes_result
+
+    - name: Armazenar os 10 principais processos não root resumidos em uma variável
+      set_fact:
+        top_non_root_processes_simple: "{{ top_non_root_processes_result.stdout_lines | map('regex_replace', '.*\\s(/[^ ]+).*', '\\1') | list }}"
 
     - name: Armazenar os 10 principais processos não root em uma variável
       set_fact:
@@ -28,6 +40,10 @@
     - name: Exibir os 10 principais processos não root
       ansible.builtin.debug:
         var: top_non_root_processes
+
+    - name: Exibir os 10 principais processos não root resumidos
+      ansible.builtin.debug:
+        var: top_non_root_processes_simple
 
     - name: Criar arquivos de facts para proccess_status_check
       template:

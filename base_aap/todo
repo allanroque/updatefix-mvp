@@ -64,16 +64,16 @@ SSH password:
 
 #local_facts
 local_facts:
-  - root_space_check OK
-  - boot_space_check OK
-  - root_readonly_check OK
-  - boot_readonly_check OK
-  - mount_points_check OK
-  - subscription_check OK
-  - repository_check OK
-  - rpm_check ok
-  - zombie_process_check ok
-  - uptime_reboot_check ok 
+  - root_space_check
+  - boot_space_check
+  - root_readonly_check
+  - boot_readonly_check
+  - mount_points_check
+  - subscription_check
+  - repository_check
+  - rpm_check
+  - zombie_process_check
+  - uptime_reboot_check
   - services_status_check
   - proccess_status_check
 

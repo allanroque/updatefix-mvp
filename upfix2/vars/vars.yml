@@ -21,10 +21,9 @@ local_facts:
   - boot_space_check
   - root_readonly_check
   - boot_readonly_check
+  - mount_points_check
   - subscription_check
-  - packages_check
+  - repository_check
+  - rpm_check
   - zombie_process_check
   - uptime_reboot_check
-  - mount_points_check
-  - services_status_check
-  - proccess_status_check
