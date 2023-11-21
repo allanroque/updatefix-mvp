@@ -1,0 +1,26 @@
+---
+- name: Validação de subscrição - UPFIX 3.9 -  services e process
+  hosts: "{{ updatefix_inventory_group_ok }}"
+  vars_files:
+    - vars/vars.yml
+  gather_facts: False
+  tasks:
+    - name: Coletar serviços habilitados e em execução
+      set_fact:
+        active_enabled_services: "{{ active_enabled_services | default([]) + [item.key] }}"
+      when: item.value.state == 'running' and item.value.status == 'enabled'
+      with_dict: "{{ ansible_facts.services }}"
+
+    - name: Coletar serviços em execução mas desabilitados
+      set_fact:
+        active_disabled_services: "{{ active_disabled_services | default([]) + [item.key] }}"
+      when: item.value.state == 'running' and item.value.status == 'disabled'
+      with_dict: "{{ ansible_facts.services }}"
+
+    - name: Exibir lista de serviços habilitados e em execução
+      debug:
+        var: active_enabled_services
+
+    - name: Exibir lista de serviços em execução mas desabilitados
+      debug:
+        var: active_disabled_services
