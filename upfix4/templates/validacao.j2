@@ -23,9 +23,10 @@ Subscrição: {{ ansible_local.subscription_check.localfacts.subscription_check 
 Repositórios: {{ ansible_local.repository_check.localfacts.repository_check }}
 Pacotes duplicados: {{ ansible_local.rpm_check.localfacts.rpm_check }}
 Processos zumbis: {{ ansible_local.zombie_process_check.localfacts.zombie_process_check }}
-
+Servicos e processos zabbix: PENDETE DE AUTOMACAO
+Servicos e processos rhsm: PENDETE DE AUTOMACAO
 Validacao de mount-points: {{ ansible_local.mount_points_check.localfacts.mount_points_check }}
-
+Validar autenticacao LDAP: PENDETE DE AUTOMACAO
 Uptime/Reboot: {{ ansible_local.uptime_reboot_check.localfacts.uptime_reboot_check }}
 Host possui inventario: {{ host_exists_in_inventory }}
 Acessivel via Ansible: {{ hosts_reachable }}
