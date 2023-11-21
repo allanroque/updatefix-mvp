@@ -1,0 +1,23 @@
+---
+- name: Listar pontos de montagem do servidor - UPFIX 3.1 - FileSystem
+  hosts: "{{ updatefix_inventory_group_ok }}"
+  vars_files:
+    - vars/vars.yml
+  gather_facts: False
+  tasks:
+    - name: Checar se o servidor está registrado na Red Hat
+      command: subscription-manager status
+      register: rh_status
+      ignore_errors: true
+
+    - name: Setar subscription_check baseado no status do registro
+      set_fact:
+        subscription_check: "{{ 'OK' if 'Overall Status: Current' in rh_status.stdout else 'FAIL' }}"
+
+    - name: Exibir subscription_check
+      debug:
+        var: rh_status
+
+    - name: Exibir subscription_check
+      debug:
+        var: subscription_check
