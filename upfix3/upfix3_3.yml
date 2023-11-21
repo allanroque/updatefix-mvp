@@ -18,6 +18,7 @@
       debug:
         var: rh_status
 
-    - name: Exibir subscription_check
-      debug:
-        var: subscription_check
+    - name: Criar arquivos de facts para subscription_check
+      template:
+        src: subscription_check.j2
+        dest: "/etc/ansible/facts.d/subscription_check.fact"
