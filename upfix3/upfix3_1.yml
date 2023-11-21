@@ -39,13 +39,13 @@
 
     - name: Verificar espaço em /
       set_fact:
-        root_space_check: "{{ 'OK' if (item.size_available / item.size_total | float) >= 0.1 else 'FAIL' }}"
+        root_space_check: "{{ 'OK' if (item.size_available / item.size_total | float) >= 0.05 else 'FAIL' }}"
       loop: "{{ ansible_mounts }}"
       when: item.mount == '/'
 
     - name: Verificar espaço em /boot
       set_fact:
-        boot_space_check: "{{ 'OK' if (item.size_available / item.size_total | float) >= 0.1 else 'FAIL' }}"
+        boot_space_check: "{{ 'OK' if (item.size_available / item.size_total | float) >= 0.05 else 'FAIL' }}"
       loop: "{{ ansible_mounts }}"
       when: item.mount == '/boot'
 
