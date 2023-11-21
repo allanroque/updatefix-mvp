@@ -11,9 +11,15 @@
       register: findmnt_result
       ignore_errors: yes
 
+#necessário pkgs util-linux-core findmnt
+
     - name: Definir mount_points_check com base no resultado
       set_fact:
         mount_points_check: "{{ 'OK' if findmnt_result.rc == 0 else 'FAIL' }}"
+        mount_points_stdout: "{{ findmnt_result.stdout }}"
+
+    - name: Definir mount_points_check com base no resultado
+      set_fact:
 
     - name: Exibir o resultado da verificação
       debug:
