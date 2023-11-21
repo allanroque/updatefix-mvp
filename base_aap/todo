@@ -63,6 +63,7 @@ SSH password:
 validar servicos: zabbix, besclient, nsr, urbancode
 - validar ldap
 
+validar ponto de montagem que não existe no fstab
 
 #local_facts
 local_facts:
