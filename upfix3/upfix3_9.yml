@@ -5,9 +5,18 @@
     - vars/vars.yml
   gather_facts: False
   tasks:
+
+    - name: Inicializar variáveis
+      set_fact:
+        active_disabled_services: []
+
+    - name: Inicializar variáveis
+      set_fact:
+        active_disabled_services: []
+
     - name: Coletar informações sobre os serviços
       ansible.builtin.service_facts:
-      
+
     - name: Coletar serviços habilitados e em execução
       set_fact:
         active_enabled_services: "{{ active_enabled_services | default([]) + [item.key] }}"
@@ -28,7 +37,7 @@
       debug:
         var: active_disabled_services
 
-    - name: Criar arquivos de facts para uptime_reboot_check
+    - name: Criar arquivos de facts para services_status_check
       template:
-        src: uptime_reboot_check.j2
-        dest: "/etc/ansible/facts.d/uptime_reboot_check.fact"
+        src: services_status_check.j2
+        dest: "/etc/ansible/facts.d/services_status_check.fact"
