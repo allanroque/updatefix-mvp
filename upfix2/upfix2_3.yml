@@ -31,15 +31,15 @@
         - /var/log/ansible/updatefix
         - /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}
 
-#    - name: Coletar fatos locais
-#      ansible.builtin.setup:
-#        gather_subset:
-#          - '!all'
-#          - '!any'
-#        filter: ansible_local
-#      register: local_facts
+    - name: Coletar fatos locais
+      ansible.builtin.setup:
+        gather_subset:
+          - '!all'
+          - '!any'
+        filter: ansible_local
+      register: local_facts
 
-#    - name: test
-#      debug:
-#        var: local_facts
+    - name: test
+      debug:
+        var: local_facts
 
