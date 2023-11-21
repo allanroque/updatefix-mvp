@@ -70,11 +70,10 @@ local_facts:
   - boot_readonly_check OK
   - mount_points_check OK
   - subscription_check OK
-  - repository_check 
+  - repository_check OK
   - packages_check ok
   - zombie_process_check
   - uptime_reboot_check
-  - 
   - services_status_check
   - proccess_status_check
 
