@@ -35,3 +35,25 @@
       set_fact:
         boot_readonly_check: "OK"
       when: boot_readonly_check is not defined
+
+    - name: Definir as opções de montagem para root
+      set_fact:
+        root_options_check: "{{ item.options }}"
+      loop: "{{ ansible_mounts }}"
+      when: item.mount == '/'
+
+    - name: Definir as opções de montagem para boot
+      set_fact:
+        boot_options_check: "{{ item.options }}"
+      loop: "{{ ansible_mounts }}"
+      when: item.mount == '/boot'
+
+    - name: Criar arquivos de facts para root_readonly_check
+      template:
+        src: root_readonly_check.j2
+        dest: "/etc/ansible/facts.d/root_space_check.fact"
+
+    - name: Criar arquivos de facts para boot_space_check
+      template:
+        src: boot_readonly_check.j2
+        dest: "/etc/ansible/facts.d/boot_readonly_check.fact"
