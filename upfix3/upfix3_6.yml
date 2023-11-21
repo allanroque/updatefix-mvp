@@ -11,12 +11,12 @@
 
     - name: Definir variável de pacotes duplicados
       set_fact:
-        packages: "OK"
+        rpm_check: "OK"
       when: dup_packages_output.stdout|int == 0
 
     - name: Definir variável de pacotes não duplicados
       set_fact:
-        packages: "FAIL"
+        rpm_check: "FAIL"
       when: dup_packages_output.stdout|int > 0
 
     - name: Criar arquivos de facts para repository_check

@@ -10,6 +10,7 @@
         cmd: "ps aux | awk '{ print $8 }' | grep -c Z"
       register: zombie_count
       changed_when: false
+      ignore_errors: true
 
     - name: Definir zombie_process_check com base no resultado
       set_fact:
