@@ -60,7 +60,7 @@ SSH password:
 [WARNING]: Invalid characters were found in group names but not replaced, use
 -vvvv to see details
 
-
+validar servicos: zabbix, besclient, nsr, urbancode
 
 #local_facts
 local_facts:
