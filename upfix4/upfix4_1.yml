@@ -15,4 +15,4 @@
 
     - name: informacao local facts
       debug:
-        var: ansible_local
+        var: ansible_local.ansible_local
