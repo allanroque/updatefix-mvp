@@ -8,11 +8,3 @@
     - name: Coletar fatos locais
       ansible.builtin.setup:
         filter: ansible_local
-
-    - name: Exibir Custom Facts
-      debug:
-        var: ansible_local.localfacts
-
-    - name: informacao local facts
-      debug:
-        var: ansible_facts.ansible_local
