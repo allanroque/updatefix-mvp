@@ -30,7 +30,7 @@ Validar autenticacao LDAP: PENDETE DE AUTOMACAO
 Uptime/Reboot: {{ ansible_local.uptime_reboot_check.localfacts.uptime_reboot_check }}
 Host possui inventario: {{ host_exists_in_inventory }}
 Acessivel via Ansible: {{ hosts_reachable }}
-Servido Pronto para update: AJUSTAR
+Servido Pronto para update: {{ ready_for_update }}
 
 -----------------------------
 SERVICOS ATIVOS ANTES DO UPDATE

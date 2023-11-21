@@ -2,13 +2,13 @@
 - name: Configuracao base o ambiente de UPDATEFIX
   hosts: localhost
   vars:
-    ac_organization: SECURITY #SECURITY #alterar este item 
+    ac_organization: SECURITY #SECURITY #alterar este item ############!!!!!!!!!!!!
     ac_cred_ac: CRED-AC-CONFIG
     ac_cred_servers: CRED-SSH-SERVER
     ac_inv_all_hosts: INV-ALL-HOSTS
     ac_inv_updatefix: INV-UPDATEFIX
     ac_proj_updatefix: PROJ-GIT-UPDATEFIX
-    ac_hostname: aap01.aroque.com.br #alterar este item
+    ac_hostname: aap01.aroque.com.br #alterar este item ##############!!!!!!!!!!!
   gather_facts: False
   tasks:
 
