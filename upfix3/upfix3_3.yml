@@ -20,9 +20,11 @@
       set_fact:
         fstab_lines: "{{ (fstab_content['content'] | b64decode).split('\n') }}"
 
-    - name: Verificar se as montagens do fstab estão ativas
-      vars:
+    - name: Coletar pontos de montagem ativos
+      set_fact:
         active_mounts: "{{ ansible_mounts | map(attribute='mount') | list }}"
+
+    - name: Verificar se as montagens do fstab estão ativas
       debug:
         msg: "{{ mount_point }} está montado"
       when:
