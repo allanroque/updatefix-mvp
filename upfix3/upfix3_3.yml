@@ -1,24 +1,37 @@
 ---
-- name: Listar pontos de montagem do servidor - UPFIX 3.1 - FileSystem
+- name: Validação de subscrição - UPFIX 3.4 - Subscription
   hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files:
     - vars/vars.yml
   gather_facts: False
-  tasks:
-    - name: Checar se o servidor está registrado na Red Hat
-      command: subscription-manager status
-      register: rh_status
-      ignore_errors: true
+    tasks:
+    - name: Coletar fatos do sistema
+      ansible.builtin.setup:
+        gather_subset:
+          - '!all'
+          - 'mounts'
 
-    - name: Setar subscription_check baseado no status do registro
+    - name: Ler conteúdo do /etc/fstab
+      ansible.builtin.slurp:
+        src: /etc/fstab
+      register: fstab_content
+
+    - name: Decodificar conteúdo do fstab
       set_fact:
-        subscription_check: "{{ 'OK' if 'Overall Status: Current' in rh_status.stdout else 'FAIL' }}"
+        fstab_lines: "{{ (fstab_content['content'] | b64decode).split('\n') }}"
 
-    - name: Exibir subscription_check
+    - name: Coletar fatos de montagens
+      ansible.builtin.setup:
+        gather_subset:
+          - '!all'
+          - 'mounts'
+
+    - name: Verificar se as montagens do fstab estão ativas
+      vars:
+        active_mounts: "{{ ansible_mounts | map(attribute='mount') | list }}"
       debug:
-        var: rh_status
-
-    - name: Criar arquivos de facts para subscription_check
-      template:
-        src: subscription_check.j2
-        dest: "/etc/ansible/facts.d/subscription_check.fact"
+        msg: "{{ item.split()[1] }} está montado"
+      when: item.split()[1] in active_mounts
+      loop: "{{ fstab_lines }}"
+      loop_control:
+        label: "{{ item.split()[1] }}"

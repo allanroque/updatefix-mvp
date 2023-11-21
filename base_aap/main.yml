@@ -144,14 +144,29 @@
         survey_enabled: yes
         survey_spec: "{{ lookup('file', 'upfix_version_survey.json') }}"
 
-    - name: Criar Job Template de UPFIX 3-3 - subscription-manager
+    - name: Criar Job Template de UPFIX 3-3 - FileSystem Mount Point
       ansible.controller.job_template:
-        name: UPFIX 3_3 - SUBSCRIPTION MANAGER
+        name: UPFIX 3_3 - FILESYSTEM MOUNT POINT
         job_type: "run"
         organization: "{{ ac_organization }}"
         inventory: "{{ ac_inv_updatefix }}" # esse job usa o inventory INV-UPDATEFIX
         project: "{{ ac_proj_updatefix }}"
         playbook: "upfix3/upfix3_3.yml"
+        credentials:
+          - "{{ ac_cred_servers }}" #esse job acessa diretamente os servidores
+#          - "{{ ac_cred_ac }}"
+        state: "present"
+        survey_enabled: yes
+        survey_spec: "{{ lookup('file', 'upfix_version_survey.json') }}"
+
+    - name: Criar Job Template de UPFIX 3-4 - subscription-manager
+      ansible.controller.job_template:
+        name: UPFIX 3_4 - SUBSCRIPTION MANAGER
+        job_type: "run"
+        organization: "{{ ac_organization }}"
+        inventory: "{{ ac_inv_updatefix }}" # esse job usa o inventory INV-UPDATEFIX
+        project: "{{ ac_proj_updatefix }}"
+        playbook: "upfix3/upfix3_4.yml"
         credentials:
           - "{{ ac_cred_servers }}" #esse job acessa diretamente os servidores
 #          - "{{ ac_cred_ac }}"

@@ -1,0 +1,24 @@
+---
+- name: Validação de subscrição - UPFIX 3.4 - Subscription
+  hosts: "{{ updatefix_inventory_group_ok }}"
+  vars_files:
+    - vars/vars.yml
+  gather_facts: False
+  tasks:
+    - name: Checar se o servidor está registrado na Red Hat
+      command: subscription-manager status
+      register: rh_status
+      ignore_errors: true
+
+    - name: Setar subscription_check baseado no status do registro
+      set_fact:
+        subscription_check: "{{ 'OK' if 'Overall Status: Current' in rh_status.stdout else 'FAIL' }}"
+
+    - name: Exibir subscription_check
+      debug:
+        var: rh_status
+
+    - name: Criar arquivos de facts para subscription_check
+      template:
+        src: subscription_check.j2
+        dest: "/etc/ansible/facts.d/subscription_check.fact"
