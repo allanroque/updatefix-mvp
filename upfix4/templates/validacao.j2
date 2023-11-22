@@ -11,7 +11,7 @@ Hostname: .................. {{ ansible_hostname }}
 Distribuição: .............. {{ ansible_distribution }}
 Release: ................... {{ ansible_distribution_version }}
 Versão do kernel: .......... {{ ansible_kernel }}
-SELinux: ................... {{ ansible_selinux.status }} {{ ansible_selinux.mode }} 
+SELinux Status: ............ {{ ansible_selinux.status }} {{ ansible_selinux.mode }}
 IPV4: ...................... {{ ansible_all_ipv4_addresses }}
 Arquitetura: ............... {{ ansible_architecture }}
 Virtual/Fisico: ............ {{ ansible_virtualization_type }}
@@ -20,7 +20,8 @@ Uptime: .................... {{ (ansible_uptime_seconds / 86400) | round(0, 'flo
 {% else %}
 Uptime: {{ (ansible_uptime_seconds / 3600) | round(0, 'floor') }} horas
 {% endif %}
-
+CPUs ....................... {{ ansible_processor_vcpus }}
+Memória: ................... {{ (ansible_memtotal_mb / 1024) | round(2) }} GB
 
 -----------------------------
 VALIDAÇÃO DAS INFORMAÇÔES DOS PREREQUISITOS
@@ -43,10 +44,14 @@ Acessivel via Ansible: ........... {{ hosts_reachable }}
 Servido Pronto para update: ...... {{ ready_for_update }}
 
 -----------------------------
-SERVICOS ATIVOS ANTES DO UPDATE
+SERVICOS LISTADOS ANTES DO UPDATE
 -----------------------------
 ATIVOS E ENABLED
 {{ ansible_local.services_status_check.localfacts.active_enabled_services }}
 
 ATIVOS E DISABLED
 {{ ansible_local.services_status_check.localfacts.active_disabled_services }}
+
+-----------------------------
+PROCESSO LISTADOS ANTES DO UPDATE
+-----------------------------
