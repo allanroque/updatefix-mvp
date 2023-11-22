@@ -18,13 +18,12 @@ Virtual/Fisico: ............ {{ ansible_virtualization_type }}
 {% set uptime_days = (ansible_uptime_seconds / 86400) | int %}
 {% set uptime_hours = ((ansible_uptime_seconds % 86400) / 3600) | int %}
 {% set uptime_minutes = ((ansible_uptime_seconds % 3600) / 60) | int %}
-Uptime: ....................
 {% if uptime_days > 0 %}
-  {{ uptime_days }} dias
+Uptime: .................... {{ uptime_days }} dias
 {% elif uptime_hours > 0 %}
-  {{ uptime_hours }} horas
+Uptime: .................... {{ uptime_hours }} horas
 {% else %}
-  {{ uptime_minutes }} minutos
+Uptime: .................... {{ uptime_minutes }} minutos
 {% endif %}
 CPUs ....................... {{ ansible_processor_vcpus }}
 Memória: ................... {{ (ansible_memtotal_mb / 1024) | round(2) }} GB
