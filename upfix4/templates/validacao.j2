@@ -55,3 +55,12 @@ ATIVOS E DISABLED
 -----------------------------
 PROCESSO LISTADOS ANTES DO UPDATE
 -----------------------------
+TOP 10 PROCESSOS
+{% for process in ansible_local.proccess_status_check.localfacts.top_processes | from_json %}
+    "{{ process }}",
+{% endfor %}
+
+TOP 10 PROCESSOS NÃO ROOT 
+{% for process in ansible_local.proccess_status_check.localfacts.top_non_root_processes | from_json %}
+    "{{ process }}",
+{% endfor %}
