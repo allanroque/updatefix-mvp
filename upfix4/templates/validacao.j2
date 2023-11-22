@@ -15,10 +15,16 @@ SELinux Status: ............ {{ ansible_selinux.status }} {{ ansible_selinux.mod
 IPV4: ...................... {{ ansible_all_ipv4_addresses }}
 Arquitetura: ............... {{ ansible_architecture }}
 Virtual/Fisico: ............ {{ ansible_virtualization_type }}
-{% if ansible_uptime_seconds / 86400 >= 1 %}
-Uptime: .................... {{ (ansible_uptime_seconds / 86400) | round(0, 'floor') }} dias
+{% set uptime_days = (ansible_uptime_seconds / 86400) | int %}
+{% set uptime_hours = ((ansible_uptime_seconds % 86400) / 3600) | int %}
+{% set uptime_minutes = ((ansible_uptime_seconds % 3600) / 60) | int %}
+Uptime: ....................
+{% if uptime_days > 0 %}
+  {{ uptime_days }} dias
+{% elif uptime_hours > 0 %}
+  {{ uptime_hours }} horas
 {% else %}
-Uptime: .................... {{ (ansible_uptime_seconds / 3600) | round(0, 'floor') }} horas
+  {{ uptime_minutes }} minutos
 {% endif %}
 CPUs ....................... {{ ansible_processor_vcpus }}
 Memória: ................... {{ (ansible_memtotal_mb / 1024) | round(2) }} GB
@@ -43,6 +49,7 @@ Uptime/Reboot: ................... {{ ansible_local.uptime_reboot_check.localfac
 Host possui inventario: .......... {{ host_exists_in_inventory }}
 Acessivel via Ansible: ........... {{ hosts_reachable }}
 Servido Pronto para update: ...... {{ ready_for_update }}
+
 
 -----------------------------
 SERVICOS LISTADOS ANTES DO UPDATE
@@ -69,3 +76,4 @@ TOP 10 PROCESSOS NÃO ROOT
 {% for process in top_non_root_processes_list %}
     "{{ process }}",
 {% endfor %}
+
