@@ -1,36 +1,46 @@
 ************************ UpdateFix Informações ******************************
-{{ ansible_date_time.date }} {{ ansible_hostname }}: Ola eu sou o servidor {{ ansible_hostname }} e faco parte do processo de Updatefix versao {{ updatefix_version }}
+{{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: Estes logs estão relacionados aos processos de coleta e validação antes da atualização do sistema.
+{{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: Ola eu sou o servidor {{ ansible_hostname }} e faco parte do processo de Updatefix versao {{ updatefix_version}}
+{{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: Realizamos um levantamento de alguma informacoes do servidor antes do processo de atualizacao:
+
 
 -----------------------------
 INFORMAÇÂO DO SERVIDOR
 -----------------------------
-Versão do kernel: {{ ansible_kernel }}
-Hostname: {{ ansible_hostname }}
-IPV4: {{ ansible_all_ipv4_addresses }}
-Distribuição: {{ ansible_distribution }}
-Release: {{ ansible_distribution_version }}
-Arquitetura: {{ ansible_architecture }}
-Virtual/Fisico: {{ ansible_virtualization_type }} Uptime: {{ ansible_uptime_seconds }}
+Hostname: .................. {{ ansible_hostname }}
+Distribuição: .............. {{ ansible_distribution }}
+Release: ................... {{ ansible_distribution_version }}
+Versão do kernel: .......... {{ ansible_kernel }}
+SELinux: ................... {{ ansible_selinux.status }} {{ ansible_selinux.mode }} 
+IPV4: ...................... {{ ansible_all_ipv4_addresses }}
+Arquitetura: ............... {{ ansible_architecture }}
+Virtual/Fisico: ............ {{ ansible_virtualization_type }}
+{% if ansible_uptime_seconds / 86400 >= 1 %}
+Uptime: .................... {{ (ansible_uptime_seconds / 86400) | round(0, 'floor') }} dias
+{% else %}
+Uptime: {{ (ansible_uptime_seconds / 3600) | round(0, 'floor') }} horas
+{% endif %}
+
 
 -----------------------------
 VALIDAÇÃO DAS INFORMAÇÔES DOS PREREQUISITOS
 -----------------------------
-Espaço em disco /: {{ ansible_local.root_space_check.localfacts.root_space_check }}
-Espaço em disco /boot: {{ ansible_local.boot_space_check.localfacts.boot_space_check }}
-FileSystem / em Read-only: {{ ansible_local.root_readonly_check.localfacts.root_readonly_check }}
-FileSystem /boot em Read-only: {{ ansible_local.boot_readonly_check.localfacts.boot_readonly_check }}
-Subscrição: {{ ansible_local.subscription_check.localfacts.subscription_check }}
-Repositórios: {{ ansible_local.repository_check.localfacts.repository_check }}
-Pacotes duplicados: {{ ansible_local.rpm_check.localfacts.rpm_check }}
-Processos zumbis: {{ ansible_local.zombie_process_check.localfacts.zombie_process_check }}
-Servicos e processos zabbix: PENDETE DE AUTOMACAO
-Servicos e processos rhsm: PENDETE DE AUTOMACAO
-Validacao de mount-points: {{ ansible_local.mount_points_check.localfacts.mount_points_check }}
-Validar autenticacao LDAP: PENDETE DE AUTOMACAO
-Uptime/Reboot: {{ ansible_local.uptime_reboot_check.localfacts.uptime_reboot_check }}
-Host possui inventario: {{ host_exists_in_inventory }}
-Acessivel via Ansible: {{ hosts_reachable }}
-Servido Pronto para update: {{ ready_for_update }}
+Espaço em disco /: ............... {{ ansible_local.root_space_check.localfacts.root_space_check }}
+Espaço em disco /boot: ........... {{ ansible_local.boot_space_check.localfacts.boot_space_check }}
+FileSystem / em Read-only: ....... {{ ansible_local.root_readonly_check.localfacts.root_readonly_check }}
+FileSystem /boot em Read-only: ... {{ ansible_local.boot_readonly_check.localfacts.boot_readonly_check }}
+Subscrição: ...................... {{ ansible_local.subscription_check.localfacts.subscription_check }}
+Repositórios: .................... {{ ansible_local.repository_check.localfacts.repository_check }}
+Pacotes duplicados: .............. {{ ansible_local.rpm_check.localfacts.rpm_check }}
+Processos zumbis: ................ {{ ansible_local.zombie_process_check.localfacts.zombie_process_check }}
+Servicos e processos zabbix: ..... PENDETE DE AUTOMACAO
+Servicos e processos bigfix: ..... PENDETE DE AUTOMACAO
+Validacao de mount-points: ....... {{ ansible_local.mount_points_check.localfacts.mount_points_check }}
+Validar autenticacao LDAP: ....... PENDETE DE AUTOMACAO
+Uptime/Reboot: ................... {{ ansible_local.uptime_reboot_check.localfacts.uptime_reboot_check }}
+Host possui inventario: .......... {{ host_exists_in_inventory }}
+Acessivel via Ansible: ........... {{ hosts_reachable }}
+Servido Pronto para update: ...... {{ ready_for_update }}
 
 -----------------------------
 SERVICOS ATIVOS ANTES DO UPDATE
