@@ -11,14 +11,21 @@
       ansible.builtin.setup:
         filter: ansible_local
 
-    - name: Convert 'top_processes' string to list
+    - name: Converter 'top_processes' string para list
       set_fact:
         top_processes_list: "{{ ansible_local.proccess_status_check.localfacts.top_processes | from_yaml }}"
 
-    - name: Convert 'top_non_root_processes' string to list
+    - name: Converter 'top_non_root_processes' string para list
       set_fact:
         top_non_root_processes_list: "{{ ansible_local.proccess_status_check.localfacts.top_non_root_processes | from_yaml }}"
 
+    - name: Convert 'active_enabled_services' string to list
+      set_fact:
+         active_enabled_services_list: "{{ ansible_local.services_status_check.localfacts.active_enabled_services | from_yaml }}"
+
+    - name: Convert 'active_disabled_services' string to list
+      set_fact:
+         active_disabled_services_list: "{{ ansible_local.services_status_check.localfacts.active_disabled_services | from_yaml }}"
 
     - name: Definir ready_for_update baseado em verificações
       set_fact:

@@ -23,6 +23,8 @@ Uptime: {{ (ansible_uptime_seconds / 3600) | round(0, 'floor') }} horas
 CPUs ....................... {{ ansible_processor_vcpus }}
 Memória: ................... {{ (ansible_memtotal_mb / 1024) | round(2) }} GB
 
+
+
 -----------------------------
 VALIDAÇÃO DAS INFORMAÇÔES DOS PREREQUISITOS
 -----------------------------
@@ -47,10 +49,14 @@ Servido Pronto para update: ...... {{ ready_for_update }}
 SERVICOS LISTADOS ANTES DO UPDATE
 -----------------------------
 ATIVOS E ENABLED
-{{ ansible_local.services_status_check.localfacts.active_enabled_services }}
+{% for service in active_enabled_services_list %}
+    "{{ service }}",
+{% endfor %}
 
 ATIVOS E DISABLED
-{{ ansible_local.services_status_check.localfacts.active_disabled_services }}
+{% for service in active_disabled_services_list %}
+    "{{ service }}",
+{% endfor %}
 
 -----------------------------
 PROCESSO LISTADOS ANTES DO UPDATE
