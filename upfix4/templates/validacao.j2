@@ -18,11 +18,16 @@ Virtual/Fisico: ............ {{ ansible_virtualization_type }}
 {% if ansible_uptime_seconds / 86400 >= 1 %}
 Uptime: .................... {{ (ansible_uptime_seconds / 86400) | round(0, 'floor') }} dias
 {% else %}
-Uptime: {{ (ansible_uptime_seconds / 3600) | round(0, 'floor') }} horas
+Uptime: .................... {{ (ansible_uptime_seconds / 3600) | round(0, 'floor') }} horas
 {% endif %}
 CPUs ....................... {{ ansible_processor_vcpus }}
 Memória: ................... {{ (ansible_memtotal_mb / 1024) | round(2) }} GB
-
+{% for disk, details in storage_details.items() %}
+Storage: ................... {{ disk }}, Size: {{ details.size }}
+{% endfor %}
+{% for interface in network_details %}
+Network: ................... {{ interface.device }}, IP: {{ interface.ipv4.address }}
+{% endfor %}
 
 
 -----------------------------
