@@ -11,6 +11,15 @@
       ansible.builtin.setup:
         filter: ansible_local
 
+    - name: Convert 'top_processes' string to list
+      set_fact:
+        top_processes_list: "{{ ansible_local.proccess_status_check.localfacts.top_processes | from_yaml }}"
+
+    - name: Convert 'top_non_root_processes' string to list
+      set_fact:
+        top_non_root_processes_list: "{{ ansible_local.proccess_status_check.localfacts.top_non_root_processes | from_yaml }}"
+
+
     - name: Definir ready_for_update baseado em verificações
       set_fact:
         ready_for_update: "FAIL"
