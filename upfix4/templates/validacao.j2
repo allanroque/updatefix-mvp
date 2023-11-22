@@ -22,13 +22,14 @@ Uptime: .................... {{ (ansible_uptime_seconds / 3600) | round(0, 'floo
 {% endif %}
 CPUs ....................... {{ ansible_processor_vcpus }}
 Memória: ................... {{ (ansible_memtotal_mb / 1024) | round(2) }} GB
-{% for disk, details in storage_details.items() %}
+{% for disk, details in ansible_devices.items() %}
 Storage: ................... {{ disk }}, Size: {{ details.size }}
 {% endfor %}
-{% for interface in network_details %}
-Network: ................... {{ interface.device }}, IP: {{ interface.ipv4.address }}
+  {% set interface = hostvars[inventory_hostname]['ansible_' + interface_name] %}
+  {% if interface.ipv4 is defined %}
+Network: ................... {{ interface_name }}, IP: {{ interface.ipv4.address }}
+  {% endif %}
 {% endfor %}
-
 
 -----------------------------
 VALIDAÇÃO DAS INFORMAÇÔES DOS PREREQUISITOS
