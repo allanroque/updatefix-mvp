@@ -31,6 +31,7 @@
         - /var/log/ansible
         - /var/log/ansible/updatefix
         - /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}
+        - /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/detalhes
 
     - name: Coletar fatos locais
       ansible.builtin.setup:

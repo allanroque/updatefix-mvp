@@ -66,4 +66,3 @@
       template:
         src: boot_space_check.j2
         dest: "/etc/ansible/facts.d/boot_space_check.fact"
-
