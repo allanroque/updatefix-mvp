@@ -1,0 +1,11 @@
+---
+- name: RoadMap
+  hosts: "{{ updatefix_inventory_group_ok }}"
+  vars_files:
+    - vars/vars.yml
+  gather_facts: True
+  become: yes
+  tasks:
+    - name: Backup
+      debug:
+        msg: "backup do servidor"
