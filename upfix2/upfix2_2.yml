@@ -20,7 +20,6 @@
     - name: Exibir hosts selecionados
       debug:
         var: selected_hosts
-      run_once: true
 
     - name: Add hosts with status OK Updatefix version {{ updatefix_version }} to inventory UPDATEFIX
       ansible.controller.group:

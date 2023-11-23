@@ -12,7 +12,7 @@
       ignore_errors: True
       ignore_unreachable: true
       
-    - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }}
+    - name: Ajustar variável de status do host no inventory e group Updatefix host_exists_in_inventory {{ updatefix_inventory_group }}
       ansible.controller.host:
         name: "{{ item }}"
         inventory: "{{ updatefix_inventory }}"
@@ -22,9 +22,8 @@
           hosts_reachable: FAIL
       loop: "{{ groups[updatefix_inventory_group] }}"
       delegate_to: localhost
-      run_once: true
 
-    - name: Ajustar variável de status do host no inventory e group Updatefix {{ updatefix_inventory_group }} OK
+    - name: Ajustar variável de status do host no inventory e group Updatefix hosts_reachable {{ updatefix_inventory_group }} OK
       ansible.controller.host:
         name: "{{ inventory_hostname }}"
         inventory: "{{ updatefix_inventory }}"
