@@ -34,7 +34,7 @@
 #######
 ########## validar dispositivos montados que não fazem parte do fstab
 ######
-   - name: Coletar pontos de montagem atuais
+    - name: Coletar pontos de montagem atuais
       command: findmnt -nr --real --nofsroot --noheadings --output TARGET
       register: pontos_montagem_atuais
 
