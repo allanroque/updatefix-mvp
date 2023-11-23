@@ -42,15 +42,32 @@
         ansible_local.uptime_reboot_check.localfacts.uptime_reboot_check == "FAIL" or
         ansible_local.mount_points_fstab_check.localfacts.mount_points_check == "FAIL"
 
-
 #add, estamos removendo nesse testes pois o servidor não possui zabbix instalado.  ansible_local.services_status_check.localfacts.zabbix_service == "FAIL" 
-
 
     - name: Definir ready_for_update como OK se todas as verificações passarem
       set_fact:
         ready_for_update: "OK"
       when: ready_for_update is not defined
 
+    - name: Criar arquivos de facts para servidores que passaram pela verificação
+      template:
+        src: ready_for_update.j2
+        dest: "/etc/ansible/facts.d/ready_for_update.fact"
+
+#ansible_local.services_status_check.localfacts.ready_for_update == OK
+
+    - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }}
+      ansible.controller.host:
+        name: "{{ item }}"
+        inventory: "{{ updatefix_inventory }}"
+        enabled: true
+        variables:
+          host_exists_in_inventory: "{{ hostvars[item]['host_exists_in_inventory'] }}"
+          hosts_reachable: "{{ hostvars[item]['hosts_reachable'] }}"
+          ready_for_update: "{{ ready_for_update }}"
+      loop: "{{ groups[updatefix_inventory_group_ok] }}"
+      delegate_to: localhost
+      run_once: true
 
     - name: Gerar relatório de validação
       template:

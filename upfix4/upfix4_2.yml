@@ -1,0 +1,33 @@
+---
+- name: Seleção de hosts e ajustes de inventarios
+  hosts: "{{ updatefix_inventory_group }}"
+  vars_files:
+    - vars/vars.yml
+  gather_facts: True
+  become: yes
+  tasks:
+
+    - name: Coletar fatos locais
+      ansible.builtin.setup:
+        filter: ansible_local
+
+    - name: Converter 'top_processes' string para list
+      set_fact:
+        top_processes_list: "{{ ansible_local.proccess_status_check.localfacts.top_processes | from_yaml }}"
+
+    - name: Converter 'top_non_root_processes' string para list
+      set_fact:
+        top_non_root_processes_list: "{{ ansible_local.proccess_status_check.localfacts.top_non_root_processes | from_yaml }}"
+
+    - name: Add hosts with status OK Updatefix version {{ updatefix_version }} to inventory UPDATEFIX
+      ansible.controller.group:
+        name: "{{ updatefix_inventory_group_ok }}"
+        preserve_existing_hosts: True
+        inventory: "{{ updatefix_inventory }}"
+        hosts: "{{ item }}"
+      loop: "{{ groups[updatefix_inventory_group] }}"
+      when:
+        - hostvars[item]['host_exists_in_inventory'] == 'OK'
+        - hostvars[item]['hosts_reachable'] == 'OK'
+      delegate_to: localhost
+      run_once: true

@@ -1,5 +1,5 @@
 ---
-- name: Validação de subscrição - UPFIX 3.9 -  services
+- name: Validação de serviços - UPFIX 3.9 -  services
   hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files:
     - vars/vars.yml
@@ -47,6 +47,8 @@
         ('zabbix-agent2.service' in services) and
         (services['zabbix-agent2.service'].state == 'running') and
         (services['zabbix-agent2.service'].status == 'enabled')
+
+# o mesmo processo pode ser utilizado para besclient, nsr e urbancode
 
     - name: Definir variável como FAIL se o serviço não estiver ativo ou enable
       set_fact:
