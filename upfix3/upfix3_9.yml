@@ -38,6 +38,21 @@
       debug:
         var: active_disabled_services
 
+# Validação do serviço zabbix 
+
+    - name: Definir variável com base no status do serviço zabbix-agent2
+      set_fact:
+        zabbix_service: "OK"
+      when: >
+        ('zabbix-agent2.service' in services) and
+        (services['zabbix-agent2.service'].state == 'running') and
+        (services['zabbix-agent2.service'].status == 'enabled')
+
+    - name: Definir variável como FAIL se o serviço não estiver ativo ou enable
+      set_fact:
+        zabbix_service: "FAIL"
+      when: zabbix_service is not defined
+
     - name: Criar arquivos de facts para services_status_check
       template:
         src: services_status_check.j2

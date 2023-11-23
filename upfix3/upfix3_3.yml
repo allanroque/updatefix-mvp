@@ -28,3 +28,28 @@
       template:
         src: mount_points_check.j2
         dest: "/etc/ansible/facts.d/mount_points_check.fact"
+
+---
+- name: Verificar pontos de montagem com findmnt
+  hosts: all
+  tasks:
+    - name: Coletar informações de pontos de montagem com findmnt
+      ansible.builtin.command: findmnt -rn
+      register: findmnt_output
+
+    - name: Ler conteúdo do fstab
+      ansible.builtin.slurp:
+        src: /etc/fstab
+      register: fstab_content
+
+    - name: Converter conteúdo do fstab para texto
+      ansible.builtin.set_fact:
+        fstab_text: "{{ fstab_content['content'] | b64decode }}"
+
+    - name: Encontrar pontos de montagem não listados no fstab
+      ansible.builtin.set_fact:
+        unlisted_mount_points: "{{ findmnt_output.stdout_lines | map('regex_replace', ' .*', '') | difference(fstab_text | regex_findall('/dev/[\\w/]+')) }}"
+
+    - name: Exibir pontos de montagem não listados no fstab
+      ansible.builtin.debug:
+        var: unlisted_mount_points
