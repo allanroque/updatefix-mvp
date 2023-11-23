@@ -38,6 +38,11 @@
       debug:
         var: active_disabled_services
 
+
+    - name: Definir variável de 'WARNING'
+      set_fact:
+        active_disabled_services_status: "{{ 'OK' if active_disabled_services | length == 0 else 'WARNING' }}"
+
 # Validação do serviço zabbix 
 
     - name: Definir variável com base no status do serviço zabbix-agent2
