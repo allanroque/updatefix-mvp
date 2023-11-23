@@ -1,7 +1,8 @@
 ---
 - name: Verificações de acesso
   hosts: "{{ updatefix_inventory_group }}"
-  vars_files: vars/vars.yml
+  vars_files:
+    - vars/vars.yml
   gather_facts: False
   tasks: 
 

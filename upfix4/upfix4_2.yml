@@ -10,6 +10,47 @@
       debug:
         msg: "Host: {{ inventory_hostname }}, host_exists_in_inventory: {{ hostvars[inventory_hostname]['host_exists_in_inventory'] | default('FAIL') }}, hosts_reachable: {{ hostvars[inventory_hostname]['hosts_reachable'] | default('FAIL') }}, ready_for_update: {{ hostvars[inventory_hostname]['ready_for_update'] | default('FAIL') }}"
 
-    - name: Exibir variáveis dos hosts
-      debug:
-        msg: test!!!!
+    - name: Refazer o grupo de servidores OK no inventario {{ updatefix_inventory_group }}
+      ansible.controller.group:
+        name: "{{ updatefix_inventory_group_ok }}"
+        preserve_existing_hosts: False
+        inventory: "{{ updatefix_inventory }}"
+      delegate_to: localhost
+      run_once: true
+
+    - name: Cadastrar os hosts OK no inventario {{ updatefix_inventory_group_ok }}
+      ansible.controller.group:
+        name: "{{ updatefix_inventory_group_ok }}"
+        preserve_existing_hosts: True
+        inventory: "{{ updatefix_inventory }}"
+        hosts: "{{ item }}"
+      loop: "{{ groups[updatefix_inventory_group] }}"
+      when:
+        - hostvars[item]['host_exists_in_inventory'] == 'OK'
+        - hostvars[item]['hosts_reachable'] == 'OK'
+        - hostvars[item]['ready_for_update'] == 'OK'
+      delegate_to: localhost
+      run_once: true
+
+
+    - name: Refazer o grupo de servidores FAIL no inventario {{ updatefix_inventory_group }}
+      ansible.controller.group:
+        name: "{{ updatefix_inventory_group_fail }}"
+        preserve_existing_hosts: False
+        inventory: "{{ updatefix_inventory }}"
+      delegate_to: localhost
+      run_once: true
+
+    - name: Cadastrar os hosts OK no inventario {{ updatefix_inventory_group_fail }}
+      ansible.controller.group:
+        name: "{{ updatefix_inventory_group_fail }}"
+        preserve_existing_hosts: True
+        inventory: "{{ updatefix_inventory }}"
+        hosts: "{{ item }}"
+      loop: "{{ groups[updatefix_inventory_group] }}"
+      when:
+        - hostvars[item]['host_exists_in_inventory'] == 'FAIL'
+          or hostvars[item]['hosts_reachable'] == 'FAIL'
+          or hostvars[item]['ready_for_update'] == 'FAIL'
+      delegate_to: localhost
+      run_once: true
