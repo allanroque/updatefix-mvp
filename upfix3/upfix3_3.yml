@@ -31,23 +31,20 @@
 #######
 ########## validar dispositivos montados que não fazem parte do fstab
 ######
-    - name: Coletar informações de pontos de montagem com findmnt
-      ansible.builtin.command: findmnt -rn
-      register: findmnt_output
+    - name: Obter pontos de montagem atuais
+      ansible.builtin.command: findmnt --real --nofsroot --noheadings --output TARGET
+      register: mounted_points
 
-    - name: Ler conteúdo do fstab
-      ansible.builtin.slurp:
-        src: /etc/fstab
-      register: fstab_content
+    - name: Obter pontos de montagem do fstab
+      ansible.builtin.command: awk '$1!~/^#/ && $1!~/^none/ {print $2}' /etc/fstab
+      register: fstab_points
 
-    - name: Converter conteúdo do fstab para texto
-      ansible.builtin.set_fact:
-        fstab_text: "{{ fstab_content['content'] | b64decode }}"
-
-    - name: Encontrar pontos de montagem não listados no fstab
-      ansible.builtin.set_fact:
-        unlisted_mount_points: "{{ findmnt_output.stdout_lines | map('regex_replace', ' .*', '') | difference(fstab_text | regex_findall('/dev/[\\w/]+')) }}"
+    - name: Comparar pontos de montagem com fstab
+      ansible.builtin.command: echo "{{ item }}"
+      loop: "{{ mounted_points.stdout_lines }}"
+      when: item not in fstab_points.stdout_lines
+      register: unlisted_mount_points
 
     - name: Exibir pontos de montagem não listados no fstab
       ansible.builtin.debug:
-        var: unlisted_mount_points
+        var: unlisted_mount_points.results
