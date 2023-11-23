@@ -1,37 +1,15 @@
 ---
 - name: Seleção de hosts e ajustes de inventarios
-  hosts: "{{ updatefix_inventory_group }}"
+  hosts: localhost
   vars_files:
     - vars/vars.yml
   gather_facts: True
-  become: yes
   tasks:
 
     - name: Exibir variáveis dos hosts
       debug:
         msg: "Host: {{ inventory_hostname }}, host_exists_in_inventory: {{ hostvars[inventory_hostname]['host_exists_in_inventory'] | default('FAIL') }}, hosts_reachable: {{ hostvars[inventory_hostname]['hosts_reachable'] | default('FAIL') }}, ready_for_update: {{ hostvars[inventory_hostname]['ready_for_update'] | default('FAIL') }}"
 
-    - name: Coletar fatos locais
-      ansible.builtin.setup:
-        filter: ansible_local
-
-    - name: Converter 'top_processes' string para list
-      set_fact:
-        top_processes_list: "{{ ansible_local.proccess_status_check.localfacts.top_processes | from_yaml }}"
-
-    - name: Converter 'top_non_root_processes' string para list
-      set_fact:
-        top_non_root_processes_list: "{{ ansible_local.proccess_status_check.localfacts.top_non_root_processes | from_yaml }}"
-
-    - name: Add hosts with status OK Updatefix version {{ updatefix_version }} to inventory UPDATEFIX
-      ansible.controller.group:
-        name: "{{ updatefix_inventory_group_ok }}"
-        preserve_existing_hosts: True
-        inventory: "{{ updatefix_inventory }}"
-        hosts: "{{ item }}"
-      loop: "{{ groups[updatefix_inventory_group] }}"
-      when:
-        - hostvars[item]['host_exists_in_inventory'] == 'OK'
-        - hostvars[item]['hosts_reachable'] == 'OK'
-      delegate_to: localhost
-      run_once: true
+    - name: Exibir variáveis dos hosts
+      debug:
+        msg: test!!!!

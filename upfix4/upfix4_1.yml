@@ -56,7 +56,7 @@
 
 #ansible_local.services_status_check.localfacts.ready_for_update == OK
 
-    - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }}
+    - name: Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }} 
       ansible.controller.host:
         name: "{{ item }}"
         inventory: "{{ updatefix_inventory }}"
