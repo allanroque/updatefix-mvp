@@ -48,13 +48,13 @@
 
     - name: Definir variável de status do ponto de montagem
       set_fact:
-        mount_points_check: "{{ 'OK' if unlisted_mount_points | length == 0 else 'WARNING' }}"
+        mount_points_check: "{{ 'OK' if mount_points_stdout | length == 0 else 'WARNING' }}"
 
     - name: Exibir pontos de montagem não listados no fstab
       debug:
         msg: "Ponto de montagem não listado no fstab: {{ item }}"
-      loop: "{{ unlisted_mount_points }}"
-      when: unlisted_mount_points | length > 0
+      loop: "{{ mount_points_stdout }}"
+      when: mount_points_stdout | length > 0
 
 ####Configuracao de facts
     - name: Criar arquivos de facts para mount_points_check
