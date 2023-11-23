@@ -3,7 +3,7 @@
   hosts: "{{ updatefix_inventory_group }}"
   vars_files:
     - vars/vars.yml
-  gather_facts: True
+  gather_facts: False
   tasks:
 
     - name: Exibir variáveis dos hosts
