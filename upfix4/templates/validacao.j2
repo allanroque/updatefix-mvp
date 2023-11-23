@@ -40,7 +40,7 @@ Subscrição: ...................... {{ ansible_local.subscription_check.localfa
 Repositórios: .................... {{ ansible_local.repository_check.localfacts.repository_check }}
 Pacotes duplicados: .............. {{ ansible_local.rpm_check.localfacts.rpm_check }}
 Processos zumbis: ................ {{ ansible_local.zombie_process_check.localfacts.zombie_process_check }}
-Servicos e processos zabbix: ..... {{ ansible_local.zombie_process_check.localfacts.zabbix_service }}
+Servicos e processos zabbix: ..... {{ ansible_local.services_status_check.localfacts.zabbix_service }}
 Servicos e processos bigfix: ..... PENDETE DE AUTOMACAO
 Validacao de mount-points: ....... {{ ansible_local.mount_points_check.localfacts.mount_points_check }}
 Validar autenticacao LDAP: ....... PENDETE DE AUTOMACAO
