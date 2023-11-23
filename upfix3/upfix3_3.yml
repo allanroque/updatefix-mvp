@@ -15,19 +15,14 @@
 
 #necessário pkgs util-linux-core findmnt
 
-    - name: Definir mount_points_check com base no resultado
+    - name: Definir mount_points_fstab_check com base no resultado
       set_fact:
-        mount_points_check: "{{ 'OK' if findmnt_result.rc == 0 else 'FAIL' }}"
-        mount_points_stdout: "{{ findmnt_result.stdout }}"
+        mount_points_fstab_check: "{{ 'OK' if findmnt_result.rc == 0 else 'FAIL' }}"
+        mount_points_fstab_stdout: "{{ findmnt_result.stdout }}"
 
     - name: Exibir o resultado da verificação
       debug:
-        var: mount_points_check
-
-    - name: Criar arquivos de facts para mount_points_check
-      template:
-        src: mount_points_check.j2
-        dest: "/etc/ansible/facts.d/mount_points_check.fact"
+        var: mount_points_fstab_check
 
 #ajustar uma variavel fstab e outra mountpoint 
 
@@ -36,7 +31,7 @@
 ######
     - name: Coletar pontos de montagem atuais
       command: findmnt -nr --real --nofsroot --noheadings --output TARGET
-      register: pontos_montagem_atuais
+      register: current_mount_points
 
     - name: Ler /etc/fstab
       slurp:
@@ -49,10 +44,20 @@
 
     - name: Processar e comparar pontos de montagem
       set_fact:
-        pontos_nao_listados: "{{ pontos_montagem_atuais.stdout_lines | difference(fstab_decoded | map('regex_replace', '^(\\S+)\\s+(\\S+).*$', '\\2') | list ) }}"
+        unlisted_mount_points: "{{ current_mount_points.stdout_lines | difference(fstab_decoded | map('regex_replace', '^(\\S+)\\s+(\\S+).*$', '\\2') | list ) }}"
+
+    - name: Definir variável de status do ponto de montagem
+      set_fact:
+        mount_point_status: "{{ 'OK' if unlisted_mount_points | length == 0 else 'WARNING' }}"
 
     - name: Exibir pontos de montagem não listados no fstab
       debug:
         msg: "Ponto de montagem não listado no fstab: {{ item }}"
-      loop: "{{ pontos_nao_listados }}"
-      when: pontos_nao_listados | length > 0
+      loop: "{{ unlisted_mount_points }}"
+      when: unlisted_mount_points | length > 0
+
+####Configuracao de facts
+    - name: Criar arquivos de facts para mount_points_check
+      template:
+        src: mount_points_check.j2
+        dest: "/etc/ansible/facts.d/mount_points_check.fact"
