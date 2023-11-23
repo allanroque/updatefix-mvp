@@ -1,6 +1,6 @@
 ---
 - name: Seleção de hosts e ajustes de inventarios
-  hosts: localhost
+  hosts: "{{ updatefix_inventory_group }}"
   vars_files:
     - vars/vars.yml
   gather_facts: True
