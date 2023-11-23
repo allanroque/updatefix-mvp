@@ -30,7 +30,7 @@
 ########## validar dispositivos montados que não fazem parte do fstab
 ######
     - name: Coletar pontos de montagem atuais
-      command: findmnt -nr --real --nofsroot --noheadings --output TARGET
+      command: findmnt -nr --nofsroot --noheadings --output TARGET | grep -vE '^/(proc|sys|dev|run)'
       register: current_mount_points
 
     - name: Ler /etc/fstab
