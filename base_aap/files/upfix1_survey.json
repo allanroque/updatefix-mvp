@@ -50,7 +50,7 @@
                 "yes",
                 "no"
             ],
-            "default": "no",
+            "default": "yes",
             "required": false,
             "variable": "reboot",
             "new_question": false,
