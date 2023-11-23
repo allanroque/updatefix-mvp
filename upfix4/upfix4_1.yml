@@ -40,8 +40,11 @@
         ansible_local.rpm_check.localfacts.rpm_check == "FAIL" or
         ansible_local.zombie_process_check.localfacts.zombie_process_check == "FAIL" or
         ansible_local.uptime_reboot_check.localfacts.uptime_reboot_check == "FAIL" or
-#        ansible_local.services_status_check.localfacts.zabbix_service == "FAIL" or #ambiente de testes esta sem o zabbix
-        ansible_local.mount_points_fstab_check.localfacts.mount_points_fstab_check == "FAIL"
+        ansible_local.mount_points_fstab_check.localfacts.mount_points_check == "FAIL"
+
+
+#add, estamos removendo nesse testes pois o servidor não possui zabbix instalado.  ansible_local.services_status_check.localfacts.zabbix_service == "FAIL" 
+
 
     - name: Definir ready_for_update como OK se todas as verificações passarem
       set_fact:
