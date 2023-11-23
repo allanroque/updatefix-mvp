@@ -38,22 +38,6 @@ Add o ansible_connection: local no inventário do AC host
         - INV-UPDATEFIX_0001_FAIL
         - INV-UPDATEFIX_0001_OK
 
-#    - name: Exibir pontos de montagem "/"
-#      debug:
-#        var: ansible_mounts
-#      when: "'/' in ansible_mounts|map(attribute='mount')|list"
-
-#    - name: Exibir pontos de montagem "/var"
-#      debug:
-#        var: ansible_mounts
-#      when: "'/var' in ansible_mounts|map(attribute='mount')|list"
-
-#    - name: Exibir pontos de montagem "/boot"
-#      debug:
-#        var: ansible_mounts
-#      when: "'/boot' in ansible_mounts|map(attribute='mount')|list"
-
-
 verificar:
 
 SSH password: 
@@ -62,8 +46,6 @@ SSH password:
 
 validar servicos: zabbix, besclient, nsr, urbancode
 - validar ldap
-
-validar ponto de montagem que não existe no fstab
 
 #local_facts
 local_facts:

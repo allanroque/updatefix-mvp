@@ -74,3 +74,44 @@
       template:
         src: validacao.j2
         dest: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/validacao.log
+
+    - name: Listar servidores prontos para atualização
+      debug:
+        msg: "Servidor {{ inventory_hostname }} está pronto para atualização."
+      when: hostvars[inventory_hostname]['ready_for_update'] == "OK"
+
+    - name: Exibir motivos de falha
+      debug:
+        msg: >
+          Servidor {{ inventory_hostname }} não está pronto para atualização. Motivos:
+          {% if ansible_local.root_space_check.localfacts.root_space_check == "FAIL" %}
+          - Espaço insuficiente no root
+          {% endif %}
+          {% if ansible_local.boot_space_check.localfacts.boot_space_check == "FAIL" %}
+          - Espaço insuficiente no boot
+          {% endif %}
+          {% if ansible_local.root_readonly_check.localfacts.root_readonly_check == "FAIL" %}
+          - Root em modo somente leitura
+          {% endif %}
+          {% if ansible_local.boot_readonly_check.localfacts.boot_readonly_check == "FAIL" %}
+          - Boot em modo somente leitura
+          {% endif %}
+          {% if ansible_local.subscription_check.localfacts.subscription_check == "FAIL" %}
+          - Falha na verificação de assinatura
+          {% endif %}
+          {% if ansible_local.repository_check.localfacts.repository_check == "FAIL" %}
+          - Falha na verificação do repositório
+          {% endif %}
+          {% if ansible_local.rpm_check.localfacts.rpm_check == "FAIL" %}
+          - Falha na verificação do RPM
+          {% endif %}
+          {% if ansible_local.zombie_process_check.localfacts.zombie_process_check == "FAIL" %}
+          - Existem processos zombie
+          {% endif %}
+          {% if ansible_local.uptime_reboot_check.localfacts.uptime_reboot_check == "FAIL" %}
+          - Necessidade de reinicialização após longo uptime
+          {% endif %}
+          {% if ansible_local.mount_points_check.localfacts.mount_points_fstab_check == "FAIL" %}
+          - Inconsistências nos pontos de montagem do fstab
+          {% endif %}
+      when: hostvars[inventory_hostname]['ready_for_update'] == "FAIL"
