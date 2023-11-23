@@ -42,20 +42,29 @@ Pacotes duplicados: .............. {{ ansible_local.rpm_check.localfacts.rpm_che
 Processos zumbis: ................ {{ ansible_local.zombie_process_check.localfacts.zombie_process_check }}
 Servicos e processos zabbix: ..... {{ ansible_local.services_status_check.localfacts.zabbix_service }}
 Servicos e processos bigfix: ..... PENDETE DE AUTOMACAO
-MountPoint listados no fstab: .... {{ ansible_local.mount_points_fstab_check.localfacts.mount_points_fstab_check }}
-MountPoint não listado no fstab: . {{ mount_points_check }}
+MountPoint listados no fstab: .... {{ ansible_local.mount_points_check.localfacts.mount_points_fstab_check }}
+MountPoint não listado no fstab: . {{ ansible_local.mount_points_check.localfacts.mount_points_check }}
 Validar autenticacao LDAP: ....... PENDETE DE AUTOMACAO
 Uptime/Reboot: ................... {{ ansible_local.uptime_reboot_check.localfacts.uptime_reboot_check }}
 Host possui inventario: .......... {{ host_exists_in_inventory }}
 Acessivel via Ansible: ........... {{ hosts_reachable }}
 
------------------------------
+*****************************
 Servido Pronto para update: ...... {{ ready_for_update }}
------------------------------
+*****************************
 
-*****************************
+-----------------------------
+PONTOS DE MONTAGEM
+-----------------------------
+Logs relacionados ao arquivo de /etc/fstab, esses logs pondem impactar no processo de update em especial refletindo em problemas na volta do servidor apos o reboot
+{{ ansible_local.mount_points_check.localfacts.mount_points_fstab_stdout }}
+
+Logs relacionados aos pontos de montagem ativos que NÃO estão especificados no arquivo /etc/fstab.
+{{ ansible_local.mount_points_check.localfacts.mount_points_stdout }}
+
+-----------------------------
 SERVICOS LISTADOS ANTES DO UPDATE
-*****************************
+-----------------------------
 ATIVOS E ENABLED
 {% for service in active_enabled_services_list %}
     "{{ service }}",

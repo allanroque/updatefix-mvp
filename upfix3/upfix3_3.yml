@@ -44,11 +44,11 @@
 
     - name: Processar e comparar pontos de montagem
       set_fact:
-        unlisted_mount_points: "{{ current_mount_points.stdout_lines | difference(fstab_decoded | map('regex_replace', '^(\\S+)\\s+(\\S+).*$', '\\2') | list ) }}"
+        mount_points_stdout: "{{ current_mount_points.stdout_lines | difference(fstab_decoded | map('regex_replace', '^(\\S+)\\s+(\\S+).*$', '\\2') | list ) }}"
 
     - name: Definir variável de status do ponto de montagem
       set_fact:
-        mount_point_status: "{{ 'OK' if unlisted_mount_points | length == 0 else 'WARNING' }}"
+        mount_points_check: "{{ 'OK' if unlisted_mount_points | length == 0 else 'WARNING' }}"
 
     - name: Exibir pontos de montagem não listados no fstab
       debug:
