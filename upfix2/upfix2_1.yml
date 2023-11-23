@@ -34,4 +34,3 @@
           hosts_reachable: "OK"
       when: ping_result.ping is defined and ping_result.ping == "pong"
       delegate_to: localhost
-      run_once: true
