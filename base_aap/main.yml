@@ -303,7 +303,7 @@
 ###############################
 
     - name: Create a workflow job template
-      awx.awx.workflow_job_template:
+      ansible.controller.workflow_job_template:
         name: UPDATEFIX - WORKFLOW
         description: Workflow UPDATEFIX
         organization: "{{ ac_organization }}"
