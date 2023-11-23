@@ -7,6 +7,10 @@
   become: yes
   tasks:
 
+    - name: Exibir variáveis dos hosts
+      debug:
+        msg: "Host: {{ inventory_hostname }}, host_exists_in_inventory: {{ hostvars[inventory_hostname]['host_exists_in_inventory'] | default('FAIL') }}, hosts_reachable: {{ hostvars[inventory_hostname]['hosts_reachable'] | default('FAIL') }}, ready_for_update: {{ hostvars[inventory_hostname]['ready_for_update'] | default('FAIL') }}"
+
     - name: Coletar fatos locais
       ansible.builtin.setup:
         filter: ansible_local
