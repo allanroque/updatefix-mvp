@@ -297,3 +297,16 @@
         state: "present"
         survey_enabled: yes
         survey_spec: "{{ lookup('file', 'upfix_version_survey.json') }}"
+
+##############################
+# WORKFLOW
+###############################
+
+    - name: Create a workflow job template
+      awx.awx.workflow_job_template:
+        name: UPDATEFIX - WORKFLOW
+        description: Workflow UPDATEFIX
+        organization: "{{ ac_organization }}"
+        state: "present"
+        survey_enabled: yes
+        survey_spec: "{{ lookup('file', 'upfix_version_survey.json') }}"

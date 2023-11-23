@@ -85,19 +85,19 @@
         msg: >
           Servidor {{ inventory_hostname }} não está pronto para atualização. Motivos:
           {% if ansible_local.root_space_check.localfacts.root_space_check == "FAIL" %}
-          - Espaço insuficiente no root
+          - Espaço insuficiente no /root
           {% endif %}
           {% if ansible_local.boot_space_check.localfacts.boot_space_check == "FAIL" %}
-          - Espaço insuficiente no boot
+          - Espaço insuficiente no /boot
           {% endif %}
           {% if ansible_local.root_readonly_check.localfacts.root_readonly_check == "FAIL" %}
-          - Root em modo somente leitura
+          - /root em modo somente leitura
           {% endif %}
           {% if ansible_local.boot_readonly_check.localfacts.boot_readonly_check == "FAIL" %}
-          - Boot em modo somente leitura
+          - /boot em modo somente leitura
           {% endif %}
           {% if ansible_local.subscription_check.localfacts.subscription_check == "FAIL" %}
-          - Falha na verificação de assinatura
+          - Falha na verificação de subscrição
           {% endif %}
           {% if ansible_local.repository_check.localfacts.repository_check == "FAIL" %}
           - Falha na verificação do repositório
@@ -109,7 +109,7 @@
           - Existem processos zombie
           {% endif %}
           {% if ansible_local.uptime_reboot_check.localfacts.uptime_reboot_check == "FAIL" %}
-          - Necessidade de reinicialização após longo uptime
+          - Servidor esta mais de um ano sem reboot
           {% endif %}
           {% if ansible_local.mount_points_check.localfacts.mount_points_fstab_check == "FAIL" %}
           - Inconsistências nos pontos de montagem do fstab
