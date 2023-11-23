@@ -28,23 +28,31 @@
       template:
         src: mount_points_check.j2
         dest: "/etc/ansible/facts.d/mount_points_check.fact"
+
+#ajustar uma variavel fstab e outra mountpoint 
+
 #######
 ########## validar dispositivos montados que não fazem parte do fstab
 ######
-    - name: Obter pontos de montagem atuais
-      ansible.builtin.command: findmnt --real --nofsroot --noheadings --output TARGET
-      register: mounted_points
+   - name: Coletar pontos de montagem atuais
+      command: findmnt -nr --real --nofsroot --noheadings --output TARGET
+      register: pontos_montagem_atuais
 
-    - name: Obter pontos de montagem do fstab
-      ansible.builtin.command: awk '$1!~/^#/ && $1!~/^none/ {print $2}' /etc/fstab
-      register: fstab_points
+    - name: Ler /etc/fstab
+      slurp:
+        src: /etc/fstab
+      register: fstab_content
 
-    - name: Comparar pontos de montagem com fstab
-      ansible.builtin.command: echo "{{ item }}"
-      loop: "{{ mounted_points.stdout_lines }}"
-      when: item not in fstab_points.stdout_lines
-      register: unlisted_mount_points
+    - name: Decodificar conteúdo do fstab
+      set_fact:
+        fstab_decoded: "{{ (fstab_content['content'] | b64decode).split('\n') }}"
+
+    - name: Processar e comparar pontos de montagem
+      set_fact:
+        pontos_nao_listados: "{{ pontos_montagem_atuais.stdout_lines | difference(fstab_decoded | map('regex_replace', '^(\\S+)\\s+(\\S+).*$', '\\2') | list ) }}"
 
     - name: Exibir pontos de montagem não listados no fstab
-      ansible.builtin.debug:
-        var: unlisted_mount_points.results
+      debug:
+        msg: "Ponto de montagem não listado no fstab: {{ item }}"
+      loop: "{{ pontos_nao_listados }}"
+      when: pontos_nao_listados | length > 0
