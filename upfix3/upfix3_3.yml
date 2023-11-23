@@ -25,12 +25,14 @@
         var: mount_points_fstab_check
 
 #ajustar uma variavel fstab e outra mountpoint 
+#findmnt -nr --nofsroot --noheadings --output TARGET | grep -vE '^/(proc|sys|dev|run)'
+#findmnt -nr --real --nofsroot --noheadings --output TARGET
 
 #######
 ########## validar dispositivos montados que não fazem parte do fstab
 ######
     - name: Coletar pontos de montagem atuais
-      command: findmnt -nr --nofsroot --noheadings --output TARGET | grep -vE '^/(proc|sys|dev|run)'
+      shell: findmnt -nr --nofsroot --noheadings --output TARGET | grep -vE '^/(proc|sys|dev|run)'
       register: current_mount_points
 
     - name: Ler /etc/fstab
