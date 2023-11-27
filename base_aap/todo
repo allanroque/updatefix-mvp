@@ -1,5 +1,8 @@
 Add o ansible_connection: local no inventário do AC host
 
+logs pos update
+
+
 ---
 - name: Ler variáveis de grupos específicos
   hosts: localhost
