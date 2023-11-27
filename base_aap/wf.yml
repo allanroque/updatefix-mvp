@@ -46,7 +46,7 @@
         success_nodes:
           - UPFIX 2_1 - ACESSO
 
-   - name: Create a workflow job template 4
+    - name: Create a workflow job template 4
       ansible.controller.workflow_job_template_node:
         identifier: UPFIX 2_3 - LOGS
         workflow: UPDATEFIX - WORKFLOW
