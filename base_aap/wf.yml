@@ -55,9 +55,9 @@
         success_nodes:
           - UPFIX 6_1 - REBOOT TESTE
       loop:
-          -	UPFIX 5_1 - BACKUP
-          - UPFIX 5_2 - SNAPSHOT
-          - UPFIX 5_3 - MANUTENÇÃO
+        -	UPFIX 5_1 - BACKUP
+        - UPFIX 5_2 - SNAPSHOT
+        - UPFIX 5_3 - MANUTENÇÃO
 
     - name: Create a workflow job template 7
       ansible.controller.workflow_job_template_node:
