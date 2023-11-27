@@ -41,7 +41,7 @@
         workflow: UPDATEFIX - WORKFLOW
         unified_job_template: UPFIX 1 - PREPARAÇÃO
         organization: "{{ ac_organization }}"
-          success_nodes:
+        success_nodes:
           - UPFIX 2_1 - ACESSO
 
     - name: Create a workflow job template 3
