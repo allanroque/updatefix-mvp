@@ -22,12 +22,41 @@
         survey_spec: "{{ lookup('file', 'upfix1_survey.json') }}"
 
 
+   - name: Create a workflow job template 4
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 2_3 - LOGS
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 2_3 - LOGS
+        organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 3_1 - FILESYSTEM SPACE
+          - UPFIX 3_2 - FILESYSTEM READONLY
+          - UPFIX 3_3 - FILESYSTEM MOUNT POINT
+          - UPFIX 3_4 - SUBSCRIPTION MANAGER
+          - UPFIX 3_5 - REPOSITORY
+          - UPFIX 3_6 - RPM DUPES
+          - UPFIX 3_7 - ZOMBIE
+          - UPFIX 3_8 - UPTIME
+          - UPFIX 3_9 - SERVICES
+          - UPFIX 3_10 - PROCESS
+
+    - name: Create a workflow job template 3
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 2_2 - INVENTORY
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 2_2 - INVENTORY
+        organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 2_3 - LOGS
+
     - name: Create a workflow job template 2
       ansible.controller.workflow_job_template_node:
         identifier: UPFIX 2_1 - ACESSO
         workflow: UPDATEFIX - WORKFLOW
         unified_job_template: UPFIX 2_1 - ACESSO
         organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 2_2 - INVENTORY
 
     - name: Create a workflow job template 1
       ansible.controller.workflow_job_template_node:
