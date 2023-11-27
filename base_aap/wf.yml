@@ -112,9 +112,9 @@
 
     - name: Create a workflow job template 4
       ansible.controller.workflow_job_template_node:
-        identifier: UPFIX 2_3 - LOGS
+        identifier: "{{ item }}"
         workflow: UPDATEFIX - WORKFLOW
-        unified_job_template: UPFIX 2_3 - LOGS
+        unified_job_template: "{{ item }}"
         organization: "{{ ac_organization }}"
         success_nodes:
           - UPFIX 2_2 - INVENTORY
