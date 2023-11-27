@@ -21,6 +21,13 @@
         survey_enabled: yes
         survey_spec: "{{ lookup('file', 'upfix1_survey.json') }}"
 
+    - name: Create a workflow job template 1
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 1 - PREPARAÇÃO
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 1 - PREPARAÇÃO
+        organization: "{{ ac_organization }}"
+
     - name: Create a workflow job template 2
       ansible.controller.workflow_job_template_node:
         identifier: UPFIX 2_1 - ACESSO
