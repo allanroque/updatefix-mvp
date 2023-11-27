@@ -21,14 +21,14 @@
         survey_enabled: yes
         survey_spec: "{{ lookup('file', 'upfix1_survey.json') }}"
 
-    - name: Create a workflow job template 12
+    - name: Create a workflow job template 11
       ansible.controller.workflow_job_template_node:
         identifier: UPFIX 6_3 - REBOOT POS UPDATE
         workflow: UPDATEFIX - WORKFLOW
         unified_job_template: UPFIX 6_3 - REBOOT POS UPDATE
         organization: "{{ ac_organization }}"
 
-    - name: Create a workflow job template 11
+    - name: Create a workflow job template 10
       ansible.controller.workflow_job_template_node:
         identifier: UPFIX 6_2 - UPDATE
         workflow: UPDATEFIX - WORKFLOW
@@ -37,7 +37,7 @@
         success_nodes:
           - UPFIX 6_3 - REBOOT POS UPDATE
 
-    - name: Create a workflow job template 10
+    - name: Create a workflow job template 9
       ansible.controller.workflow_job_template_node:
         identifier: UPFIX 6_1 - REBOOT TESTE
         workflow: UPDATEFIX - WORKFLOW
@@ -46,7 +46,7 @@
         success_nodes:
           - UPFIX 6_2 - UPDATE
 
-    - name: Create a workflow job template 9
+    - name: Create a workflow job template 8
       ansible.controller.workflow_job_template_node:
         identifier: "{{ item }}"
         workflow: UPDATEFIX - WORKFLOW
@@ -59,23 +59,16 @@
           - UPFIX 5_2 - SNAPSHOT
           - UPFIX 5_3 - MANUTENÇÃO
 
-    - name: Create a workflow job template 8
-      ansible.controller.workflow_job_template_node:
-        identifier: UPFIX 5_1 - BACKUP
-        workflow: UPDATEFIX - WORKFLOW
-        unified_job_template: UPFIX 5_1 - BACKUP
-        organization: "{{ ac_organization }}"
-        success_nodes:
-          -	UPFIX 5_1 - BACKUP
-          - UPFIX 5_2 - SNAPSHOT
-          - UPFIX 5_3 - MANUTENÇÃO       
-
     - name: Create a workflow job template 7
       ansible.controller.workflow_job_template_node:
         identifier: UPFIX 4_2 - SELECT HOSTS
         workflow: UPDATEFIX - WORKFLOW
         unified_job_template: UPFIX 4_2 - SELECT HOSTS
         organization: "{{ ac_organization }}"
+        success_nodes:
+          -	UPFIX 5_1 - BACKUP
+          - UPFIX 5_2 - SNAPSHOT
+          - UPFIX 5_3 - MANUTENÇÃO  
 
     - name: Create a workflow job template 6
       ansible.controller.workflow_job_template_node:
