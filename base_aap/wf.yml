@@ -66,7 +66,7 @@
         unified_job_template: UPFIX 4_2 - SELECT HOSTS
         organization: "{{ ac_organization }}"
         success_nodes:
-          -	UPFIX 5_1 - BACKUP
+          - UPFIX 5_1 - BACKUP
           - UPFIX 5_2 - SNAPSHOT
           - UPFIX 5_3 - MANUTENÇÃO
 
