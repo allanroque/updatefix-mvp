@@ -12,7 +12,7 @@
   gather_facts: False
   tasks:
 
-    - name: Create a workflow job template
+    - name: Create a workflow job template 
       ansible.controller.workflow_job_template:
         name: UPDATEFIX - WORKFLOW
         description: Workflow UPDATEFIX
@@ -68,7 +68,7 @@
         success_nodes:
           -	UPFIX 5_1 - BACKUP
           - UPFIX 5_2 - SNAPSHOT
-          - UPFIX 5_3 - MANUTENÇÃO  
+          - UPFIX 5_3 - MANUTENÇÃO
 
     - name: Create a workflow job template 6
       ansible.controller.workflow_job_template_node:
