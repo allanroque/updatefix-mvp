@@ -1,13 +1,26 @@
 ---
-- name: RoadMap
+- name: Primeiro de Reboot de Teste
   hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files:
     - vars/vars.yml
   gather_facts: True
   become: yes
   tasks:
+    - name: Reboot do Servidor
+      ansible.builtin.reboot:
+        reboot_timeout: 600
+      register: reboot_result
 
-    - name: Test de reboot
-      debug:
-        msg: "Test de reboot"
-      
+    - name: Esperar o Servidor Voltar
+      ansible.builtin.wait_for_connection:
+        delay: 60
+        timeout: 300
+
+    - name: Definir o Status do Reboot
+      set_fact:
+        first_reboot_status_check: "{{ 'OK' if reboot_result is changed else 'FAIL' }}"
+
+    - name: Criar arquivo de facts para reboot_status_check
+      template:
+        src: first_reboot_status_check.j2
+        dest: "/etc/ansible/facts.d/first_reboot_status_check.fact"

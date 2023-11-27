@@ -1,12 +1,28 @@
 ---
-- name: RoadMap
+- name: RoadMap de Atualização
   hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files:
     - vars/vars.yml
   gather_facts: True
   become: yes
   tasks:
-      
-    - name: Update
-      debug:
-        msg: "Update"
+    - block:
+        - name: Update all packages
+          yum:
+            name: '*'
+            state: latest
+          when: update_type == 'all'
+          notify: Log Success Update
+
+      rescue:
+        - name: adicionar mensagem de erro de log
+          lineinfile:
+            path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}.log
+            line: "################# O servidor sofreu um erro durante o processo de atualização ou reboot ##########################"
+
+  handlers:
+    - name: Log Success Update
+      lineinfile:
+        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}.log
+        line: "################# Servidor foi atualizado com sucesso!!! ##########################"
+

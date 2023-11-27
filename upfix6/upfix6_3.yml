@@ -1,12 +1,26 @@
 ---
-- name: RoadMap
+- name: Segundo Reboot de Teste
   hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files:
     - vars/vars.yml
   gather_facts: True
   become: yes
   tasks:
-      
-    - name: reboot pos update
-      debug:
-        msg: "Reboot pos update"
+    - name: Reboot do Servidor
+      ansible.builtin.reboot:
+        reboot_timeout: 600
+      register: reboot_result
+
+    - name: Esperar o Servidor Voltar
+      ansible.builtin.wait_for_connection:
+        delay: 60
+        timeout: 300
+
+    - name: Definir o Status do Segundo Reboot
+      set_fact:
+        second_reboot_status_check: "{{ 'OK' if reboot_result is changed else 'FAIL' }}"
+
+    - name: Criar arquivo de facts para second_reboot_status_check
+      template:
+        src: second_reboot_status_check.j2
+        dest: "/etc/ansible/facts.d/second_reboot_status_check.fact"
