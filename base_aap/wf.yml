@@ -117,6 +117,7 @@
         unified_job_template: "{{ item }}"
         organization: "{{ ac_organization }}"
         success_nodes:
+          "{{ item }}"
       loop:
         - UPFIX 3_1 - FILESYSTEM SPACE
         - UPFIX 3_2 - FILESYSTEM READONLY
