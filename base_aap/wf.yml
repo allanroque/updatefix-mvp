@@ -35,6 +35,13 @@
         unified_job_template: UPFIX 2_1 - ACESSO
         organization: "{{ ac_organization }}"
 
+    - name: Create a workflow job template 3
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 2_2 - INVENTORY
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 2_2 - INVENTORY
+        organization: "{{ ac_organization }}"
+
     - name: Create a workflow job template 1
       ansible.controller.workflow_job_template_node:
         identifier: UPFIX 1 - PREPARAÇÃO
