@@ -34,5 +34,3 @@
         workflow: UPDATEFIX - WORKFLOW
         unified_job_template: UPFIX 2_1 - ACESSO
         organization: "{{ ac_organization }}"
-        success_nodes:
-          - UPFIX 2_1 - ACESSO
