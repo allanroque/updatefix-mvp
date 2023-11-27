@@ -27,13 +27,12 @@
         workflow: UPDATEFIX - WORKFLOW
         unified_job_template: UPFIX 1 - PREPARAÇÃO
         organization: "{{ ac_organization }}"
- 
+         success_nodes:
+          - UPFIX 2_1 - ACESSO
+
     - name: Create a workflow job template 2
       ansible.controller.workflow_job_template_node:
         identifier: UPFIX 2_1 - ACESSO
         workflow: UPDATEFIX - WORKFLOW
         unified_job_template: UPFIX 2_1 - ACESSO
         organization: "{{ ac_organization }}"
-        success_nodes:
-          - UPFIX 1 - PREPARAÇÃO
-
