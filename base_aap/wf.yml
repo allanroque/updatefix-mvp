@@ -108,7 +108,7 @@
         unified_job_template: UPFIX 2_2 - INVENTORY
         organization: "{{ ac_organization }}"
         success_nodes:
-          - UPFIX 2_3 - INVENTORY
+          - UPFIX 2_3 - LOGS
 
     - name: Create a workflow job template 4
       ansible.controller.workflow_job_template_node:
@@ -118,51 +118,3 @@
         organization: "{{ ac_organization }}"
         success_nodes:
           - UPFIX 2_2 - INVENTORY
-        
-    - name: Create a workflow job template 5
-      ansible.controller.workflow_job_template_node:
-        identifier: "{{ item }}"
-        workflow: UPDATEFIX - WORKFLOW
-        unified_job_template: "{{ item }}"
-        organization: "{{ ac_organization }}"
-        success_nodes:
-          - UPFIX 2_3 - LOGS
-      loop:
-        - UPFIX 3_1 - FILESYSTEM SPACE
-        - UPFIX 3_2 - FILESYSTEM READONLY
-        - UPFIX 3_3 - FILESYSTEM MOUNT POINT
-        - UPFIX 3_4 - SUBSCRIPTION MANAGER
-        - UPFIX 3_5 - REPOSITORY
-        - UPFIX 3_6 - RPM DUPES
-        - UPFIX 3_7 - ZOMBIE
-        - UPFIX 3_8 - UPTIME
-        - UPFIX 3_9 - SERVICES
-        - UPFIX 3_10 - PROCESS
-
-    - name: Create a workflow job template 5
-      ansible.controller.workflow_job_template_node:
-        identifier: UPFIX 4_1 - REPORT
-        workflow: UPDATEFIX - WORKFLOW
-        unified_job_template: UPFIX 4_1 - REPORT
-        organization: "{{ ac_organization }}"
-        success_nodes:
-          - UPFIX 3_1 - FILESYSTEM SPACE
-          - UPFIX 3_2 - FILESYSTEM READONLY
-          - UPFIX 3_3 - FILESYSTEM MOUNT POINT
-          - UPFIX 3_4 - SUBSCRIPTION MANAGER
-          - UPFIX 3_5 - REPOSITORY
-          - UPFIX 3_6 - RPM DUPES
-          - UPFIX 3_7 - ZOMBIE
-          - UPFIX 3_8 - UPTIME
-          - UPFIX 3_9 - SERVICES
-          - UPFIX 3_10 - PROCESS
-
-    
-    - name: Create a workflow job template 6
-      ansible.controller.workflow_job_template_node:
-        identifier: UPFIX 4_2 - SELECT HOSTS
-        workflow: UPDATEFIX - WORKFLOW
-        unified_job_template: UPFIX 4_2 - SELECT HOSTS
-        organization: "{{ ac_organization }}"
-        success_nodes:
-          - UPFIX 4_1 - REPOR
