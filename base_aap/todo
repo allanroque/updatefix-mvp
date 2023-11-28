@@ -7,7 +7,7 @@ variaveis de reboot reboot: yes - OK
 relatório reboot - OK
 relatório pos reboot 
 integração com ITSM
-
+https://www.ansible.com/blog/aix-patch-management-with-ansible
 
 ---
 - name: Ler variáveis de grupos específicos

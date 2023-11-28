@@ -7,6 +7,10 @@
   become: yes
   tasks:
 
+    - name: Aguardar por 15 segundos
+      pause:
+        seconds: 15
+
     - name: Coletar fatos locais
       ansible.builtin.setup:
         filter: ansible_local
