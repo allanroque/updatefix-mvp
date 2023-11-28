@@ -6,6 +6,11 @@
   gather_facts: True
   become: yes
   tasks:
+
+    - name: Debug reboot variable
+      debug:
+        var: reboot
+
     - name: Reboot do Servidor
       ansible.builtin.reboot:
         reboot_timeout: 600
@@ -42,7 +47,6 @@
           ################# PRIMEIRO REBOOT ##########################"
           {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: procedimento de reboot realizado!
           {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}:  inicio do processo de reboot
-
       when: reboot == 'yes'
 
     - name: adicionar mensagem de log sobre não realização de reboot
@@ -52,7 +56,6 @@
           ################# PRIMEIRO REBOOT ##########################"
           {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: durante a execução da automação foi selecionada a opção de não realizar o reboot do servidor
           {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}:  Caso opte pelo processo de reboot realize de for manual após a automação de update
-
       when: reboot == 'no'
 
     - name: Gerar arquivo de log para primeiro reboot
