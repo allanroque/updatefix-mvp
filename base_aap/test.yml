@@ -1,5 +1,5 @@
 - name: Coletar informações específicas do host
-  hosts: all
+  hosts: localhost
   tasks:
     - name: Definir variáveis com informações específicas do host
       set_fact:
