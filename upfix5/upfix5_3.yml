@@ -1,3 +1,4 @@
+---
 - name: Gerenciar Manutenção no Zabbix
   hosts: "{{ seu_grupo_de_hosts }}"
   vars_files:
