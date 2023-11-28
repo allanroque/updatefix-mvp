@@ -1,0 +1,17 @@
+- name: Coletar informações específicas do host
+  hosts: all
+  tasks:
+    - name: Definir variáveis com informações específicas do host
+      set_fact:
+        host_info: {
+          "ID do Host": "{{ foreman_id }}",
+          "IPv4": "{{ foreman_ipv4 }}",
+          "Localização": "{{ foreman_location }}",
+          "Organização": "{{ foreman_organization }}",
+          "Sistema Operacional": "{{ foreman_facts['os::name'] }} {{ foreman_facts['os::release::full'] }}",
+          "SELinux Modo Atual": "{{ foreman_facts['os::selinux::current_mode'] }}"
+        }
+
+    - name: Exibir informações coletadas
+      debug:
+        var: host_info
