@@ -563,7 +563,6 @@
         success_nodes:
           - UPFIX 4_1 - REPORT
 
-
     - name: Create a workflow job template 4
       ansible.controller.workflow_job_template_node:
         identifier: UPFIX 2_3 - LOGS
