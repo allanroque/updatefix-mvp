@@ -1,6 +1,12 @@
 Add o ansible_connection: local no inventário do AC host
 
+report do update 
 logs pos update
+versão do yum history
+variaveis de reboot reboot: yes
+relatório reboot 
+relatório pos reboot
+integração com ITSM
 
 
 ---
