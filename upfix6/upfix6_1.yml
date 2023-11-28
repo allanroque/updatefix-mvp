@@ -15,6 +15,9 @@
           - "update_type: {{ update_type }}"
           - "reboot: {{ reboot }}"
 
+    - name: Aguardar por 15 segundos
+      pause:
+        seconds: 15
 
     - name: Convert 'active_enabled_services' string to list
       set_fact:
