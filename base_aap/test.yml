@@ -1,6 +1,20 @@
 - name: Coletar informações específicas do host
   hosts: localhost
   tasks:
+    - name: Listar todos os hosts do inventário
+      debug:
+        msg: "{{ item }}"
+      with_inventory_hostnames:
+        - all
+
+    - name: Listar hosts nos grupos específicos
+      debug:
+        msg: "Hosts no grupo {{ item }}: {{ groups[item] }}"
+        loop:
+        - INV-UPDATEFIX_0001
+        - INV-UPDATEFIX_0001_FAIL
+        - INV-UPDATEFIX_0001_OK
+
     - name: Definir variáveis com informações específicas do host
       set_fact:
         host_info: {
