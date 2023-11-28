@@ -11,6 +11,15 @@
       debug:
         var: reboot
 
+    - name: Debug para listar variáveis do grupo
+      debug:
+        msg: 
+          - "updatefix_version: {{ updatefix_version }}"
+          - "updatefix_inventory: {{ updatefix_inventory }}"
+          - "updatefix_inventory_group: {{ updatefix_inventory_group }}"
+          - "update_type: {{ update_type }}"
+          - "reboot: {{ reboot }}"
+
     - name: Reboot do Servidor
       ansible.builtin.reboot:
         reboot_timeout: 600
