@@ -5,24 +5,29 @@
   gather_facts: yes
   become: yes
   tasks:
-    - name: Colocar servidor em manutenção no Zabbix
-      community.zabbix.zabbix_maintenance:
-        server_url: "{{ zabbix_url }}"
-        login_user: "{{ zabbix_user }}"
-        login_password: "{{ zabbix_password }}"
-        host_name: "{{ inventory_hostname }}"
-        name: "Manutencao_{{ inventory_hostname }}"
-        state: present
-        active_since: "{{ lookup('pipe', 'date +%s') }}"
-        active_till: "{{ lookup('pipe', 'date +%s + 3600') }}"  # 1 hora de manutenção
-        description: "Manutenção programada para {{ inventory_hostname }}"
-      delegate_to: localhost
 
-    - name: Definir status do manutencao
-      set_fact:
-        snapshot_status_check: "{{ 'OK' if snapshot_result is succeeded else 'FAIL' }}"
+    - name: debug zabbix
+      debug:
+        msg: "Automação zabbix"
 
-    - name: Criar arquivo de facts para manutencao_status_check
-      template:
-        src: manutencao_status_check.j2
-        dest: "/etc/ansible/facts.d/manutencao_status_check.fact"
+#    - name: Colocar servidor em manutenção no Zabbix
+#      community.zabbix.zabbix_maintenance:
+#        server_url: "{{ zabbix_url }}"
+#        login_user: "{{ zabbix_user }}"
+#        login_password: "{{ zabbix_password }}"
+#        host_name: "{{ inventory_hostname }}"
+#        name: "Manutencao_{{ inventory_hostname }}"
+#        state: present
+#        active_since: "{{ lookup('pipe', 'date +%s') }}"
+#        active_till: "{{ lookup('pipe', 'date +%s + 3600') }}"  # 1 hora de manutenção
+#        description: "Manutenção programada para {{ inventory_hostname }}"
+#      delegate_to: localhost
+#
+#    - name: Definir status do manutencao
+#      set_fact:
+#        snapshot_status_check: "{{ 'OK' if snapshot_result is succeeded else 'FAIL' }}"
+#
+#    - name: Criar arquivo de facts para manutencao_status_check
+#      template:
+#        src: manutencao_status_check.j2
+#        dest: "/etc/ansible/facts.d/manutencao_status_check.fact"

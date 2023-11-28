@@ -9,22 +9,22 @@
     - name: Verificar se o serviço Bacula está ativo
       ansible.builtin.service_facts:
     
-    - name: Verificar status do serviço Bacula
-      debug:
-        msg: "O serviço Bacula está {{ 'ativo' if ansible_facts.services['bacula.service'].state == 'running' else 'inativo' }}"
-      register: bacula_service_status
-
-    - name: Forçar a realização de backup se o serviço Bacula estiver ativo
-      command: <comando_para_forcar_backup>
-      when: ansible_facts.services['bacula.service'].state == 'running'
-
-    - name: Definir status do backup
-      set_fact:
-        backup_status_check: "{{ 'OK' if ansible_facts.services['bacula.service'].state == 'running' else 'FAIL' }}"
-
-    - name: Criar arquivos de facts para backup_status_check
-      template:
-        src: backup_status_check.j2
-        dest: "/etc/ansible/facts.d/backup_status_check.fact"
+#    - name: Verificar status do serviço Bacula
+#      debug:
+#        msg: "O serviço Bacula está {{ 'ativo' if ansible_facts.services['bacula.service'].state == 'running' else 'inativo' }}"
+#      register: bacula_service_status
+#
+#    - name: Forçar a realização de backup se o serviço Bacula estiver ativo
+#      command: <comando_para_forcar_backup>
+#      when: ansible_facts.services['bacula.service'].state == 'running'
+#
+#    - name: Definir status do backup
+#      set_fact:
+#        backup_status_check: "{{ 'OK' if ansible_facts.services['bacula.service'].state == 'running' else 'FAIL' }}"
+#
+#    - name: Criar arquivos de facts para backup_status_check
+#      template:
+#        src: backup_status_check.j2
+#        dest: "/etc/ansible/facts.d/backup_status_check.fact"
 
         

@@ -10,26 +10,26 @@
       ansible.builtin.setup:
       register: vmware_check
 
-    - name: Criar um snapshot para VMs VMware
-      community.vmware.vmware_guest_snapshot:
-        hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_username }}"
-        password: "{{ vcenter_password }}"
-        datacenter: "{{ datacenter_name }}"
-        folder: "/{{ datacenter_name }}/vm/"
-        name: "{{ guest_name }}"
-        state: present
-        snapshot_name: snap1
-        description: "Snapshot created by Ansible"
-      delegate_to: localhost
-      when: vmware_check.ansible_virtualization_type == 'VMware'
-      register: snapshot_result
-
-    - name: Definir status do snapshot
-      set_fact:
-        snapshot_status_check: "{{ 'OK' if snapshot_result is succeeded else 'FAIL' }}"
-
-    - name: Criar arquivos de facts para snapshot_status_check
-      template:
-        src: snapshot_status_check.j2
-        dest: "/etc/ansible/facts.d/snapshot_status_check.fact"
+#    - name: Criar um snapshot para VMs VMware
+#      community.vmware.vmware_guest_snapshot:
+#        hostname: "{{ vcenter_hostname }}"
+#       username: "{{ vcenter_username }}"
+#       password: "{{ vcenter_password }}"
+#       datacenter: "{{ datacenter_name }}"
+#        folder: "/{{ datacenter_name }}/vm/"
+#        name: "{{ guest_name }}"
+#        state: present
+#        snapshot_name: snap1
+#        description: "Snapshot created by Ansible"
+#      delegate_to: localhost
+#      when: vmware_check.ansible_virtualization_type == 'VMware'
+#      register: snapshot_result
+#
+#    - name: Definir status do snapshot
+#      set_fact:
+#        snapshot_status_check: "{{ 'OK' if snapshot_result is succeeded else 'FAIL' }}"
+#
+#    - name: Criar arquivos de facts para snapshot_status_check
+#      template:
+#        src: snapshot_status_check.j2
+#        dest: "/etc/ansible/facts.d/snapshot_status_check.fact"
