@@ -27,6 +27,14 @@
         src: first_reboot_status_check.j2
         dest: "/etc/ansible/facts.d/first_reboot_status_check.fact"
   
+    - name: Convert 'active_enabled_services' string to list
+      set_fact:
+         active_enabled_services_list: "{{ ansible_local.services_status_check.localfacts.active_enabled_services | from_yaml }}"
+
+    - name: Convert 'active_disabled_services' string to list
+      set_fact:
+         active_disabled_services_list: "{{ ansible_local.services_status_check.localfacts.active_disabled_services | from_yaml }}"
+
     - name: adicionar mensagem de log sobre primeiro reboot
       lineinfile:
         path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/validacao.log
