@@ -41,10 +41,6 @@
           register: register_update
           when: update_type == 'security'
 
-        - name: Reboot server after package update
-          reboot:
-          when: server_reboot == 'yes'
-
       rescue:
         - name: Adicionar mensagem de erro de log
           lineinfile:
