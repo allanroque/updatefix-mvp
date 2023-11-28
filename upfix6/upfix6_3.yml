@@ -15,15 +15,6 @@
           - "update_type: {{ update_type }}"
           - "reboot: {{ reboot }}"
 
-    - name: Definir o Status do Reboot
-      set_fact:
-        second_reboot_status_check: "{{ 'OK' if reboot_result is changed else 'FAIL' }}"
-
-    - name: Criar arquivo de facts para reboot_status_check
-      template:
-        src: second_reboot_status_check.j2
-        dest: "/etc/ansible/facts.d/second_reboot_status_check.fact"
-  
     - name: Convert 'active_enabled_services' string to list
       set_fact:
          active_enabled_services_list: "{{ ansible_local.services_status_check.localfacts.active_enabled_services | from_yaml }}"
@@ -66,3 +57,13 @@
         delay: 60
         timeout: 300
       when: reboot == 'yes'
+
+    - name: Definir o Status do Reboot
+      set_fact:
+        second_reboot_status_check: "{{ 'OK' if reboot_result is changed else 'FAIL' }}"
+
+    - name: Criar arquivo de facts para reboot_status_check
+      template:
+        src: second_reboot_status_check.j2
+        dest: "/etc/ansible/facts.d/second_reboot_status_check.fact"
+  
