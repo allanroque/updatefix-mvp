@@ -12,4 +12,4 @@
             - Organização: {{ hostvars[item]['foreman_organization'] | default('Não disponível') }}
             - Sistema Operacional: {{ hostvars[item]['foreman_facts']['os::name'] | default('Não disponível') }} {{ hostvars[item]['foreman_facts']['os::release::full'] | default('Não disponível') }}
             - SELinux Modo Atual: {{ hostvars[item]['foreman_facts']['os::selinux::current_mode'] | default('Não disponível') }}
-      with_items: "{{ groups['all'] }}"z
+      with_items: "{{ groups['all'] }}"
