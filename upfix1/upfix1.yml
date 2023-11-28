@@ -15,6 +15,14 @@
 
     - name: Criar lista dos hosts existentes
       set_fact:
+        server_existing: "{{ server_existing|default([]) }}"
+
+    - name: Criar lista dos hosts não existentes
+      set_fact:
+        server_noexisting: "{{ server_noexisting|default([]) }}"
+
+    - name: Criar lista dos hosts existentes
+      set_fact:
         server_existing: "{{ server_existing|default([]) + [item.item] }}"
       with_items: "{{ check_inventory_result.results }}"
       when: item.changed == False
