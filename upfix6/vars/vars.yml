@@ -5,8 +5,6 @@ ac_inv_updatefix: INV-UPDATEFIX
 
 #variáveis do processo de updatefix
 updatefix_version: "" #0001
-update_type: "{{ update_type }}" #all, debug, security
-reboot: "{{ reboot }}" # yes or no
 update_pkgs: #roadmap
 
 #variaveis para construcao de inventário de updatefix
