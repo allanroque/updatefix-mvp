@@ -466,23 +466,102 @@
 
     - name: Create a workflow job template 5
       ansible.controller.workflow_job_template_node:
-        identifier: "{{ item }}"
+        identifier: UPFIX 3_1 - FILESYSTEM SPACE
         workflow: UPDATEFIX - WORKFLOW
-        unified_job_template: "{{ item }}"
+        unified_job_template: UPFIX 3_1 - FILESYSTEM SPACE
         organization: "{{ ac_organization }}"
         success_nodes:
           - UPFIX 4_1 - REPORT
-      loop:
-        - UPFIX 3_1 - FILESYSTEM SPACE
-        - UPFIX 3_2 - FILESYSTEM READONLY
-        - UPFIX 3_3 - FILESYSTEM MOUNT POINT
-        - UPFIX 3_4 - SUBSCRIPTION MANAGER
-        - UPFIX 3_5 - REPOSITORY
-        - UPFIX 3_6 - RPM DUPES
-        - UPFIX 3_7 - ZOMBIE
-        - UPFIX 3_8 - UPTIME
-        - UPFIX 3_9 - SERVICES
-        - UPFIX 3_10 - PROCESS
+
+    - name: Create a workflow job template 5
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 3_1 - FILESYSTEM SPACE
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 3_1 - FILESYSTEM SPACE
+        organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 4_1 - REPORT
+
+    - name: Create a workflow job template 5
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 3_2 - FILESYSTEM READONLY
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 3_2 - FILESYSTEM READONLY
+        organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 4_1 - REPORT
+
+    - name: Create a workflow job template 5
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 3_3 - FILESYSTEM MOUNT POINT
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 3_3 - FILESYSTEM MOUNT POINT
+        organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 4_1 - REPORT
+
+    - name: Create a workflow job template 5
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 3_4 - SUBSCRIPTION MANAGER
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 3_4 - SUBSCRIPTION MANAGER
+        organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 4_1 - REPORT
+
+    - name: Create a workflow job template 5
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 3_5 - REPOSITORY
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 3_5 - REPOSITORY
+        organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 4_1 - REPORT
+
+    - name: Create a workflow job template 5
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 3_6 - RPM DUPES
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 3_6 - RPM DUPES
+        organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 4_1 - REPORT
+
+    - name: Create a workflow job template 5
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 3_7 - ZOMBIE
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 3_7 - ZOMBIE
+        organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 4_1 - REPORT
+
+    - name: Create a workflow job template 5
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 3_8 - UPTIME
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 3_8 - UPTIME
+        organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 4_1 - REPORT
+
+    - name: Create a workflow job template 5
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 3_9 - SERVICES
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 3_9 - SERVICES
+        organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 4_1 - REPORT
+
+    - name: Create a workflow job template 5
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 3_10 - PROCESS
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 3_10 - PROCESS
+        organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 4_1 - REPORT
 
 
     - name: Create a workflow job template 4

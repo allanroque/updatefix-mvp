@@ -1,9 +1,9 @@
 ---
 - name: Gerenciar Manutenção no Zabbix
-  hosts: "{{ seu_grupo_de_hosts }}"
+  hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files:
     - vars/vars.yml
-  gather_facts: yes
+  gather_facts: false
   become: yes
   tasks:
 
