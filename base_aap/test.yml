@@ -1,31 +1,20 @@
-- name: Coletar informações específicas do host
+- name: Coletar informações de hosts do inventário
   hosts: localhost
+  gather_facts: no
   tasks:
     - name: Listar todos os hosts do inventário
       debug:
-        msg: "{{ item }}"
-      with_inventory_hostnames:
-        - all
-
-    - name: Listar hosts nos grupos específicos
-      debug:
-        msg: "Hosts no grupo {{ item }}: {{ groups[item] }}"
-        loop:
-        - INV-UPDATEFIX_0001
-        - INV-UPDATEFIX_0001_FAIL
-        - INV-UPDATEFIX_0001_OK
-
-    - name: Definir variáveis com informações específicas do host
-      set_fact:
-        host_info: {
-          "ID do Host": "{{ foreman_id }}",
-          "IPv4": "{{ foreman_ipv4 }}",
-          "Localização": "{{ foreman_location }}",
-          "Organização": "{{ foreman_organization }}",
-          "Sistema Operacional": "{{ foreman_facts['os::name'] }} {{ foreman_facts['os::release::full'] }}",
-          "SELinux Modo Atual": "{{ foreman_facts['os::selinux::current_mode'] }}"
-        }
+        msg: "{{ query('inventory_hostnames', 'all') }}"
+      register: inventory_hosts
 
     - name: Exibir informações coletadas
       debug:
-        var: host_info
+        msg: |
+          Informações do Host {{ item.item }}:
+            - ID do Host: {{ item.ansible_facts['foreman_id'] | default('Não disponível') }}
+            - IPv4: {{ item.ansible_facts['foreman_ipv4'] | default('Não disponível') }}
+            - Localização: {{ item.ansible_facts['foreman_location'] | default('Não disponível') }}
+            - Organização: {{ item.ansible_facts['foreman_organization'] | default('Não disponível') }}
+            - Sistema Operacional: {{ item.ansible_facts['foreman_facts']['os::name'] | default('Não disponível') }} {{ item.ansible_facts['foreman_facts']['os::release::full'] | default('Não disponível') }}
+            - SELinux Modo Atual: {{ item.ansible_facts['foreman_facts']['os::selinux::current_mode'] | default('Não disponível') }}
+      loop: "{{ hosts_facts.results }}"
