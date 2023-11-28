@@ -2,19 +2,19 @@
   hosts: localhost
   gather_facts: no
   tasks:
-    - name: Listar todos os hosts do inventário
-      debug:
-        msg: "{{ query('inventory_hostnames', 'all') }}"
-      register: inventory_hosts
+    - name: Coletar informações de cada host
+      setup:
+      delegate_to: "{{ inventory_hostname }}"
+      register: host_facts
 
     - name: Exibir informações coletadas
       debug:
         msg: |
-          Informações do Host {{ item.item }}:
-            - ID do Host: {{ item.ansible_facts['foreman_id'] | default('Não disponível') }}
-            - IPv4: {{ item.ansible_facts['foreman_ipv4'] | default('Não disponível') }}
-            - Localização: {{ item.ansible_facts['foreman_location'] | default('Não disponível') }}
-            - Organização: {{ item.ansible_facts['foreman_organization'] | default('Não disponível') }}
-            - Sistema Operacional: {{ item.ansible_facts['foreman_facts']['os::name'] | default('Não disponível') }} {{ item.ansible_facts['foreman_facts']['os::release::full'] | default('Não disponível') }}
-            - SELinux Modo Atual: {{ item.ansible_facts['foreman_facts']['os::selinux::current_mode'] | default('Não disponível') }}
-      loop: "{{ hosts_facts.results }}"
+          Informações do Host {{ inventory_hostname }}:
+            - ID do Host: {{ host_facts.ansible_facts['foreman_id'] | default('Não disponível') }}
+            - IPv4: {{ host_facts.ansible_facts['foreman_ipv4'] | default('Não disponível') }}
+            - Localização: {{ host_facts.ansible_facts['foreman_location'] | default('Não disponível') }}
+            - Organização: {{ host_facts.ansible_facts['foreman_organization'] | default('Não disponível') }}
+            - Sistema Operacional: {{ host_facts.ansible_facts['foreman_facts']['os::name'] | default('Não disponível') }} {{ host_facts.ansible_facts['foreman_facts']['os::release::full'] | default('Não disponível') }}
+            - SELinux Modo Atual: {{ host_facts.ansible_facts['foreman_facts']['os::selinux::current_mode'] | default('Não disponível') }}
+      run_once: true
