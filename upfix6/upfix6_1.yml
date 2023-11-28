@@ -6,11 +6,6 @@
   gather_facts: True
   become: yes
   tasks:
-
-    - name: Debug reboot variable
-      debug:
-        var: reboot
-
     - name: Debug para listar variáveis do grupo
       debug:
         msg: 
@@ -19,18 +14,6 @@
           - "updatefix_inventory_group: {{ updatefix_inventory_group }}"
           - "update_type: {{ update_type }}"
           - "reboot: {{ reboot }}"
-
-    - name: Reboot do Servidor
-      ansible.builtin.reboot:
-        reboot_timeout: 600
-      when: reboot == 'yes'
-      register: reboot_result
-
-    - name: Esperar o Servidor Voltar
-      ansible.builtin.wait_for_connection:
-        delay: 60
-        timeout: 300
-      when: reboot == 'yes'
 
     - name: Definir o Status do Reboot
       set_fact:
@@ -71,3 +54,15 @@
       template:
         src: primeiro_reboot_log.j2
         dest: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/primeiro_reboot.log
+
+    - name: Reboot do Servidor
+      ansible.builtin.reboot:
+        reboot_timeout: 600
+      when: reboot == 'yes'
+      register: reboot_result
+
+    - name: Esperar o Servidor Voltar
+      ansible.builtin.wait_for_connection:
+        delay: 60
+        timeout: 300
+      when: reboot == 'yes'
