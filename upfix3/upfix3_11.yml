@@ -1,0 +1,11 @@
+---
+- name: Validação de update - UPFIX 3.11 -  update
+  hosts: "{{ updatefix_inventory_group_ok }}"
+  vars_files:
+    - vars/vars.yml
+  gather_facts: False
+  become: yes
+  tasks:
+    - name: debug
+      debug:
+        msg: "add info de update"

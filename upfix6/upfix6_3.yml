@@ -25,7 +25,7 @@
 
     - name: adicionar mensagem de log sobre segundo reboot
       lineinfile:
-        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/validacao.log
+        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/updatefix_{{ updatefix_version }}.log
         line: |
           ################# SEGUNDO REBOOT ##########################"
           {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: procedimento de reboot realizado!
@@ -34,7 +34,7 @@
 
     - name: adicionar mensagem de log sobre não realização de reboot
       lineinfile:
-        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/validacao.log
+        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/updatefix_{{ updatefix_version }}.log
         line: |
           ################# SEGUNDO REBOOT ##########################"
           {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: durante a execução da automação foi selecionada a opção de não realizar o reboot do servidor
@@ -44,7 +44,7 @@
     - name: Gerar arquivo de log para segundo reboot
       template:
         src: segundo_reboot_log.j2
-        dest: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/segundo_reboot.log
+        dest: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/segundo_reboot_updatefix_{{ updatefix_version }}.log
 
     - name: Reboot do Servidor
       ansible.builtin.reboot:
@@ -66,4 +66,3 @@
       template:
         src: second_reboot_status_check.j2
         dest: "/etc/ansible/facts.d/second_reboot_status_check.fact"
-  

@@ -31,7 +31,6 @@
         - /var/log/ansible
         - /var/log/ansible/updatefix
         - /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}
-        - /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/detalhes
 
     - name: Coletar fatos locais
       ansible.builtin.setup:
@@ -41,7 +40,6 @@
         filter: ansible_local
       register: local_facts
 
-    - name: test
+    - name: Coletar local facts 
       debug:
         var: local_facts
-        

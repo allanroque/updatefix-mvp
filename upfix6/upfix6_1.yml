@@ -29,7 +29,7 @@
 
     - name: adicionar mensagem de log sobre primeiro reboot
       lineinfile:
-        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/validacao.log
+        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/updatefix_{{ updatefix_version }}.log
         line: |
           ################# PRIMEIRO REBOOT ##########################"
           {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: procedimento de reboot realizado!
@@ -38,7 +38,7 @@
 
     - name: adicionar mensagem de log sobre não realização de reboot
       lineinfile:
-        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/validacao.log
+        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/updatefix_{{ updatefix_version }}.log
         line: |
           ################# PRIMEIRO REBOOT ##########################"
           {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: durante a execução da automação foi selecionada a opção de não realizar o reboot do servidor
@@ -48,7 +48,7 @@
     - name: Gerar arquivo de log para primeiro reboot
       template:
         src: primeiro_reboot_log.j2
-        dest: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/primeiro_reboot.log
+        dest: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/primeiro_reboot_updatefix_{{ updatefix_version }}.log
 
     - name: Reboot do Servidor
       ansible.builtin.reboot:

@@ -16,47 +16,51 @@
         src: yum_history_fact.j2
         dest: "/etc/ansible/facts.d/yum_history.fact"    
 
-    - block:
-        - name: Update all packages (all)
-          yum:
-            name: '*'
-            state: latest
-            exclude: java*,mysql*,postgresql*,nginx*,httpd*,php*,oracle*,sap*,jboss*,weblogic*
-          register: register_update
-          when: update_type == 'all'
+    - name: Update all packages (all)
+      yum:
+        name: '*'
+        state: latest
+        exclude: java*,mysql*,postgresql*,nginx*,httpd*,php*,oracle*,sap*,jboss*,weblogic*
+      register: register_update
+       when: update_type == 'all'
 
-        - name: Update bugfix packages (bugfix)
-          yum:
-            name: '*'
-            state: latest
-            bugfix: true
-          register: register_update
-          when: update_type == 'bugfix'
+####### NO REBOOT!!!!
+    - name: Update all packages no reboot 
+      yum:
+        name: '*'
+        state: latest
+        exclude: java*,mysql*,postgresql*,nginx*,httpd*,php*,oracle*,sap*,jboss*,weblogic*,kernel*,*-firmware-*,dbus,glibc,hal,systemd,udev,gnutls,openssl-libs
+      register: register_update
+       when: update_type == 'all' and reboot == 'no'
 
-        - name: Update security packages (security)
-          yum:
-            name: '*'
-            state: latest
-            security: true
-          register: register_update
-          when: update_type == 'security'
+########
 
-      rescue:
-        - name: Adicionar mensagem de erro de log
-          lineinfile:
-            path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}.log
-            line: |
-              "################# STATUS DO UPDATE ##########################"
-              {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: Identificamos uma falha durante o processo de update
-              {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: Log de erro do processo de update:
-              {{ register_update.stdout | default('N/A') }}
+    - name: Update bugfix packages (bugfix)
+      yum:
+        name: '*'
+        state: latest
+        bugfix: true
+      register: register_update
+      when: update_type == 'bugfix'
 
-  handlers:
-    - name: Log Success Update
+    - name: Update security packages (security)
+      yum:
+        name: '*'
+        state: latest
+        security: true
+      register: register_update
+      when: update_type == 'security'
+
+    - name: Adicionar mensagem de log de atualização
       lineinfile:
-        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}.log
+        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/updatefix_{{ updatefix_version }}.log
         line: |
           "################# STATUS DO UPDATE ##########################"
+          {% if register_update.failed %}
+          {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: Identificamos uma falha durante o processo de update
+          Erro: {{ register_update.msg | default('N/A') }}
+          {% else %}
           UPDATE REALIZADO COM SUCESSO
           {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: Detalhes do processo:
+          {% endif %}
           {{ register_update.stdout | default('N/A') }}

@@ -32,7 +32,6 @@
       delegate_to: localhost
       run_once: true
 
-
     - name: Refazer o grupo de servidores FAIL no inventario {{ updatefix_inventory_group }}
       ansible.controller.group:
         name: "{{ updatefix_inventory_group_fail }}"
