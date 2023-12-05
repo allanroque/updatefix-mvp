@@ -72,13 +72,14 @@
         path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/updatefix_{{ updatefix_version }}.log
         line: |
           "################# STATUS DO UPDATE ##########################"
-          {% if register_update.failed %}
-          {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: Identificamos uma falha durante o processo de update
-          Erro: {{ register_update.msg | default('N/A') }}
+          "{{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: "
+          {% if register_update.changed %}
+          "UPDATE REALIZADO COM SUCESSO!!!"
+          "Detalhes do processo:"
+          "{{ register_update.stdout | default('N/A') }}"
           {% else %}
-          {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: UPDATE REALIZADO COM SUCESSO!!!
-          {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: Detalhes do processo:
-          {{ register_update.stdout | default('N/A') }}
+          "Nenhuma atualização necessária ou erro durante o processo de update"
+          "Detalhes: {{ register_update.msg | default('N/A') }}"
           {% endif %}
       when: register_update is defined
 
