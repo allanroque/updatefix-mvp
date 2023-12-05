@@ -38,7 +38,7 @@
         state: latest
         exclude: java*,mysql*,postgresql*,nginx*,httpd*,php*,oracle*,sap*,jboss*,weblogic*
       register: register_update
-       when: update_type == 'all'
+      when: update_type == 'all'
 
 ####### NO REBOOT!!!!
     - name: Update all packages no reboot 
@@ -47,7 +47,7 @@
         state: latest
         exclude: java*,mysql*,postgresql*,nginx*,httpd*,php*,oracle*,sap*,jboss*,weblogic*,kernel*,*-firmware-*,dbus,glibc,hal,systemd,udev,gnutls,openssl-libs
       register: register_update
-       when: update_type == 'all' and reboot == 'no'
+      when: update_type == 'all' and reboot == 'no'
 
 ########
 
