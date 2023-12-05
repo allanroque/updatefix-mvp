@@ -78,8 +78,9 @@
           {% else %}
           {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: UPDATE REALIZADO COM SUCESSO!!!
           {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: Detalhes do processo:
-          {% endif %}
           {{ register_update.stdout | default('N/A') }}
+          {% endif %}
+      when: register_update is defined
 
     - name: Coletar informações de atualização pos-update
       command: yum updateinfo

@@ -1,5 +1,8 @@
 Add o ansible_connection: local no inventário do AC host
 
+
+Criar uma lista de pre e pos
+processo de volta
 report do update OK
 logs pos update  OK
 versão do yum history OK 
