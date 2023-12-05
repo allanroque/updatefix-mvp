@@ -1,11 +1,11 @@
 Add o ansible_connection: local no inventário do AC host
 
-report do update 
-logs pos update 
-versão do yum history 
+report do update OK
+logs pos update  OK
+versão do yum history OK 
 variaveis de reboot reboot: yes - OK
 relatório reboot - OK
-relatório pos reboot 
+relatório pos reboot OK
 integração com ITSM
 https://www.ansible.com/blog/aix-patch-management-with-ansible
 
