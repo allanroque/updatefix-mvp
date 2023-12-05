@@ -28,7 +28,7 @@
         path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/updatefix_{{ updatefix_version }}.log
         line: |
           ################# SEGUNDO REBOOT ##########################"
-          {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: procedimento de reboot realizado!
+          {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: procedimento de reboot pos update será realizado, mais informações podem ser encontradas no arquivo de log /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/segundo_reboot_updatefix_{{ updatefix_version }}.log
           {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}:  inicio do processo de reboot
       when: reboot == 'yes'
 
@@ -66,3 +66,11 @@
       template:
         src: second_reboot_status_check.j2
         dest: "/etc/ansible/facts.d/second_reboot_status_check.fact"
+
+    - name: adicionar mensagem de log sobre segundo reboot
+      lineinfile:
+        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/updatefix_{{ updatefix_version }}.log
+        line: |
+          ################# SEGUNDO REBOOT ##########################"
+          {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}:  Reboot realizado com sucesso!!!
+      when: reboot == 'yes'

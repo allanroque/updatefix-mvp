@@ -7,6 +7,22 @@
   become: yes
   tasks:
 
+    - name: Aguardar por 5 segundos
+      pause:
+        seconds: 5
+
+    - name: Coletar informações de atualização pré-update
+      command: yum updateinfo
+      register: yum_pre_update_info
+
+    - name: Criar arquivos de facts para yum_pre_update_info
+      lineinfile:
+        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/updatefix_{{ updatefix_version }}.log
+        line: |
+          ################# INFORMAÇÃO PRE UPDATES ##########################"
+          {{ yum_pre_update_info.stdout }}
+
+
     - name: Capturar a última versão do histórico do YUM
       shell: yum history | awk 'NR==4 {print $1}'
       register: yum_history_id
@@ -60,7 +76,18 @@
           {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: Identificamos uma falha durante o processo de update
           Erro: {{ register_update.msg | default('N/A') }}
           {% else %}
-          UPDATE REALIZADO COM SUCESSO
+          {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: UPDATE REALIZADO COM SUCESSO!!!
           {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: Detalhes do processo:
           {% endif %}
           {{ register_update.stdout | default('N/A') }}
+
+    - name: Coletar informações de atualização pos-update
+      command: yum updateinfo
+      register: yum_pos_update_info
+
+    - name: Criar arquivos de facts para yum_pos_update_info
+      lineinfile:
+        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/updatefix_{{ updatefix_version }}.log
+        line: |
+          ################# INFORMAÇÃO POS UPDATES ##########################"
+          {{ yum_pre_update_info }}

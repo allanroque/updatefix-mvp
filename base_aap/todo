@@ -116,3 +116,20 @@ upfix2.3:
  - Verificar espaço em /boot
  - Criar arquivos de facts para root_space_check
  - Criar arquivos de facts para boot_space_check
+
+yum updateinfo
+yum updateinfo
+yum updateinfo 
+yum updateinfo list bugfix
+yum updateinfo list Enhancement
+yum updateinfo list enhancement
+yum updateinfo list enhancement |nl
+yum updateinfo
+yum updateinfo summary all
+yum updateinfo list all
+yum updateinfo list
+yum updateinfo
+yum updateinfo sec
+yum updateinfo bugfix
+yum updateinfo bugfix 
+yum updateinfo

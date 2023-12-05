@@ -15,9 +15,9 @@
           - "update_type: {{ update_type }}"
           - "reboot: {{ reboot }}"
 
-    - name: Aguardar por 15 segundos
+    - name: Aguardar por 10 segundos
       pause:
-        seconds: 15
+        seconds: 10
 
     - name: Convert 'active_enabled_services' string to list
       set_fact:
@@ -33,7 +33,7 @@
         line: |
           ################# PRIMEIRO REBOOT ##########################"
           {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: procedimento de reboot realizado!
-          {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}:  inicio do processo de reboot
+          {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}:  inicio do processo de reboot será iniciado, informações detalhadas sobre o reboot podem ser encotradas em /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/primeiro_reboot_updatefix_{{ updatefix_version }}.log
       when: reboot == 'yes'
 
     - name: adicionar mensagem de log sobre não realização de reboot
@@ -70,3 +70,10 @@
       template:
         src: first_reboot_status_check.j2
         dest: "/etc/ansible/facts.d/first_reboot_status_check.fact"
+
+    - name: adicionar mensagem de log sobre status do primeiro reboot
+      lineinfile:
+        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/updatefix_{{ updatefix_version }}.log
+        line: |
+          {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: REBOOT REALIZADO COM SUCESSO!!
+          {{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: Reboot realizado com Sucesso!

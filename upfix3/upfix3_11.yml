@@ -6,6 +6,13 @@
   gather_facts: False
   become: yes
   tasks:
-    - name: debug
-      debug:
-        msg: "add info de update"
+
+    - name: Coletar informações de atualização pré-update
+      command: yum updateinfo
+      register: yum_pre_update_info
+      changed_when: False
+
+    - name: Criar arquivos de facts para yum_pre_update_info
+      template:
+        src: yum_pre_update_info.j2
+        dest: "/var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/yum_pre_update_info.log"
