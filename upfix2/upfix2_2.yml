@@ -1,5 +1,5 @@
 ---
-- name: Verificações de acesso
+- name: Verificações de acesso - UPFIX 2.2 - Ajuste inventários
   hosts: "{{ updatefix_inventory_group }}"
   vars_files:
     - vars/vars.yml

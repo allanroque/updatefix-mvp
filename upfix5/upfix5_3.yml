@@ -1,5 +1,5 @@
 ---
-- name: Gerenciar Manutenção no Zabbix
+- name: Gerenciar Manutenção no Zabbix - UPFIX 5.3 - Manutenção
   hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files:
     - vars/vars.yml

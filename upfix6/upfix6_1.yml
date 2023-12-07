@@ -1,5 +1,5 @@
 ---
-- name: Primeiro de Reboot de Teste
+- name: Primeiro de Reboot de Teste - UPFIX 6.1 - PRIMEIRO REBOOT
   hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files:
     - vars/vars.yml

@@ -1,138 +1,82 @@
-Add o ansible_connection: local no inventário do AC host
 
-comparativos
-Criar uma lista de pre e pos
-processo de volta
-report do update OK
-logs pos update  OK
-versão do yum history OK 
-variaveis de reboot reboot: yes - OK
-relatório reboot - OK
-relatório pos reboot OK
+Notas: 
+UPFIX 1 - Preparação
+Verifica a existência dos servidores no inventário.
+Cria listas de hosts existentes e não existentes.
+Exibe listas dos servidores.
+Adiciona hosts existentes ao inventário de UPDATEFIX.
+Adiciona hosts não existentes ao inventário de UPDATEFIX.
+Cria grupos para a versão do Updatefix.
+Adiciona hosts aos grupos de Updatefix.
+
+UPFIX 2.1 - Validação de Acesso
+Verifica acesso aos servidores.
+Teste de ping nos servidores.
+Ajusta status de acessibilidade dos hosts.
+
+UPFIX 2.2 - Ajuste de Inventários
+Exibe variáveis dos hosts.
+Cria estrutura de variáveis para hosts selecionados.
+Adiciona hosts acessíveis e existentes ao grupo específico.
+
+UPFIX 2.3 - Construção de Logs
+Prepara diretórios e arquivos para logs e fatos do Ansible.
+Coleta e exibe fatos locais específicos.
+
+UPFIX 3.1 - FileSystem
+Verifica pontos de montagem e espaço disponível.
+
+UPFIX 3.2 - FileSystem Somente Leitura
+Verifica se partições estão em modo somente leitura.
+
+UPFIX 3.3 - Mount Point
+Verifica consistência dos pontos de montagem e fstab.
+
+UPFIX 3.4 - Subscription
+Verifica status de subscrição na Red Hat.
+
+UPFIX 3.5 - Repository
+Verifica configuração de repositórios nos servidores.
+
+UPFIX 3.6 - RPM Duplicados
+Verifica a existência de pacotes RPM duplicados.
+
+UPFIX 3.7 - Processos Zumbis
+Conta e verifica processos zumbis nos servidores.
+
+UPFIX 3.8 - Uptime
+Analisa tempo de atividade dos servidores.
+
+UPFIX 3.9 - Serviços
+Verifica status e configuração dos serviços essenciais.
+
+UPFIX 3.10 - Processos
+Identifica processos com alto consumo de memória.
+
+UPFIX 4.1 - Consolidação de Informações
+Reúne informações para verificar prontidão para atualização.
+
+UPFIX 4.2 - Ajuste de Inventário
+Reorganiza hosts nos grupos de inventário com base nas verificações.
+
+UPFIX 5.1 - Backup
+Verifica e executa backups com o Bacula.
+
+UPFIX 5.2 - Snapshot
+Automatiza a criação de snapshots para VMs VMware.
+
+UPFIX 5.3 - Manutenção
+Gerencia estado de manutenção dos servidores no Zabbix.
+
+UPFIX 6.1 - Primeiro Reboot
+Executa e monitora o primeiro reboot dos servidores.
+
+UPFIX 6.2 - Atualização de Pacotes
+Realiza e registra a atualização dos pacotes.
+
+UPFIX 6.3 - Segundo Reboot
+Executa e monitora o segundo reboot dos servidores.
+
+Todo:
 integração com ITSM
 https://www.ansible.com/blog/aix-patch-management-with-ansible
-
----
-- name: Ler variáveis de grupos específicos
-  hosts: localhost
-  gather_facts: no
-  tasks:
-    - name: Exibir variáveis do grupo
-      debug:
-        msg: "Grupo: {{ item }}, Variáveis: {{ groups[item] | map('extract', hostvars) | list }}"
-      loop: "{{ groups_to_check }}"
-      vars:
-        groups_to_check:
-          - 'nome_do_grupo1'
-          - 'nome_do_grupo2'
-
----
-- name: Coletar informações de grupo e listar hosts
-  hosts: localhost
-  gather_facts: no
-  tasks:
-    - name: Exibir variáveis do grupo INV-UPDATEFIX_0001
-      debug:
-        msg: |
-          Grupo: INV-UPDATEFIX_0001
-          Variáveis:
-            updatefix_version: "{{ group_vars['INV-UPDATEFIX_0001']['updatefix_version'] }}"
-            updatefix_inventory: "{{ group_vars['INV-UPDATEFIX_0001']['updatefix_inventory'] }}"
-            updatefix_inventory_group: "{{ group_vars['INV-UPDATEFIX_0001']['updatefix_inventory_group'] }}"
-            update_type: "{{ group_vars['INV-UPDATEFIX_0001']['update_type'] }}"
-            reboot: "{{ group_vars['INV-UPDATEFIX_0001']['reboot'] }}"
-
-    - name: Listar hosts nos grupos específicos
-      debug:
-        msg: "Hosts no grupo {{ item }}: {{ groups[item] }}"
-      loop:
-        - INV-UPDATEFIX_0001
-        - INV-UPDATEFIX_0001_FAIL
-        - INV-UPDATEFIX_0001_OK
-
-verificar:
-
-SSH password: 
-[WARNING]: Invalid characters were found in group names but not replaced, use
--vvvv to see details
-
-validar servicos: zabbix, besclient, nsr, urbancode
-- validar ldap
-
-#local_facts
-local_facts:
-  - root_space_check
-  - boot_space_check
-  - root_readonly_check
-  - boot_readonly_check
-  - mount_points_check
-  - subscription_check
-  - repository_check
-  - rpm_check
-  - zombie_process_check
-  - uptime_reboot_check
-  - services_status_check
-  - proccess_status_check
-
-exemplo:
-    - name: Criar arquivos de facts para root_space_check
-      template:
-        src: root_space_check.j2
-        dest: "/etc/ansible/facts.d/root_space_check.fact"
-
-
-[localfacts]
-root_space_check={{ root_space_check }}
-
-
-notas: 
-upfix1:
- - Verificar se os servidores previamente existe no Automation Controller no inventario principal
- - Criar lista dos hosts existentes
- - Criar lista dos hosts não existentes
- - Add hosts existentes no inventory de UPDATEFIX com variável OK
- - Add hosts NÃO existentse no inventory de UPDATEFIX com variável FAIL
- - Criar grupo Updatefix versão {{ updatefix_version }} on inventory UPDATEFIX
- - Add host no grupo Updatefix versão {{ updatefix_version }} no inventory UPDATEFIX
-
-upfix2.1:
- - Verificar se os servidores existentes no inventario estão acessiveis para o Automation Controller
- -  Ajustar variável de status do host no inventory e group Updatefix  {{ updatefix_inventory_group }}
- - Ajustar variável de status do host no inventory e group Updatefix {{ updatefix_inventory_group }} OK 
-upfix2.2:
- - Exibir variáveis dos hosts
- - Criar estrutura de variáveis para hosts específicos
- - Exibir hosts selecionados
- - Add hosts with status OK Updatefix version {{ updatefix_version }} to inventory UPDATEFIX
-upfix2.3:
- - Construção de diretórios e logs para o UpdateFix
- - Criar diretório de fatos do Ansible
- - Garantir que o diretório /etc/ansible/facts.d existe
- - Criar arquivos de facts para cada item
- - Gerar diretórios de log do Ansible e UpdateFix
- upfix3.1:
- - Exibir espaço e status em /
- - Exibir espaço e status em /boot
- - Exibir informações dos pontos de montagem /
- - Exibir informações dos pontos de montagem /boot
- - Verificar espaço em /
- - Verificar espaço em /boot
- - Criar arquivos de facts para root_space_check
- - Criar arquivos de facts para boot_space_check
-
-yum updateinfo
-yum updateinfo
-yum updateinfo 
-yum updateinfo list bugfix
-yum updateinfo list Enhancement
-yum updateinfo list enhancement
-yum updateinfo list enhancement |nl
-yum updateinfo
-yum updateinfo summary all
-yum updateinfo list all
-yum updateinfo list
-yum updateinfo
-yum updateinfo sec
-yum updateinfo bugfix
-yum updateinfo bugfix 
-yum updateinfo

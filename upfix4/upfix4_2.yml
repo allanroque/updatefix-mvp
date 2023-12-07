@@ -1,5 +1,5 @@
 ---
-- name: Seleção de hosts e ajustes de inventarios
+- name: Seleção de hosts e ajustes de inventarios - UPFIX 4.2 - Ajuste de inventario
   hosts: "{{ updatefix_inventory_group }}"
   vars_files:
     - vars/vars.yml

@@ -1,5 +1,5 @@
 ---
-- name: Bacula Backup
+- name: Bacula Backup - UPFIX 5.1 - Backup
   hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files:
     - vars/vars.yml

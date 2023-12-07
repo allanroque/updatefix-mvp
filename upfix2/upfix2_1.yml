@@ -1,5 +1,5 @@
 ---
-- name: Verificações de acesso
+- name: Verificações de acesso - UPFIX 2.1 - Validação de acesso
   hosts: "{{ updatefix_inventory_group }}"
   vars_files: vars/vars.yml
   gather_facts: False

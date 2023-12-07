@@ -1,5 +1,5 @@
 ---
-- name: Construção de diretórios e logs para o UpdateFix
+- name: Construção de diretórios e logs para o UpdateFix UPFIX 2.3 - Construção de logs
   hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files:
     - vars/vars.yml

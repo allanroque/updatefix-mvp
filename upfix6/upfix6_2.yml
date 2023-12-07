@@ -1,5 +1,5 @@
 ---
-- name: RoadMap de Atualização
+- name: Atualização de pacotes - UPFIX 6.2 - Update 
   hosts: "{{ updatefix_inventory_group_ok }}"
   vars_files:
     - vars/vars.yml
