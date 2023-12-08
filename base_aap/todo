@@ -80,3 +80,201 @@ Executa e monitora o segundo reboot dos servidores.
 Todo:
 integração com ITSM
 https://www.ansible.com/blog/aix-patch-management-with-ansible
+
+################################################
+
+UPFIX 1 - Preparação
+Verificação de Existência dos Servidores no Inventário Principal: Confirma se os servidores listados previamente existem no inventário principal do Automation Controller.
+Criação de Listas de Hosts Existentes e Não Existentes: Gera listas separadas para hosts que estão presentes e ausentes no inventário principal, com base nos resultados da verificação.
+Exibição das Listas de Hosts: Mostra as listas de servidores existentes e não existentes no inventário.
+Adição de Hosts Existentes ao Inventário de UPDATEFIX: Adiciona hosts existentes ao inventário específico de UPDATEFIX, marcando-os com a variável "OK" para existência no inventário e "FAIL" para acessibilidade.
+Adição de Hosts Não Existentes ao Inventário de UPDATEFIX: Inclui hosts não existentes no inventário de UPDATEFIX, atribuindo a variável "FAIL" tanto para existência no inventário quanto para acessibilidade.
+Criação de Grupos para Versão Updatefix: Estabelece grupos dentro do inventário de UPDATEFIX para a versão específica do Updatefix, preservando hosts existentes e definindo variáveis relevantes.
+Adição de Hosts aos Grupos de Updatefix: Insere todos os servidores listados nos grupos apropriados do Updatefix dentro do inventário UPDATEFIX.
+
+UPFIX 2.1 - Validação de Acesso
+Verificação de Acesso aos Servidores: Confirma se os servidores no inventário de Updatefix estão acessíveis para o Automation Controller.
+Teste de Ping: Utiliza o módulo ping do Ansible (baseado em acesso SSH, não ICMP) para validar o acesso aos dispositivos.
+Ajuste de Variável de Status para Hosts Inacessíveis: Para os servidores que não respondem ao ping, ajusta a variável hosts_reachable para "FAIL" no inventário e grupo Updatefix.
+Ajuste de Variável de Status para Hosts Acessíveis: Para os servidores que respondem com sucesso ao ping, atualiza a variável hosts_reachable para "OK", indicando que estão acessíveis.
+
+UPFIX 2.2 - Ajuste de Inventários
+Exibição de Variáveis dos Hosts: Apresenta um resumo das variáveis host_exists_in_inventory e hosts_reachable para cada host no inventário Updatefix.
+Criação de Estrutura de Variáveis para Hosts Específicos: Estabelece um conjunto de hosts selecionados (selected_hosts) com base na condição de que ambos host_exists_in_inventory e hosts_reachable sejam "OK".
+Exibição de Hosts Selecionados: Mostra a lista de hosts que atendem às condições especificadas para serem considerados como acessíveis e existentes no inventário.
+Adição de Hosts Acessíveis e Existentes ao Grupo Específico: Inclui hosts com status "OK" no grupo {{ updatefix_inventory_group_ok }} dentro do inventário Updatefix, assegurando que apenas os hosts que estão acessíveis e existentes sejam considerados para a próxima etapa do processo.
+
+
+UPFIX 2.3 - Construção de Logs
+Criação de Diretórios e Arquivos para Logs e Fatos do Ansible: Prepara a infraestrutura necessária para armazenamento de logs e fatos gerados pelo Ansible e pelo processo UpdateFix.
+Criação de Diretório para Fatos do Ansible: Assegura a existência e criação do diretório /etc/ansible/facts.d/, utilizado para armazenar arquivos de facts.
+Geração de Arquivos de Facts: Utiliza um template (fact_template.j2) para criar arquivos de facts para cada item especificado em local_facts.
+Criação de Diretórios de Log: Estabelece diretórios específicos para armazenar logs do Ansible e do processo UpdateFix, incluindo um subdiretório para a versão específica do UpdateFix.
+Coleta de Fatos Locais: Utiliza o módulo ansible.builtin.setup para coletar e exibir fatos locais específicos, que são úteis para o processo de atualização e diagnóstico.
+
+
+UPFIX 3.1 - FileSystem
+Listagem de Pontos de Montagem: Inicia a verificação nos servidores definidos, com elevação de privilégios, sem coletar fatos padrão do Ansible.
+Coleta de Fatos do Sistema: Utiliza o módulo ansible.builtin.setup para coletar informações específicas sobre os pontos de montagem.
+Análise de Espaço e Status em '/' e '/boot': Define e exibe informações sobre o espaço total, disponível e percentual disponível nas partições "/", "/boot", e estabelece um status de "OK" ou "FAIL" com base na disponibilidade de espaço.
+Verificação de Espaço Disponível: Avalia o espaço disponível nas partições "/", "/boot", e define o status correspondente de espaço como "OK" ou "FAIL".
+Criação de Arquivos de Facts: Gera arquivos de facts para root_space_check e boot_space_check, utilizando templates específicos, e os armazena em "/etc/ansible/facts.d".
+
+UPFIX 3.2 - FileSystem Somente Leitura
+Listagem de Pontos de Montagem: Verifica os pontos de montagem nos servidores especificados no grupo de inventário.
+Coleta de Fatos do Sistema: Coleta informações específicas dos pontos de montagem, focando em "/" e "/boot".
+Verificação de Modo Somente Leitura em '/' e '/boot': Avalia se estas partições estão configuradas como somente leitura.
+Definição de Status: Define as variáveis root_readonly_check e boot_readonly_check com base no status de montagem.
+Captura das Opções de Montagem: Registra as opções de montagem atuais para as partições "/" e "/boot".
+Criação de Arquivos de Facts: Gera arquivos de facts para root_readonly_check e boot_readonly_check.
+
+UPFIX 3.3 - Mount Point
+Validação de Subscrição e Verificação de Pontos de Montagem: Analisa e registra o status dos pontos de montagem nos servidores selecionados.
+Execução do Comando findmnt --verify: Verifica a consistência dos pontos de montagem utilizando o comando findmnt.
+Determinação do Estado dos Pontos de Montagem no fstab: Define a variável mount_points_fstab_check como "OK" ou "FAIL" com base no resultado do comando findmnt.
+Exibição do Resultado da Verificação: Mostra o status dos pontos de montagem conforme registrado no fstab.
+Coleta de Pontos de Montagem Atuais: Obtém a lista atual de pontos de montagem no sistema, excluindo diretórios de sistema como /proc, /sys, /dev, /run.
+Leitura e Decodificação do /etc/fstab: Recupera e processa o conteúdo do arquivo fstab para comparação.
+Processamento e Comparação de Pontos de Montagem: Compara a lista atual de pontos de montagem com as entradas do fstab.
+Definição de Status dos Pontos de Montagem: Estabelece o status mount_points_check como "OK" se todos os pontos de montagem atuais estiverem listados no fstab, e como "WARNING" se houver discrepâncias.
+Exibição de Pontos de Montagem Não Listados no fstab: Apresenta pontos de montagem que estão ativos, mas não estão listados no fstab.
+Criação de Arquivos de Facts para mount_points_check: Gera arquivos de facts com base no status dos pontos de montagem e os armazena em /etc/ansible/facts.d.
+
+UPFIX 3.4 - Subscription
+Validação de Status de Subscrição: Analisa o status de subscrição dos servidores no grupo de inventário selecionado para garantir que estejam corretamente registrados na Red Hat.
+Verificação de Registro na Red Hat: Utiliza o comando subscription-manager identity para verificar se o servidor está registrado na Red Hat.
+Determinação do Status de Subscrição: Estabelece a variável subscription_check como "OK" se o servidor estiver registrado na Red Hat, e como "FAIL" caso contrário.
+Exibição do Status de Subscrição: Apresenta o resultado do comando de verificação para confirmar o status de registro.
+Criação de Arquivos de Facts para subscription_check: Gera um arquivo de facts com base no status de subscrição e o armazena em /etc/ansible/facts.d.
+
+UPFIX 3.5 - Repository
+Validação da Configuração de Repositórios: Verifica a configuração de repositórios nos servidores para assegurar que estão configurados e acessíveis.
+Verificação de Repositórios Existentes: Utiliza o comando yum repolist --quiet para listar os repositórios configurados no servidor.
+Determinação do Estado dos Repositórios: Define a variável repository_check como "OK" se houver repositórios listados e "FAIL" se a lista estiver vazia.
+Exibição do Resultado da Verificação: Apresenta o status dos repositórios baseado na verificação realizada.
+Criação de Arquivos de Facts para repository_check: Gera um arquivo de facts com base no status de configuração dos repositórios e o armazena em /etc/ansible/facts.d.
+
+
+UPFIX 3.6 - RPM Duplicados
+Verificação de Pacotes Duplicados: Analisa os servidores para identificar a presença de pacotes RPM duplicados, o que pode indicar problemas de configuração ou atualização.
+Execução de Verificação de Duplicidade de Pacotes: Usa o comando package-cleanup --dupes --quiet para listar pacotes duplicados e conta o número de linhas no resultado.
+Definição de Status de Pacotes: Configura a variável rpm_check como "OK" se não houver pacotes duplicados (ou seja, o comando retorna 0) e como "FAIL" se houver pacotes duplicados.
+Criação de Arquivos de Facts para rpm_check: Gera um arquivo de facts com base no resultado da verificação de pacotes duplicados e o armazena em /etc/ansible/facts.d.
+
+UPFIX 3.7 - Processos Zumbis
+Verificação de Processos Zumbis: Realiza uma verificação nos servidores para identificar a presença de processos zumbis, que podem indicar problemas no gerenciamento de processos do sistema.
+Execução da Contagem de Processos Zumbis: Utiliza o comando ps aux combinado com awk e grep para contar a quantidade de processos zumbis (processos que terminaram sua execução, mas ainda permanecem na tabela de processos).
+Determinação do Estado dos Processos Zumbis: Configura a variável zombie_process_check como "OK" se não houver processos zumbis detectados e como "FAIL" se algum processo zumbi for encontrado.
+Exibição do Resultado da Verificação: Mostra o status da verificação de processos zumbis, facilitando a identificação de possíveis problemas no gerenciamento de processos.
+Criação de Arquivos de Facts para zombie_process_check: Gera um arquivo de facts com base no resultado da verificação e o armazena em /etc/ansible/facts.d.
+
+
+UPFIX 3.8 - Tempo de Atividade (Uptime)
+Verificação do Tempo de Atividade e Necessidade de Reinicialização: Analisa o tempo de atividade dos servidores para determinar se uma reinicialização é necessária, visando a manutenção da saúde do sistema.
+Determinação do Status com Base no Tempo de Atividade: Utiliza o fato ansible_uptime_seconds para calcular o tempo de atividade em dias e define a variável uptime_reboot_check como "OK" se o servidor estiver ativo há menos de 365 dias, e como "FAIL" se exceder este período.
+Exibição do Resultado da Verificação de Reinicialização: Apresenta o status de uptime_reboot_check, indicando se é recomendado ou não reiniciar o servidor.
+Exibição do Tempo de Atividade do Servidor: Mostra quantos dias o servidor está ativo sem reinicialização.
+Criação de Arquivos de Facts para uptime_reboot_check: Gera um arquivo de facts com base no status de tempo de atividade e o armazena em /etc/ansible/facts.d.
+
+
+UPFIX 3.9 - Serviços
+Validação do Status dos Serviços: Analisa e registra o status dos serviços nos servidores para assegurar que estão funcionando conforme o esperado.
+Inicialização de Variáveis para Serviços: Prepara variáveis para armazenar informações sobre serviços ativos e desabilitados.
+Coleta de Informações Sobre os Serviços: Utiliza o módulo ansible.builtin.service_facts para obter dados sobre todos os serviços no servidor.
+Identificação de Serviços Habilitados e Ativos: Captura serviços que estão em execução e habilitados, adicionando-os à lista active_enabled_services.
+Identificação de Serviços Ativos mas Desabilitados: Registra serviços que estão em execução, mas desabilitados, na lista active_disabled_services.
+Exibição de Listas de Serviços: Mostra as listas de serviços habilitados e ativos, bem como serviços ativos, mas desabilitados.
+Determinação do Status de Serviços Ativos/Desabilitados: Define active_disabled_services_status como "OK" se não houver serviços ativos e desabilitados, e como "WARNING" se houver.
+Validação do Serviço 'Zabbix-agent2': Verifica se o serviço 'zabbix-agent2' está ativo e habilitado, definindo a variável zabbix_service como "OK" ou "FAIL" com base nessa condição.
+Criação de Arquivos de Facts para services_status_check: Gera um arquivo de facts baseado no status geral dos serviços e o armazena em /etc/ansible/facts.d.
+
+
+UPFIX 3.10 - Processos
+Análise dos Principais Processos por Uso de Memória: Verifica e registra os processos que mais consomem memória nos servidores, tanto para processos de qualquer usuário quanto especificamente para processos não executados pelo usuário 'root'.
+Obtenção dos 10 Principais Processos por Uso de Memória: Utiliza o comando ps aux --sort=-%mem para listar os 10 processos que mais consomem memória, incluindo o usuário e o comando executado.
+Definição da Variável top_processes: Armazena a lista dos 10 principais processos em top_processes.
+Obtenção dos 10 Principais Processos Não-Root por Uso de Memória: Executa um comando similar ao anterior, mas exclui processos executados pelo usuário 'root'.
+Definição da Variável top_non_root_processes: Armazena a lista dos 10 principais processos não-root em top_non_root_processes.
+Exibição dos Processos: Mostra as listas dos principais processos e dos principais processos não-root com base no uso de memória.
+Criação de Arquivos de Facts para proccess_status_check: Gera um arquivo de facts com base na análise de processos e o armazena em /etc/ansible/facts.d.
+
+UPFIX 4.1 - Consolidação de Informações
+Preparação e Verificação de Prontidão para Atualização: Reúne informações de várias verificações anteriores para determinar se os servidores estão prontos para a atualização.
+Pausa Inicial: Espera por 15 segundos antes de iniciar as tarefas.
+Coleta de Fatos Locais: Utiliza o módulo ansible.builtin.setup para coletar informações locais.
+Conversão de Strings para Listas: Transforma as strings de processos e serviços em listas para facilitar a análise.
+Definição da Prontidão para Atualização: Estabelece ready_for_update como "FAIL" se qualquer uma das verificações anteriores falhar, e como "OK" se todas passarem.
+Criação de Arquivos de Facts para ready_for_update: Gera um arquivo de facts com base nas verificações e o armazena em /etc/ansible/facts.d.
+Ajuste de Variáveis no Inventário: Atualiza as variáveis do inventário para refletir o status de prontidão para atualização de cada servidor.
+Geração de Relatório de Validação: Produz um relatório com o status de prontidão para atualização dos servidores, armazenando-o em /var/log/ansible/updatefix.
+Exibição de Servidores Prontos para Atualização: Mostra uma mensagem para cada servidor que está pronto para a atualização.
+Exibição de Motivos de Falha: Apresenta os motivos específicos pelos quais alguns servidores não estão prontos para atualização, baseando-se nas verificações anteriores.
+
+UPFIX 4.2 - Ajuste de Inventário
+Organização e Classificação dos Hosts no Inventário: Reorganiza os hosts nos grupos de inventário com base nas verificações de prontidão, acessibilidade e existência.
+Exibição de Variáveis dos Hosts: Apresenta um resumo do status de cada host, incluindo existência no inventário, acessibilidade e prontidão para atualização.
+Recriação do Grupo de Servidores 'OK' no Inventário: Limpa e reconstrói o grupo {{ updatefix_inventory_group_ok }}, preparando-o para adicionar novamente os hosts que estão prontos para atualização.
+Cadastro de Hosts 'OK' no Inventário: Adiciona os hosts que passaram em todas as verificações ao grupo {{ updatefix_inventory_group_ok }}.
+Recriação do Grupo de Servidores 'FAIL' no Inventário: Limpa e reconstrói o grupo {{ updatefix_inventory_group_fail }}, destinado aos hosts que falharam em alguma verificação.
+Cadastro de Hosts 'FAIL' no Inventário: Adiciona os hosts que falharam em alguma verificação ao grupo {{ updatefix_inventory_group_fail }}.
+
+UPFIX 5.1 - Backup
+Verificação e Execução de Backup com Bacula: Analisa se o serviço de backup Bacula está ativo nos servidores selecionados e, se estiver, realiza os backups necessários.
+Verificação do Serviço Bacula: Utiliza o módulo ansible.builtin.service_facts para obter informações sobre o estado do serviço Bacula.
+(Comentado) Verificação de Status do Serviço Bacula: Se necessário, apresenta o estado atual do serviço Bacula (ativo ou inativo).
+(Comentado) Execução Forçada de Backup: Se o serviço Bacula estiver ativo, executa um comando para forçar a realização de backup (comando específico a ser definido conforme a configuração do ambiente).
+(Comentado) Definição do Status do Backup: Estabelece uma variável backup_status_check com base no estado do serviço Bacula, definindo como "OK" se estiver ativo e como "FAIL" se não estiver.
+(Comentado) Criação de Arquivos de Facts para backup_status_check: Se implementado, geraria um arquivo de facts com base no status do backup e o armazenaria em /etc/ansible/facts.d.
+
+
+UPFIX 5.2 - Snapshot
+Automação de Snapshot para Máquinas Virtuais: Realiza uma verificação para determinar se os servidores são VMs VMware e, se forem, executa snapshots como parte da preparação para a atualização.
+Verificação de VM VMware: Utiliza o módulo ansible.builtin.setup para identificar se o servidor é uma máquina virtual VMware.
+(Comentado) Criação de Snapshot para VMs VMware: Se implementado, este passo criaria um snapshot para cada VM identificada como VMware, utilizando o módulo community.vmware.vmware_guest_snapshot com as credenciais e informações específicas do vCenter.
+(Comentado) Definição do Status do Snapshot: Se o snapshot for criado com sucesso, a variável snapshot_status_check seria definida como "OK", e como "FAIL" em caso de falhas.
+(Comentado) Criação de Arquivos de Facts para snapshot_status_check: Se implementado, geraria um arquivo de facts com base no status dos snapshots e o armazenaria em /etc/ansible/facts.d.
+
+
+UPFIX 5.3 - Manutenção
+Gerenciamento de Manutenção no Zabbix: Propõe a automação para colocar servidores em estado de manutenção no Zabbix, como parte das preparações para a atualização.
+Mensagem de Debug para Zabbix: Exibe uma mensagem de debug para confirmar a execução da automação relacionada ao Zabbix.
+(Comentado) Colocação do Servidor em Manutenção no Zabbix: Se implementado, este passo colocaria o servidor em estado de manutenção no Zabbix, utilizando o módulo community.zabbix.zabbix_maintenance com as credenciais do Zabbix e configurações específicas para cada servidor.
+(Comentado) Definição do Status de Manutenção: Se a manutenção for configurada com sucesso, a variável manutencao_status_check seria definida como "OK", e como "FAIL" em caso de falhas.
+(Comentado) Criação de Arquivos de Facts para manutencao_status_check: Se implementado, geraria um arquivo de facts com base no status de manutenção e o armazenaria em /etc/ansible/facts.d.
+
+UPFIX 6.1 - Primeiro Reboot
+Realização e Monitoramento do Primeiro Reboot dos Servidores: Executa um reboot inicial como teste para verificar a estabilidade e a capacidade de reinicialização dos servidores após as atualizações.
+Exibição de Variáveis do Grupo: Mostra as variáveis chave utilizadas na automação.
+Pausa Antes do Reboot: Espera por 10 segundos antes de iniciar o processo de reboot.
+Conversão de Strings para Listas de Serviços Ativos e Desativados: Transforma as strings de serviços ativos e desativados em listas para facilitar a análise.
+Adição de Mensagens de Log: Insere mensagens de log sobre o procedimento de reboot, incluindo a data e hora, e o nome do host.
+Geração de Arquivo de Log para o Primeiro Reboot: Cria um arquivo de log detalhado para o primeiro reboot usando um template específico.
+Execução do Reboot do Servidor: Realiza o reboot do servidor se a opção estiver ativada (reboot == 'yes').
+Espera pelo Retorno do Servidor: Aguarda a reconexão do servidor após o reboot.
+Definição do Status do Reboot: Estabelece first_reboot_status_check como "OK" se o reboot ocorrer com sucesso, e como "FAIL" em caso contrário.
+Criação de Arquivo de Facts para reboot_status_check: Gera um arquivo de facts com base no resultado do reboot e o armazena em /etc/ansible/facts.d.
+Adição de Mensagem de Log sobre o Status do Primeiro Reboot: Registra uma mensagem final de log confirmando o sucesso do reboot.
+
+UPFIX 6.2 - Atualização de Pacotes
+Execução e Registro da Atualização dos Pacotes: Realiza a atualização dos pacotes nos servidores selecionados e registra informações relevantes antes e após a atualização.
+Pausa Inicial: Espera por 5 segundos antes de iniciar a atualização.
+Coleta de Informações Pré-Atualização: Executa o comando yum updateinfo para obter informações sobre atualizações disponíveis antes de iniciar o processo de atualização.
+Registro de Informações Pré-Atualização: Armazena as informações pré-atualização em um arquivo de log.
+Captura da Última Versão do Histórico do YUM: Usa o comando yum history para obter a última versão do histórico do YUM.
+Armazenamento do Número do Histórico do YUM: Gera um arquivo de facts com base no histórico do YUM.
+Atualização de Todos os Pacotes: Executa a atualização de todos os pacotes, exceto aqueles especificamente excluídos, com base no tipo de atualização selecionado (all, bugfix, security).
+Registro da Atualização: Adiciona informações sobre o status da atualização em um arquivo de log.
+Coleta de Informações Pós-Atualização: Executa novamente o comando yum updateinfo após a atualização para capturar informações atualizadas.
+Registro de Informações Pós-Atualização: Armazena as informações pós-atualização no mesmo arquivo de log.
+
+UPFIX 6.3 - Segundo Reboot
+Realização e Monitoramento do Segundo Reboot dos Servidores: Executa um segundo reboot para confirmar a estabilidade dos servidores após as atualizações.
+Exibição de Variáveis do Grupo: Mostra as variáveis-chave utilizadas na automação.
+Conversão de Strings para Listas de Serviços Ativos e Desativados: Transforma as strings de serviços ativos e desativados em listas para facilitar a análise.
+Adição de Mensagens de Log sobre o Segundo Reboot: Insere mensagens no arquivo de log sobre o procedimento de reboot, incluindo data, hora e nome do host.
+Geração de Arquivo de Log para o Segundo Reboot: Cria um arquivo de log detalhado para o segundo reboot usando um template específico.
+Execução do Reboot do Servidor: Realiza o reboot do servidor se a opção estiver ativada (reboot == 'yes').
+Espera pelo Retorno do Servidor: Aguarda a reconexão do servidor após o reboot.
+Definição do Status do Reboot: Estabelece second_reboot_status_check como "OK" se o reboot ocorrer com sucesso, e como "FAIL" em caso contrário.
+Criação de Arquivo de Facts para reboot_status_check: Gera um arquivo de facts com base no resultado do reboot e o armazena em /etc/ansible/facts.d.
+Adição de Mensagem de Log sobre o Sucesso do Segundo Reboot: Registra uma mensagem final no arquivo de log confirmando o sucesso do segundo reboot.
