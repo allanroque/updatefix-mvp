@@ -1,12 +1,12 @@
-# 🛠️ UpdateFix - Relatório de Atualização
+# UpdateFix - Relatório de Atualização
 
-## 📅 Data e Hora
+## Data e Hora
 - **Início do processo:** 2024-05-02 19:13:53
 - **Hostname:** `web01.aroque.com.br`
 - **Versão do UpdateFix:** `0010`
 
 ---
-## 🖥️ Informações do Servidor
+##  Informações do Servidor
 | Propriedade           | Valor |
 |-----------------------|---------------------------------|
 | **Distribuição**     | RedHat |
@@ -16,12 +16,12 @@
 | **IPV4**             | 192.168.100.21 |
 | **Arquitetura**      | x86_64 |
 | **Virtual/Físico**   | KVM |
-| **Uptime**           | 42 minutos |
+| **Uptime**           | 8 horas |
 | **CPUs**             | 1 |
 | **Memória**          | 0.75 GB |
 
 ---
-## ✅ Validação dos Pré-requisitos
+## Validação dos Pré-requisitos
 
 | Requisito                          | Status |
 |-------------------------------------|--------|
@@ -32,18 +32,17 @@
 | Subscrição                         | ✅ OK |
 | Repositórios                       | ✅ OK |
 | Pacotes duplicados                 | ✅ OK |
-| Processos zumbis                    | ✅ OK |
+| Processos zumbis                   | ✅ OK |
 | Serviços não persistentes          | ✅ OK |
 | Serviços e processos Zabbix        | ✅ OK |
-| Serviços e processos BigFix        | ⚠️ Pendente de Automação |
 | MountPoint listados no `fstab`     | ✅ OK |
 | MountPoint não listado no `fstab`  | ✅ OK |
-| Validação de autenticação LDAP     | ⚠️ Pendente de Automação |
+| Validação de autenticação LDAP     | ⚠️ WARNING |
 | Uptime/Reboot                      | ✅ OK |
 | Host possui inventário             | ✅ OK |
 | Acessível via Ansible              | ✅ OK |
 
-### 🔹 **Servidor pronto para update:** ✅ OK
+### **Servidor pronto para update:** ✅ OK
 
 ---
 ## 📂 Pontos de Montagem
@@ -72,7 +71,7 @@
 *(Nenhum listado)*
 
 ---
-## 🔍 Processos Listados Antes do Update
+## Processos Listados Antes do Update
 ### **Top 10 Processos**
 1. `root /usr/bin/python3`
 2. `root /usr/bin/python3`
@@ -98,23 +97,28 @@
 10. `dbus dbus-broker`
 
 ---
-## 🔄 Primeiro Reboot
+## Primeiro Reboot
 - **Horário:** 2024-05-02 19:14:57
-- **Status:** ✅ Reboot realizado com sucesso!
+- **Status:** Reboot realizado com sucesso!
 - **Logs detalhados:** `/var/log/ansible/updatefix/updatefix_0010/primeiro_reboot_updatefix_0010.log`
 
 ---
-## 🔍 Informações Pré-Update
+## Informações Pré-Update
 - Atualização dos repositórios realizada.
 - **Última verificação de metadados:** 16 minutos atrás.
 
-### 📌 Resumo das Atualizações Disponíveis
+### Resumo das Atualizações Disponíveis
 - **Notificações de Segurança:** 23
   - 🔴 4 **Importantes**
   - 🟠 16 **Moderadas**
   - 🟡 3 **Baixas**
 - **Correções de bugs:** 79
 - **Melhorias:** 4
+
+## Segundo Reboot
+- **Horário:** 2024-05-02 19:40:57
+- **Status:** Reboot realizado com sucesso!
+- **Logs detalhados:** `/var/log/ansible/updatefix/updatefix_0010/segundo_reboot_updatefix_0010.log`
 
 ---
 ✅ **UpdateFix concluído com sucesso!**
