@@ -2,12 +2,12 @@
 - name: Configuracao base o ambiente de UPDATEFIX
   hosts: localhost
   vars:
-    ac_organization: Default #SECURITY #alterar este item ############!!!!!!!!!!!!
+    ac_organization: ITOPS #SECURITY #alterar este item ############!!!!!!!!!!!!
     ac_cred_ac: CRED-AC-CONFIG
-    ac_cred_servers: CRED-SSH-SERVER
+    ac_cred_servers: CRED_SSH_ITOPS
     ac_inv_all_hosts: INV-ALL-HOSTS
     ac_inv_updatefix: INV-UPDATEFIX
-    ac_proj_updatefix: PROJ-GIT-UPDATEFIX
+    ac_proj_updatefix: PROJ_GIT_UPDATEFIX
     ac_hostname: localhost #alterar este item ##############!!!!!!!!!!!
   gather_facts: False
   tasks:
