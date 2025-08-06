@@ -6,6 +6,7 @@ ac_inv_updatefix: INV-UPDATEFIX
 #variáveis do processo de updatefix
 updatefix_version: "" #0001
 update_pkgs: #roadmap
+updatefix_exclude: #java*,mysql*,postgresql*,nginx*,httpd*,php*,oracle*,sap*,jboss*,weblogic*,kernel*,*-firmware-*,dbus,glibc,hal,systemd,udev,gnutls,openssl-libs
 
 #variaveis para construcao de inventário de updatefix
 updatefix_inventory: "{{ ac_inv_updatefix }}" 

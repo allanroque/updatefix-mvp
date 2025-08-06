@@ -45,7 +45,7 @@
       yum:
         name: '*'
         state: latest
-        exclude: java*,mysql*,postgresql*,nginx*,httpd*,php*,oracle*,sap*,jboss*,weblogic*,kernel*,*-firmware-*,dbus,glibc,hal,systemd,udev,gnutls,openssl-libs
+        exclude: "{{ updatefix_exclude }}"
       register: register_update
       when: update_type == 'all' and reboot == 'no'
 
@@ -56,6 +56,7 @@
         name: '*'
         state: latest
         bugfix: true
+        exclude: "{{ updatefix_exclude }}"
       register: register_update
       when: update_type == 'bugfix'
 
@@ -64,6 +65,7 @@
         name: '*'
         state: latest
         security: true
+        exclude: "{{ updatefix_exclude }}"
       register: register_update
       when: update_type == 'security'
 
