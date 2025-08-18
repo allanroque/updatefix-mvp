@@ -348,6 +348,51 @@
         survey_spec: "{{ lookup('file', 'upfix_version_survey.json') }}"
 
 
+    - name: Criar Job Template de UPFIX 6-1 - REBOOT TESTE
+      ansible.controller.job_template:
+        name: UPFIX 6_1 - REBOOT TESTE
+        job_type: "run"
+        organization: "{{ ac_organization }}"
+        inventory: "{{ ac_inv_updatefix }}" 
+        project: "{{ ac_proj_updatefix }}"
+        playbook: "upfix6/upfix6_1.yml"
+        credentials:
+          - "{{ ac_cred_servers }}" 
+          - "{{ ac_cred_ac }}"
+        state: "present"
+        survey_enabled: yes
+        survey_spec: "{{ lookup('file', 'upfix_version_survey.json') }}"
+
+    - name: Criar Job Template de UPFIX 6-2 - UPDATE
+      ansible.controller.job_template:
+        name: UPFIX 6_2 - UPDATE
+        job_type: "run"
+        organization: "{{ ac_organization }}"
+        inventory: "{{ ac_inv_updatefix }}" 
+        project: "{{ ac_proj_updatefix }}"
+        playbook: "upfix6/upfix6_2.yml"
+        credentials:
+          - "{{ ac_cred_servers }}" 
+          - "{{ ac_cred_ac }}"
+        state: "present"
+        survey_enabled: yes
+        survey_spec: "{{ lookup('file', 'upfix_version_survey.json') }}"
+
+    - name: Criar Job Template de UPFIX 6-3 - REBOOT POS UPDATE
+      ansible.controller.job_template:
+        name: UPFIX 6_3 - REBOOT POS UPDATE
+        job_type: "run"
+        organization: "{{ ac_organization }}"
+        inventory: "{{ ac_inv_updatefix }}" 
+        project: "{{ ac_proj_updatefix }}"
+        playbook: "upfix6/upfix6_3.yml"
+        credentials:
+          - "{{ ac_cred_servers }}" 
+          - "{{ ac_cred_ac }}"
+        state: "present"
+        survey_enabled: yes
+        survey_spec: "{{ lookup('file', 'upfix_version_survey.json') }}"
+
 ######################################
 # workflow
 ######################################
@@ -360,6 +405,44 @@
         state: "present"
         survey_enabled: yes
         survey_spec: "{{ lookup('file', 'upfix1_survey.json') }}"
+
+    - name: Create a workflow job template 11
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 6_3 - REBOOT POS UPDATE
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 6_3 - REBOOT POS UPDATE
+        organization: "{{ ac_organization }}"
+
+    - name: Create a workflow job template 10
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 6_2 - UPDATE
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 6_2 - UPDATE
+        organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 6_3 - REBOOT POS UPDATE
+
+    - name: Create a workflow job template 9
+      ansible.controller.workflow_job_template_node:
+        identifier: UPFIX 6_1 - REBOOT TESTE
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: UPFIX 6_1 - REBOOT TESTE
+        organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 6_2 - UPDATE
+
+    - name: Create a workflow job template 8
+      ansible.controller.workflow_job_template_node:
+        identifier: "{{ item }}"
+        workflow: UPDATEFIX - WORKFLOW
+        unified_job_template: "{{ item }}"
+        organization: "{{ ac_organization }}"
+        success_nodes:
+          - UPFIX 6_1 - REBOOT TESTE
+      loop:
+        - UPFIX 5_1 - BACKUP
+        - UPFIX 5_2 - SNAPSHOT
+        - UPFIX 5_3 - MANUTENÇÃO
 
     - name: Create a workflow job template 7
       ansible.controller.workflow_job_template_node:
