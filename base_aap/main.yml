@@ -1,6 +1,7 @@
 ---
 - name: Configuracao base o ambiente de UPDATEFIX
   hosts: localhost
+  connection: local
   vars:
     ac_organization: SEC #SECURITY #alterar este item ############!!!!!!!!!!!!
     ac_cred_ac: CRED-AC-CONFIG
