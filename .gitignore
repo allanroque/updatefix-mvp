@@ -1,0 +1,104 @@
+# UpdateFix MVP - .gitignore
+
+# Arquivos temporários do sistema
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Arquivos de log
+*.log
+logs/
+*.log.*
+
+# Arquivos de backup
+*.bak
+*.backup
+*.old
+*.orig
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Arquivos de cache
+.cache/
+*.cache
+
+# Arquivos de configuração local
+*.local
+.env
+.env.local
+.env.production
+.env.staging
+
+# Arquivos de credenciais
+*.key
+*.pem
+*.p12
+*.pfx
+credentials/
+secrets/
+
+# Arquivos de inventário local
+inventory/local/
+host_vars/local/
+group_vars/local/
+
+# Arquivos de variáveis sensíveis
+vars/secrets.yml
+vars/credentials.yml
+vars/local.yml
+
+# Arquivos de relatórios temporários
+reports/temp/
+*.report.tmp
+
+# Arquivos de teste
+test_results/
+coverage/
+.coverage
+
+# Arquivos de IDE/Editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Arquivos de build/distribuição
+dist/
+build/
+*.tar.gz
+*.zip
+
+# Arquivos de dependências Python (se houver)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Arquivos de Node.js (se houver)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos de Ansible
+*.retry
+.ansible/
+ansible.log
+
+# Arquivos específicos do projeto
+# (Adicione aqui arquivos específicos que não devem ser versionados)
