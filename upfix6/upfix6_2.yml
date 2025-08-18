@@ -11,6 +11,87 @@
       pause:
         seconds: 5
 
-    - name: Exemplo
-      debug:
-        msg: "Simulacao de update"
+    - name: Coletar informações de atualização pré-update
+      command: yum updateinfo
+      register: yum_pre_update_info
+
+    - name: Criar arquivos de facts para yum_pre_update_info
+      lineinfile:
+        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/updatefix_{{ updatefix_version }}.log
+        line: |
+          ################# INFORMAÇÃO PRE UPDATES ##########################"
+          {{ yum_pre_update_info.stdout }}
+
+
+    - name: Capturar a última versão do histórico do YUM
+      shell: yum history | awk 'NR==4 {print $1}'
+      register: yum_history_id
+
+    - name: Armazenar o número do histórico do YUM
+      template:
+        src: yum_history_fact.j2
+        dest: "/etc/ansible/facts.d/yum_history.fact"    
+
+    - name: Update all packages (all)
+      yum:
+        name: '*'
+        state: latest
+        exclude: java*,mysql*,postgresql*,nginx*,httpd*,php*,oracle*,sap*,jboss*,weblogic*
+      register: register_update
+      when: update_type == 'all'
+
+####### NO REBOOT!!!!
+    - name: Update all packages no reboot 
+      yum:
+        name: '*'
+        state: latest
+        exclude: "{{ updatefix_exclude }}"
+      register: register_update
+      when: update_type == 'all' and reboot == 'no'
+
+########
+
+    - name: Update bugfix packages (bugfix)
+      yum:
+        name: '*'
+        state: latest
+        bugfix: true
+        exclude: "{{ updatefix_exclude }}"
+      register: register_update
+      when: update_type == 'bugfix'
+
+    - name: Update security packages (security)
+      yum:
+        name: '*'
+        state: latest
+        security: true
+        exclude: "{{ updatefix_exclude }}"
+      register: register_update
+      when: update_type == 'security'
+
+    - name: Adicionar mensagem de log de atualização
+      lineinfile:
+        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/updatefix_{{ updatefix_version }}.log
+        line: |
+          "################# STATUS DO UPDATE ##########################"
+          "{{ lookup('pipe','date +%Y-%m-%d') }} {{ lookup('pipe','date +%H:%M:%S') }} {{ inventory_hostname }}: "
+          {% if register_update.changed %}
+          "UPDATE REALIZADO COM SUCESSO!!!"
+          "Detalhes do processo:"
+          "{{ register_update.stdout | default('N/A') }}"
+          {% else %}
+          "Nenhuma atualização necessária ou erro durante o processo de update"
+          "Detalhes: {{ register_update.msg | default('N/A') }}"
+          {% endif %}
+      when: register_update is defined
+
+    - name: Coletar informações de atualização pos-update
+      command: yum updateinfo
+      register: yum_pos_update_info
+
+    - name: Criar arquivos de facts para yum_pos_update_info
+      lineinfile:
+        path: /var/log/ansible/updatefix/updatefix_{{ updatefix_version }}/updatefix_{{ updatefix_version }}.log
+        line: |
+          ################# INFORMAÇÃO POS UPDATES ##########################"
+          {{ yum_pre_update_info }}
