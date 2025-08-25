@@ -1,0 +1,24 @@
+- hosts: windows
+  name: Windows Patching Playbook
+  vars:
+    categories: []
+    reboot_server: true
+
+  tasks:
+    - name: Install Windows Updates
+      win_updates:
+        category_names: "{{ categories | default(omit) }}"
+        reboot: "{{ reboot_server | default(true) }}"
+      register: update_result
+
+    - name: Show update summary
+      debug:
+        msg:
+          - "Updates found: {{ update_result.updates | length }}"
+          - "Updates installed: {{ update_result.installed_update_count }}"
+          - "Updates (detailed): {{ update_result.updates | map(attribute='title') | list }}"
+
+    - name: Conditional reboot info
+      debug:
+        msg: "System reboot required: {{ update_result.reboot_required }}"
+
